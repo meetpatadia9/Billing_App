@@ -4,7 +4,9 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.os.Bundle
+import android.view.Gravity
 import android.view.MenuItem
+import android.widget.FrameLayout
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
@@ -13,7 +15,6 @@ import com.codebyzebru.myapplication.R
 import com.codebyzebru.myapplication.adapters.PrefManager
 import com.codebyzebru.myapplication.broadcastreceiver.ConnectivityReceiver
 import com.codebyzebru.myapplication.fragments.*
-//import com.example.billapp.fragments.*
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
@@ -25,19 +26,14 @@ class HomeActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
     lateinit var drawerLayout: DrawerLayout
     lateinit var naviView: NavigationView
     private var snackBar: Snackbar? = null
+    private var isConnected: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-
-        /*
-               REGISTERING BROADCAST RECEIVER FOR INTERNET CONNECTIVITY
-        */
-        registerReceiver(
-            ConnectivityReceiver(),
-            IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
-        )
+        //  REGISTERING BROADCAST RECEIVER FOR INTERNET CONNECTIVITY
+        registerReceiver(ConnectivityReceiver(), IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
 
         prefManager = PrefManager(this)
         naviView = findViewById(R.id.home_navigationView)
@@ -58,11 +54,12 @@ class HomeActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
                 DEFAULT FRAGMENT
         */
         if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction().replace(R.id.layout_home, HomeFragment()).commit()
+            supportFragmentManager.beginTransaction().replace(R.id.layout_home, HomeFragment())
+                .commit()
             setTitle("Home")
         }
 
-
+        //  NAVIGATION-ITEM-SELECTED LISTENER
         naviView.setNavigationItemSelectedListener {
             it.isChecked = true
             when (it.itemId) {
@@ -84,17 +81,19 @@ class HomeActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
                 }
             }
         }
+
     }
 
 
     private fun replaceFragments(fragment: Fragment, title: String): Boolean {
-        supportFragmentManager.beginTransaction().replace(R.id.layout_home, fragment).addToBackStack(null).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.layout_home, fragment)
+            .addToBackStack(null).commit()
         drawerLayout.closeDrawers()
         setTitle(title)
         return true
     }
 
-
+    //  required to enable Option menu
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
             return true
@@ -103,7 +102,7 @@ class HomeActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
     }
 
 
-    //UNSETTING FLAG ON "Logout"
+    //  UNSETTING FLAG ON "Logout"
     private fun logout() {
         prefManager.clearData()
         val intent = Intent(this, LoginActivity::class.java)
@@ -114,8 +113,16 @@ class HomeActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
 
 
     /*
-        CHECKING FOR ACTIVE INTERNET CONNECTION
+            CHECKING FOR ACTIVE INTERNET CONNECTION
     */
+    private fun noInternet() {
+        isConnected = false
+    }
+
+    private fun internetConnected() {
+        isConnected = true
+    }
+
     override fun onNetworkConnectionChange(isConnected: Boolean) {
         showNetworkMessage(isConnected)
     }
@@ -127,19 +134,19 @@ class HomeActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
 
     private fun showNetworkMessage(isConnected: Boolean) {
         if (!isConnected) {
-            snackBar = Snackbar.make(
-                findViewById(R.id.layout_home),
-                "Connection loss",
-                Snackbar.LENGTH_LONG
-            )
+            noInternet()
+            snackBar = Snackbar.make(findViewById(R.id.layout_home), "Connection loss", Snackbar.LENGTH_LONG)
+
+            val view = snackBar?.view
             snackBar?.duration = BaseTransientBottomBar.LENGTH_INDEFINITE
+            snackBar?.setBackgroundTint(resources.getColor(R.color.red))
+            val params = view?.layoutParams as FrameLayout.LayoutParams
+            params.gravity = Gravity.TOP
             snackBar?.show()
         } else {
             snackBar?.dismiss()
+            internetConnected()
         }
     }
-
-
-
 
 }

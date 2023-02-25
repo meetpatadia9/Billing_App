@@ -23,8 +23,7 @@ import com.codebyzebru.myapplication.dataclasses.PartyDataClass
             iii. onBindViewHolder()    --->  fetch appropriate data and uses data to fill in ViewHolder's layout
 */
 
-class PartyAdapter(val context: Context, val partyList: ArrayList<PartyDataClass>) : RecyclerView.Adapter<PartyAdapter.PartyViewHolders>() {
-
+class PartyAdapter(val context: Context, private val partyList: ArrayList<PartyDataClass>) : RecyclerView.Adapter<PartyAdapter.PartyViewHolders>() {
 
     class PartyViewHolders(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var partyName = itemView.findViewById<TextView>(R.id.singleView_party_name)
@@ -42,9 +41,12 @@ class PartyAdapter(val context: Context, val partyList: ArrayList<PartyDataClass
     }
 
     override fun onBindViewHolder(holder: PartyViewHolders, position: Int) {
-        holder.partyName.text = partyList[position].partyName
-        holder.companyName.text = partyList[position].companyName
-        holder.totalPurchase.text = partyList[position].totalPurchase.toString()
+        //scope functions `apply`
+        holder.apply {
+            partyName.text = partyList[position].partyName
+            companyName.text = partyList[position].companyName
+            totalPurchase.text = partyList[position].totalPurchase.toString()
+        }
     }
 
 }

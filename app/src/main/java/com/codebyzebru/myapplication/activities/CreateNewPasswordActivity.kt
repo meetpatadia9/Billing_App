@@ -23,11 +23,11 @@ class CreateNewPasswordActivity : AppCompatActivity(), ConnectivityReceiver.Conn
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_new_password)
 
+        //  REGISTERING BROADCAST RECEIVER FOR INTERNET CONNECTIVITY
         registerReceiver(ConnectivityReceiver(), IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
 
         val newPassword = findViewById<EditText>(R.id.cpf_edtxt_newPassword)
         val conformPassword = findViewById<EditText>(R.id.cpf_edtxt_conformPass)
-
 
 
         //  CREATE NEW PASSWORD
@@ -50,7 +50,7 @@ class CreateNewPasswordActivity : AppCompatActivity(), ConnectivityReceiver.Conn
     }
 
     /*
-        CHECKING FOR ACTIVE INTERNET CONNECTION
+            CHECKING FOR ACTIVE INTERNET CONNECTION
     */
     private fun noInternet() {
         isConnected = false
@@ -86,4 +86,5 @@ class CreateNewPasswordActivity : AppCompatActivity(), ConnectivityReceiver.Conn
             snackBar?.dismiss()
         }
     }
+
 }

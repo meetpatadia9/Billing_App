@@ -20,13 +20,17 @@
         <activity
             android:name=".activities.CreateNewPasswordActivity"
             android:exported="false" />
+
         <activity
             android:name=".activities.ForgotPasswordActivity"
             android:exported="false" />
+
         <activity
             android:name=".activities.RegistrationActivity"
             android:exported="false" />
-        <activity android:name=".activities.HomeActivity" />
+
+        <activity android:name=".activities.HomeActivity"
+            android:exported="false"/>
 
         <activity
             android:name=".activities.LoginActivity"

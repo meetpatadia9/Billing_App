@@ -29,12 +29,16 @@ class RegistrationActivity : AppCompatActivity(), ConnectivityReceiver.Connectiv
                 "[a-zA-Z\\d][a-zA-Z\\d\\-]{0,25}" +
                 ")+"
     )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registrastion)
 
+        //  DISABLING TOOLBAR/ACTIONBAR
         supportActionBar?.hide()
 
+
+	    //  REGISTERING BROADCAST RECEIVER FOR INTERNET CONNECTIVITY
         registerReceiver(ConnectivityReceiver(), IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
 
         val fullname = findViewById<EditText>(R.id.reg_edtxt_name)
@@ -91,14 +95,18 @@ class RegistrationActivity : AppCompatActivity(), ConnectivityReceiver.Connectiv
                 startActivity(intent)
             }
         }
+
     }
 
+
+    //  CHECKING ENTERED EMAIL VALIDITY
     fun isValidString(str: String): Boolean{
         return EMAIL_ADDRESS_PATTERN.matcher(str).matches()
     }
 
+
     /*
-        CHECKING FOR ACTIVE INTERNET CONNECTION
+            CHECKING FOR ACTIVE INTERNET CONNECTION
     */
     private fun noInternet() {
         isConnected = false
@@ -120,7 +128,6 @@ class RegistrationActivity : AppCompatActivity(), ConnectivityReceiver.Connectiv
     private fun showNetworkMessage(isConnected: Boolean) {
         if (!isConnected) {
             noInternet()
-
             snackBar = Snackbar.make(findViewById(R.id.layout_registration), "Connection loss", Snackbar.LENGTH_LONG)
 
             val view = snackBar?.view
@@ -135,12 +142,5 @@ class RegistrationActivity : AppCompatActivity(), ConnectivityReceiver.Connectiv
             snackBar?.dismiss()
         }
     }
-
-//    override fun onBackPressed() {
-//        super.onBackPressed()
-//        if (!isConnected) {
-//            onNetworkConnectionChange(true)
-//        }
-//    }
 
 }

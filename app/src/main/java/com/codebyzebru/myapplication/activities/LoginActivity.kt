@@ -4,9 +4,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.os.Bundle
-import android.text.Editable
-import android.text.Layout.Alignment
-import android.text.style.AlignmentSpan
 import android.view.Gravity
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -16,13 +13,11 @@ import com.codebyzebru.myapplication.broadcastreceiver.ConnectivityReceiver
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 
-
 class LoginActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityReceiverListener {
 
     lateinit var prefManager: PrefManager
     private var isConnected: Boolean = true
     private var snackBar: Snackbar? = null
-    private var fetchedUsername: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,14 +25,13 @@ class LoginActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRece
 
         supportActionBar?.hide()
 
-        registerReceiver(
-            ConnectivityReceiver(),
-            IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
-        )
+        //  REGISTERING BROADCAST RECEIVER FOR INTERNET CONNECTIVITY
+        registerReceiver(ConnectivityReceiver(), IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
 
         val username = findViewById<EditText>(R.id.login_edtxt_username)
         val password = findViewById<EditText>(R.id.login_edtxt_password)
 
+        //  GETTING USERNAME, ENTERED BY USER IN `RegistrationActivity.kt`
         val bundle: Bundle? = intent.extras
         val displayData = bundle?.getString("username")
         username.setText(displayData)
@@ -92,7 +86,7 @@ class LoginActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRece
     }
 
     /*
-        CHECKING FOR ACTIVE INTERNET CONNECTION
+            CHECKING FOR ACTIVE INTERNET CONNECTION
     */
     private fun noInternet() {
         isConnected = false
@@ -114,7 +108,6 @@ class LoginActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRece
     private fun showNetworkMessage(isConnected: Boolean) {
         if (!isConnected) {
             noInternet()
-
             snackBar = Snackbar.make(findViewById(R.id.layout_login), "Connection loss", Snackbar.LENGTH_LONG)
 
             val view = snackBar?.view

@@ -10,7 +10,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.FrameLayout
 import com.codebyzebru.myapplication.R
-import com.codebyzebru.myapplication.activities.CreateNewPasswordActivity
 import com.codebyzebru.myapplication.broadcastreceiver.ConnectivityReceiver
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
@@ -24,6 +23,7 @@ class ForgotPasswordActivity : AppCompatActivity(), ConnectivityReceiver.Connect
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_forgot_password)
 
+        //  REGISTERING BROADCAST RECEIVER FOR INTERNET CONNECTIVITY
         registerReceiver(ConnectivityReceiver(), IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
 
         val email = findViewById<EditText>(R.id.fpf_edtxt_enterEmail)
@@ -40,8 +40,9 @@ class ForgotPasswordActivity : AppCompatActivity(), ConnectivityReceiver.Connect
 
     }
 
+
     /*
-        CHECKING FOR ACTIVE INTERNET CONNECTION
+            CHECKING FOR ACTIVE INTERNET CONNECTION
     */
     private fun noInternet() {
         isConnected = false

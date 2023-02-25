@@ -13,7 +13,6 @@ import com.codebyzebru.myapplication.activities.HomeActivity
 import com.codebyzebru.myapplication.adapters.ProductAdapter
 import com.codebyzebru.myapplication.dataclasses.InventoryDataClass
 
-
 class InventoryFragment : Fragment() {
 
     lateinit var popupView: View
@@ -27,9 +26,14 @@ class InventoryFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
+        /*
+                when the fragment come in picture, respected navigation `menu item` must be highlighted
+                and `title` of the activity must be sync with fragment.
+        */
         (activity as HomeActivity).naviView.menu.findItem(R.id.drawer_item_inventory).isChecked = true
         (activity as HomeActivity).setTitle("Inventory")
+
+        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_inventory, container, false)
     }
 
@@ -39,72 +43,70 @@ class InventoryFragment : Fragment() {
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.inventory_recyclerView)
 
+        /*
+                1)  Create DataClass with required parameters
+                2)  Create AdapterFile
+        */
+        //  STATIC DATA TO PLACE IN RECYCLE-VIEW
         itemList = ArrayList<InventoryDataClass>()
-        itemList.add(InventoryDataClass("Facewash", 60))
-        itemList.add(InventoryDataClass("Racto Herb", 120))
-        itemList.add(InventoryDataClass("Bronco Herb", 110))
-        itemList.add(InventoryDataClass("Lekhni Kashai", 160))
-        itemList.add(InventoryDataClass("Dabar Avla", 110))
-        itemList.add(InventoryDataClass("Sorex", 80))
-        itemList.add(InventoryDataClass("Glucon-D", 150))
+        itemList.apply {
+            add(InventoryDataClass("Facewash", 60))
+            add(InventoryDataClass("Racto Herb", 120))
+            add(InventoryDataClass("Bronco Herb", 110))
+            add(InventoryDataClass("Lekhni Kashai", 160))
+            add(InventoryDataClass("Dabar Avla", 110))
+            add(InventoryDataClass("Sorex", 80))
+            add(InventoryDataClass("Glucon-D", 150))
 
-        itemList.add(InventoryDataClass("Facewash", 60))
-        itemList.add(InventoryDataClass("Racto Herb", 120))
-        itemList.add(InventoryDataClass("Bronco Herb", 110))
-        itemList.add(InventoryDataClass("Lekhni Kashai", 160))
-        itemList.add(InventoryDataClass("Dabar Avla", 110))
-        itemList.add(InventoryDataClass("Sorex", 80))
-        itemList.add(InventoryDataClass("Glucon-D", 150))
+            add(InventoryDataClass("Facewash", 60))
+            add(InventoryDataClass("Racto Herb", 120))
+            add(InventoryDataClass("Bronco Herb", 110))
+            add(InventoryDataClass("Lekhni Kashai", 160))
+            add(InventoryDataClass("Dabar Avla", 110))
+            add(InventoryDataClass("Sorex", 80))
+            add(InventoryDataClass("Glucon-D", 150))
 
-        itemList.add(InventoryDataClass("Facewash", 60))
-        itemList.add(InventoryDataClass("Racto Herb", 120))
-        itemList.add(InventoryDataClass("Bronco Herb", 110))
-        itemList.add(InventoryDataClass("Lekhni Kashai", 160))
-        itemList.add(InventoryDataClass("Dabar Avla", 110))
-        itemList.add(InventoryDataClass("Sorex", 80))
-        itemList.add(InventoryDataClass("Glucon-D", 150))
+            add(InventoryDataClass("Facewash", 60))
+            add(InventoryDataClass("Racto Herb", 120))
+            add(InventoryDataClass("Bronco Herb", 110))
+            add(InventoryDataClass("Lekhni Kashai", 160))
+            add(InventoryDataClass("Dabar Avla", 110))
+            add(InventoryDataClass("Sorex", 80))
+            add(InventoryDataClass("Glucon-D", 150))
 
-        itemList.add(InventoryDataClass("Facewash", 60))
-        itemList.add(InventoryDataClass("Racto Herb", 120))
-        itemList.add(InventoryDataClass("Bronco Herb", 110))
-        itemList.add(InventoryDataClass("Lekhni Kashai", 160))
-        itemList.add(InventoryDataClass("Dabar Avla", 110))
-        itemList.add(InventoryDataClass("Sorex", 80))
-        itemList.add(InventoryDataClass("Glucon-D", 150))
+            add(InventoryDataClass("Facewash", 60))
+            add(InventoryDataClass("Racto Herb", 120))
+            add(InventoryDataClass("Bronco Herb", 110))
+            add(InventoryDataClass("Lekhni Kashai", 160))
+            add(InventoryDataClass("Dabar Avla", 110))
+            add(InventoryDataClass("Sorex", 80))
+            add(InventoryDataClass("Glucon-D", 150))
 
-        itemList.add(InventoryDataClass("Facewash", 60))
-        itemList.add(InventoryDataClass("Racto Herb", 120))
-        itemList.add(InventoryDataClass("Bronco Herb", 110))
-        itemList.add(InventoryDataClass("Lekhni Kashai", 160))
-        itemList.add(InventoryDataClass("Dabar Avla", 110))
-        itemList.add(InventoryDataClass("Sorex", 80))
-        itemList.add(InventoryDataClass("Glucon-D", 150))
+            add(InventoryDataClass("Facewash", 60))
+            add(InventoryDataClass("Racto Herb", 120))
+            add(InventoryDataClass("Bronco Herb", 110))
+            add(InventoryDataClass("Lekhni Kashai", 160))
+            add(InventoryDataClass("Dabar Avla", 110))
+            add(InventoryDataClass("Sorex", 80))
+            add(InventoryDataClass("Glucon-D", 150))
 
+            add(InventoryDataClass("Facewash", 60))
+            add(InventoryDataClass("Racto Herb", 120))
+            add(InventoryDataClass("Bronco Herb", 110))
+            add(InventoryDataClass("Lekhni Kashai", 160))
+            add(InventoryDataClass("Dabar Avla", 110))
+            add(InventoryDataClass("Sorex", 80))
+            add(InventoryDataClass("Glucon-D", 150))
+        }
 
-        recyclerView.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        //  applying `Layout` to Recyclerview
+        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        //  applying `adapter` to Recyclerview
         recyclerView.adapter = ProductAdapter(requireContext(), itemList)
-
-
-//        view.findViewById<Button>(R.id.inventoryFrag_addItem).setOnClickListener {
-//            val popupView = layoutInflater.inflate(R.layout.popup_layout_additem, null)
-//            val width = LinearLayout.LayoutParams.MATCH_PARENT
-//            val high = LinearLayout.LayoutParams.WRAP_CONTENT
-//            val focus= true
-//            val popup = PopupWindow(popupView, width, high, focus)
-//
-//            popupView.findViewById<Button>(R.id.btnSaveItem).setOnClickListener {
-//                Toast.makeText(context, "Item Added to Inventory", Toast.LENGTH_SHORT).show()
-//            }
-//
-//            popupView.findViewById<Button>(R.id.btn_additem_cancel).setOnClickListener {
-//                popup.dismiss()
-//            }
-//            popup.showAtLocation(view, Gravity.CENTER,0, 0)
-//        }
-
     }
 
+
+    //  TO INFLATE OPTION MENU
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.inventory_fragment_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
@@ -114,18 +116,15 @@ class InventoryFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.inventoryFrag_menu_addItem -> {
+                //  subclass of `Dialog`
                 val builder = AlertDialog.Builder(requireContext())
-//                builder.setTitle("Add Item")
-//                builder.setMessage("Enter Details:")
 
+                //  Instantiates a layout XML file into its corresponding `View` objects
                 val inflater = LayoutInflater.from(context)
                 popupView = inflater.inflate(R.layout.popup_layout_additem, null)
-
-//                activity?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
                 builder.setView(popupView)
 
                 val alertDialog = builder.create()
-
                 alertDialog.show()
 
                 popupView.findViewById<Button>(R.id.btnSaveItem).setOnClickListener {
@@ -135,12 +134,9 @@ class InventoryFragment : Fragment() {
                 popupView.findViewById<Button>(R.id.btn_additem_cancel).setOnClickListener {
                     alertDialog.dismiss()
                 }
-
             }
         }
-
         return super.onOptionsItemSelected(item)
     }
-
 
 }

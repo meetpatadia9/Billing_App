@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import com.codebyzebru.myapplication.R
 import com.codebyzebru.myapplication.activities.HomeActivity
 
-
 class SettingFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,17 +15,16 @@ class SettingFragment : Fragment() {
 
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        /*
+                when the fragment come in picture, respected navigation `menu item` must be highlighted
+                and `title` of the activity must be sync with fragment.
+        */
         (activity as HomeActivity).naviView.menu.findItem(R.id.drawer_item_setting).isChecked = true
         (activity as HomeActivity).setTitle("Setting")
+
+        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_setting, container, false)
     }
-
-
-
 
 }

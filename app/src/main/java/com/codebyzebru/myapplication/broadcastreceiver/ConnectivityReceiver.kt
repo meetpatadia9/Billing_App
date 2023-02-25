@@ -23,6 +23,10 @@ class ConnectivityReceiver : BroadcastReceiver() {
         fun onNetworkConnectionChange(isConnected: Boolean)
     }
 
+    /*
+            `companion objects` are singleton objects whose properties and functions are tied to a class
+            but not to the instance of that class, basically like the “static” keyword in Java
+    */
     companion object {
         var connectivityReceiverListener: ConnectivityReceiverListener? = null
     }

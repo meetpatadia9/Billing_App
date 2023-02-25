@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.codebyzebru.myapplication.R
 import com.codebyzebru.myapplication.dataclasses.InventoryDataClass
 
-class ProductAdapter(val context: Context, val itemList: ArrayList<InventoryDataClass>) : RecyclerView.Adapter<ProductAdapter.ProductViewHolders>() {
+class ProductAdapter(val context: Context, private val itemList: ArrayList<InventoryDataClass>) : RecyclerView.Adapter<ProductAdapter.ProductViewHolders>() {
 
     class ProductViewHolders(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val productName = itemView.findViewById<TextView>(R.id.singleView_product_name)
@@ -26,8 +26,11 @@ class ProductAdapter(val context: Context, val itemList: ArrayList<InventoryData
     }
 
     override fun onBindViewHolder(holder: ProductViewHolders, position: Int) {
-        holder.productName.text = itemList[position].productName
-        holder.productPrice.text = itemList[position].productPrice.toString()
+        //scope functions `apply`
+        holder.apply {
+            productName.text = itemList[position].productName
+            productPrice.text = itemList[position].productPrice.toString()
+        }
     }
 
 
