@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- HOME -->
+    <group
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/drawer_item_home"
+            android:checkable="true"
+            android:icon="@drawable/baseline_home_24"
+            android:title="Home" />
+    </group>
+
+
+    <!--  BILL  -->
+    <item android:title="Bill">
+        <menu>
+            <group
+                android:checkableBehavior="single">
+                <item
+                    android:id="@+id/drawer_item_bill"
+                    android:checkable="true"
+                    android:icon="@drawable/baseline_currency_rupee_24"
+                    android:title="Create Bill" />
+
+                <item
+                    android:id="@+id/drawer_item_inventory"
+                    android:checkable="true"
+                    android:icon="@drawable/baseline_inventory_24"
+                    android:title="Inventory" />
+
+                <item
+                    android:id="@+id/drawer_item_parties"
+                    android:checkable="true"
+                    android:icon="@drawable/baseline_groups_3_24"
+                    android:title="Parties" />
+
+                <item
+                    android:id="@+id/drawer_item_history"
+                    android:checkable="true"
+                    android:icon="@drawable/baseline_history_24"
+                    android:title="History" />
+            </group>
+        </menu>
+    </item>
+
+
+    <!-- OTHER -->
+    <item android:title="Other">
+        <menu>
+            <group
+                android:checkableBehavior="single">
+                <item
+                    android:id="@+id/drawer_item_setting"
+                    android:checkable="true"
+                    android:icon="@drawable/baseline_settings_24"
+                    android:title="Setting" />
+                <item
+                    android:id="@+id/drawer_item_logout"
+                    android:checkable="true"
+                    android:icon="@drawable/baseline_logout_24"
+                    android:title="Logout" />
+            </group>
+        </menu>
+    </item>
+
+
+</menu>

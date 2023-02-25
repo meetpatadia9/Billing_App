@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.BillFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/billFrag_txt_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DD-MM-YYYY" />
+
+        <TextView
+            android:id="@+id/billFrag_txt_billNo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0001"
+            android:layout_alignParentRight="true"/>
+
+<!--    NAME    -->
+        <LinearLayout
+            android:id="@+id/billFrag_subLayout_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:weightSum="2">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.6"
+                android:text="Name:"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <AutoCompleteTextView
+                android:id="@+id/billFrag_autoTxt_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:layout_weight="1.4" />
+
+        </LinearLayout>
+
+<!--    EMAIL    -->
+        <LinearLayout
+            android:id="@+id/billFrag_subLayout_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            android:layout_below="@id/billFrag_subLayout_1">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.6"
+                android:text="Email:"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/billFrag_edtxt_email"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:layout_weight="1.4" />
+
+        </LinearLayout>
+
+<!--    COMPANY NAME / ORGANIZATION    -->
+        <LinearLayout
+            android:id="@+id/billFrag_subLayout_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            android:layout_below="@id/billFrag_subLayout_2">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.6"
+                android:text="Organization:"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/billFrag_edtxt_companyName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:layout_weight="1.4" />
+
+        </LinearLayout>
+
+<!--    COMPANY ADDRESS/LOCATION    -->
+        <LinearLayout
+            android:id="@+id/billFrag_subLayout_4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            android:layout_below="@id/billFrag_subLayout_3">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.6"
+                android:text="Address:"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/billFrag_edtxt_companyAddr"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:layout_weight="1.4" />
+
+        </LinearLayout>
+
+<!--    CONTACT / PHONE NUMBER    -->
+        <LinearLayout
+            android:id="@+id/billFrag_subLayout_5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            android:layout_below="@id/billFrag_subLayout_4">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.6"
+                android:text="Contact:"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/billFrag_edtxt_contact"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:layout_weight="1.4" />
+
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/billFrag_btn_addItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/billFrag_subLayout_5"
+            android:layout_alignParentRight="true"
+            android:background="#00FFFFFF"
+            android:text="Add item"
+            android:textColor="@color/green"
+            android:textSize="12sp" />
+
+
+<!--    GENERATE BILL BUTTON    -->
+        <Button
+            android:id="@+id/btnGenerateBill"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create"
+            android:background="@drawable/shape_btn"
+            android:textSize="16sp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"/>
+
+    </RelativeLayout>
+
+
+</FrameLayout>

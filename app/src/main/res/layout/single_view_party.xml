@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:elevation="2dp"
+    android:layout_margin="3dp"
+    app:cardCornerRadius="5dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/singleView_party_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Meet Patadia"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/singleView_party_company"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="IT Path Solutions"
+            android:layout_below="@id/singleView_party_name"/>
+
+
+        <TextView
+            android:id="@+id/singleView_party_totalPurchase"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="50000"
+            android:layout_marginTop="10dp"
+            android:layout_alignParentRight="true"/>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
