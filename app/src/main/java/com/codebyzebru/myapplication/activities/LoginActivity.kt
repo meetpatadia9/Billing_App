@@ -36,7 +36,6 @@ class LoginActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRece
         val displayData = bundle?.getString("username")
         username.setText(displayData)
 
-
         /*
                 SharedPreferences for one-time login
         */
@@ -47,20 +46,17 @@ class LoginActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRece
             finish()
         }
 
-
         //  REGISTRATION PAGE
         findViewById<TextView>(R.id.login_txt_newUser).setOnClickListener {
             val intent = Intent(this, RegistrationActivity::class.java)
             startActivity(intent)
         }
 
-
         //  FORGOT PASSWORD
         findViewById<TextView>(R.id.login_txt_forgotPassword).setOnClickListener {
             val intent = Intent(this, ForgotPasswordActivity::class.java)
             startActivity(intent)
         }
-
 
         //  LOGIN
         findViewById<Button>(R.id.btnLogin).setOnClickListener {

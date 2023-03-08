@@ -15,8 +15,8 @@ import com.codebyzebru.myapplication.dataclasses.InventoryDataClass
 
 class InventoryFragment : Fragment() {
 
-    lateinit var popupView: View
-    var itemList = arrayListOf<InventoryDataClass>()
+    private lateinit var popupView: View
+    private var itemList = arrayListOf<InventoryDataClass>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +31,7 @@ class InventoryFragment : Fragment() {
                 and `title` of the activity must be sync with fragment.
         */
         (activity as HomeActivity).naviView.menu.findItem(R.id.drawer_item_inventory).isChecked = true
-        (activity as HomeActivity).setTitle("Inventory")
+        (activity as HomeActivity).title = "Inventory"
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_inventory, container, false)
@@ -105,7 +105,6 @@ class InventoryFragment : Fragment() {
         recyclerView.adapter = ProductAdapter(requireContext(), itemList)
     }
 
-
     //  TO INFLATE OPTION MENU
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.inventory_fragment_menu, menu)
@@ -118,7 +117,6 @@ class InventoryFragment : Fragment() {
             R.id.inventoryFrag_menu_addItem -> {
                 //  subclass of `Dialog`
                 val builder = AlertDialog.Builder(requireContext())
-
                 //  Instantiates a layout XML file into its corresponding `View` objects
                 val inflater = LayoutInflater.from(context)
                 popupView = inflater.inflate(R.layout.popup_layout_additem, null)
@@ -128,6 +126,7 @@ class InventoryFragment : Fragment() {
                 alertDialog.show()
 
                 popupView.findViewById<Button>(R.id.btnSaveItem).setOnClickListener {
+                    Toast.makeText(context, "Item Added to Inventory", Toast.LENGTH_SHORT).show()
                     alertDialog.dismiss()
                 }
 

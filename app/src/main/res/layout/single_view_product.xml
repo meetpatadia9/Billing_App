@@ -22,7 +22,7 @@
             android:layout_weight="1.5"/>
 
         <TextView
-            android:id="@+id/singleView_proudct_qty"
+            android:id="@+id/singleView_product_qty"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -30,7 +30,7 @@
             android:layout_weight="0.75"/>
 
         <TextView
-            android:id="@+id/singleView_proudct_price"
+            android:id="@+id/singleView_product_price"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="50"

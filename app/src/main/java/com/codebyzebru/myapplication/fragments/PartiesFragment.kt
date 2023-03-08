@@ -16,8 +16,8 @@ import com.codebyzebru.myapplication.dataclasses.PartyDataClass
 
 class PartiesFragment : Fragment() {
 
-    lateinit var popupView: View
-    var partyList = arrayListOf<PartyDataClass>()
+    private lateinit var popupView: View
+    private var partyList = arrayListOf<PartyDataClass>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +32,7 @@ class PartiesFragment : Fragment() {
                 and `title` of the activity must be sync with fragment.
         */
         (activity as HomeActivity).naviView.menu.findItem(R.id.drawer_item_parties).isChecked = true
-        (activity as HomeActivity).setTitle("Parties")
+        (activity as HomeActivity).title = "Parties"
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_parties, container, false)
@@ -43,10 +43,6 @@ class PartiesFragment : Fragment() {
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.parties_recyclerView)
 
-        /*
-                1)  Create DataClass with required parameters
-                2)  Create AdapterFile
-        */
         //  STATIC DATA TO PLACE IN RECYCLE-VIEW
         partyList = ArrayList<PartyDataClass>()
         partyList.apply {
@@ -91,13 +87,13 @@ class PartiesFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+    //menu click listener
     @SuppressLint("InflateParams")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.partiesFrag_menu_addParty -> {
                 //  subclass of `Dialog`
                 val builder = AlertDialog.Builder(requireContext())
-
                 //  Instantiates a layout XML file into its corresponding `View` objects
                 val inflater = LayoutInflater.from(context)
                 popupView = inflater.inflate(R.layout.popup_layout_addparty, null)

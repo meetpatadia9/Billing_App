@@ -21,9 +21,9 @@ import com.google.android.material.snackbar.Snackbar
 
 class HomeActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityReceiverListener {
 
-    lateinit var prefManager: PrefManager
-    lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
-    lateinit var drawerLayout: DrawerLayout
+    private lateinit var prefManager: PrefManager
+    private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
+    private lateinit var drawerLayout: DrawerLayout
     lateinit var naviView: NavigationView
     private var snackBar: Snackbar? = null
     private var isConnected: Boolean = true
@@ -38,7 +38,6 @@ class HomeActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
         prefManager = PrefManager(this)
         naviView = findViewById(R.id.home_navigationView)
 
-
         /*
                 DRAWER LAYOUT
         */
@@ -49,14 +48,12 @@ class HomeActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
         actionBarDrawerToggle.syncState()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-
         /*
                 DEFAULT FRAGMENT
         */
         if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction().replace(R.id.layout_home, HomeFragment())
-                .commit()
-            setTitle("Home")
+            supportFragmentManager.beginTransaction().replace(R.id.layout_home, HomeFragment()).commit()
+            title = "Home"
         }
 
         //  NAVIGATION-ITEM-SELECTED LISTENER
@@ -84,7 +81,6 @@ class HomeActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
 
     }
 
-
     private fun replaceFragments(fragment: Fragment, title: String): Boolean {
         supportFragmentManager.beginTransaction().replace(R.id.layout_home, fragment)
             .addToBackStack(null).commit()
@@ -101,7 +97,6 @@ class HomeActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
         return super.onOptionsItemSelected(item)
     }
 
-
     //  UNSETTING FLAG ON "Logout"
     private fun logout() {
         prefManager.clearData()
@@ -110,7 +105,6 @@ class HomeActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
         startActivity(intent)
         finish()
     }
-
 
     /*
             CHECKING FOR ACTIVE INTERNET CONNECTION

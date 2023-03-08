@@ -36,7 +36,6 @@
             android:textSize="36dp"
             android:textStyle="bold" />
 
-
         <LinearLayout
             android:id="@+id/login_bgLayout"
             android:layout_width="match_parent"
@@ -144,19 +143,10 @@
                     android:padding="5dp"
                     android:src="@drawable/icon_gmail"/>
 
-<!--                <ImageView-->
-<!--                    android:layout_width="50dp"-->
-<!--                    android:layout_height="50dp"-->
-<!--                    android:padding="5dp"-->
-<!--                    android:layout_marginLeft="18dp"-->
-<!--                    android:src="@drawable/icon_facebook"/>-->
-<!--                -->
-
             </LinearLayout>
 
         </LinearLayout>
 
     </LinearLayout>
-
 
 </RelativeLayout>

@@ -37,7 +37,6 @@ class RegistrationActivity : AppCompatActivity(), ConnectivityReceiver.Connectiv
         //  DISABLING TOOLBAR/ACTIONBAR
         supportActionBar?.hide()
 
-
 	    //  REGISTERING BROADCAST RECEIVER FOR INTERNET CONNECTIVITY
         registerReceiver(ConnectivityReceiver(), IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
 
@@ -48,13 +47,11 @@ class RegistrationActivity : AppCompatActivity(), ConnectivityReceiver.Connectiv
         val email = findViewById<EditText>(R.id.reg_edtxt_email)
         val phoneNumber = findViewById<EditText>(R.id.reg_edtxt_contact)
 
-
         //  LOGIN PAGE
         findViewById<TextView>(R.id.reg_txt_alreadyUser).setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
-
 
         //  REGISTER
         findViewById<Button>(R.id.btnRegister).setOnClickListener {
@@ -98,12 +95,10 @@ class RegistrationActivity : AppCompatActivity(), ConnectivityReceiver.Connectiv
 
     }
 
-
     //  CHECKING ENTERED EMAIL VALIDITY
     fun isValidString(str: String): Boolean{
         return EMAIL_ADDRESS_PATTERN.matcher(str).matches()
     }
-
 
     /*
             CHECKING FOR ACTIVE INTERNET CONNECTION

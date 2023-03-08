@@ -29,17 +29,16 @@ class CreateNewPasswordActivity : AppCompatActivity(), ConnectivityReceiver.Conn
         val newPassword = findViewById<EditText>(R.id.cpf_edtxt_newPassword)
         val conformPassword = findViewById<EditText>(R.id.cpf_edtxt_conformPass)
 
-
         //  CREATE NEW PASSWORD
         findViewById<Button>(R.id.btnCreateNewPassword).setOnClickListener {
             if (newPassword.text.toString() == "") {
-                newPassword.setError("Empty Field")
+                newPassword.error = "Empty Field"
             }
             else if (conformPassword.text.toString() == "") {
-                newPassword.setError("Empty Field")
+                newPassword.error = "Empty Field"
             }
             else if (newPassword.text.toString() != conformPassword.text.toString()) {
-                newPassword.setError("Different Password")
+                newPassword.error = "Different Password"
             }
             else if (newPassword.text.toString() == conformPassword.text.toString()) {      //ACCEPT CONDITION
                 val intent = Intent(this, LoginActivity::class.java)

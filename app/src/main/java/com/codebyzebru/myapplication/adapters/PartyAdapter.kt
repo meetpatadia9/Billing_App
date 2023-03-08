@@ -10,6 +10,8 @@ import com.codebyzebru.myapplication.R
 import com.codebyzebru.myapplication.dataclasses.PartyDataClass
 
 /*
+        RECYCLERVIEW ADAPTER:
+
         1)  AdapterFile requires two parameters
             i.  Context
             ii. ArrayList<DataClass>
@@ -26,9 +28,9 @@ import com.codebyzebru.myapplication.dataclasses.PartyDataClass
 class PartyAdapter(val context: Context, private val partyList: ArrayList<PartyDataClass>) : RecyclerView.Adapter<PartyAdapter.PartyViewHolders>() {
 
     class PartyViewHolders(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var partyName = itemView.findViewById<TextView>(R.id.singleView_party_name)
-        var companyName = itemView.findViewById<TextView>(R.id.singleView_party_company)
-        var totalPurchase = itemView.findViewById<TextView>(R.id.singleView_party_totalPurchase)
+        var partyName:TextView = itemView.findViewById(R.id.singleView_party_name)
+        var companyName:TextView = itemView.findViewById(R.id.singleView_party_company)
+        var totalPurchase:TextView = itemView.findViewById(R.id.singleView_party_totalPurchase)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PartyViewHolders {

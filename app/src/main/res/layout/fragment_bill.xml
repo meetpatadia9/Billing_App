@@ -20,10 +20,10 @@
             android:id="@+id/billFrag_txt_billNo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0001"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignParentRight="true"
+            android:text="0001" />
 
-<!--    NAME    -->
+        <!--    NAME    -->
         <LinearLayout
             android:id="@+id/billFrag_subLayout_1"
             android:layout_width="match_parent"
@@ -43,18 +43,18 @@
                 android:id="@+id/billFrag_autoTxt_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="12dp"
-                android:layout_weight="1.4" />
+                android:layout_weight="1.4"
+                android:padding="12dp" />
 
         </LinearLayout>
 
-<!--    EMAIL    -->
+        <!--    EMAIL    -->
         <LinearLayout
             android:id="@+id/billFrag_subLayout_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="2"
-            android:layout_below="@id/billFrag_subLayout_1">
+            android:layout_below="@id/billFrag_subLayout_1"
+            android:weightSum="2">
 
             <TextView
                 android:layout_width="0dp"
@@ -68,18 +68,18 @@
                 android:id="@+id/billFrag_edtxt_email"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="12dp"
-                android:layout_weight="1.4" />
+                android:layout_weight="1.4"
+                android:padding="12dp" />
 
         </LinearLayout>
 
-<!--    COMPANY NAME / ORGANIZATION    -->
+        <!--    COMPANY NAME / ORGANIZATION    -->
         <LinearLayout
             android:id="@+id/billFrag_subLayout_3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="2"
-            android:layout_below="@id/billFrag_subLayout_2">
+            android:layout_below="@id/billFrag_subLayout_2"
+            android:weightSum="2">
 
             <TextView
                 android:layout_width="0dp"
@@ -93,18 +93,18 @@
                 android:id="@+id/billFrag_edtxt_companyName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="12dp"
-                android:layout_weight="1.4" />
+                android:layout_weight="1.4"
+                android:padding="12dp" />
 
         </LinearLayout>
 
-<!--    COMPANY ADDRESS/LOCATION    -->
+        <!--    COMPANY ADDRESS/LOCATION    -->
         <LinearLayout
             android:id="@+id/billFrag_subLayout_4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="2"
-            android:layout_below="@id/billFrag_subLayout_3">
+            android:layout_below="@id/billFrag_subLayout_3"
+            android:weightSum="2">
 
             <TextView
                 android:layout_width="0dp"
@@ -118,18 +118,18 @@
                 android:id="@+id/billFrag_edtxt_companyAddr"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="12dp"
-                android:layout_weight="1.4" />
+                android:layout_weight="1.4"
+                android:padding="12dp" />
 
         </LinearLayout>
 
-<!--    CONTACT / PHONE NUMBER    -->
+        <!--    CONTACT / PHONE NUMBER    -->
         <LinearLayout
             android:id="@+id/billFrag_subLayout_5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="2"
-            android:layout_below="@id/billFrag_subLayout_4">
+            android:layout_below="@id/billFrag_subLayout_4"
+            android:weightSum="2">
 
             <TextView
                 android:layout_width="0dp"
@@ -143,12 +143,12 @@
                 android:id="@+id/billFrag_edtxt_contact"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="12dp"
-                android:layout_weight="1.4" />
+                android:layout_weight="1.4"
+                android:padding="12dp" />
 
         </LinearLayout>
 
-
+        <!--    ADD ITEM BUTTON    -->
         <Button
             android:id="@+id/billFrag_btn_addItem"
             android:layout_width="wrap_content"
@@ -160,19 +160,26 @@
             android:textColor="@color/green"
             android:textSize="12sp" />
 
+        <!--    ADD-ITEM RECYCLERVIEW    -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/btnGenerateBill"
+            android:layout_below="@id/billFrag_btn_addItem"
+            android:textColor="@color/app_background"
+            android:padding="12dp"/>
 
-<!--    GENERATE BILL BUTTON    -->
+        <!--    GENERATE BILL BUTTON    -->
         <Button
             android:id="@+id/btnGenerateBill"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Create"
-            android:background="@drawable/shape_btn"
-            android:textSize="16sp"
             android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"/>
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/shape_btn"
+            android:text="Create"
+            android:textSize="16sp" />
 
     </RelativeLayout>
-
 
 </FrameLayout>
