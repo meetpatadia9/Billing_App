@@ -37,6 +37,6 @@
         app:itemIconTint="@color/green"
         app:headerLayout="@layout/drawer_custom_layout"
         app:menu="@menu/drawer_menu"
-        android:background="@color/app_background"/>
+        android:background="@color/app_background" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

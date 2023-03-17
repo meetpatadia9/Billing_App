@@ -5,22 +5,30 @@ import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.Gravity
-import android.widget.Button
-import android.widget.EditText
-import android.widget.FrameLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.codebyzebru.myapplication.R
 import com.codebyzebru.myapplication.broadcastreceiver.ConnectivityReceiver
+import com.codebyzebru.myapplication.dataclasses.NewUserEntryDataClass
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.activity_registrastion.*
+import kotlinx.android.synthetic.main.popup_layout_addparty.*
 import java.util.regex.Pattern
 
 class RegistrationActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityReceiverListener {
 
+    private lateinit var auth: FirebaseAuth
+    private lateinit var database: DatabaseReference
+
     private var isConnected: Boolean = true
     private var snackBar: Snackbar? = null
-    val EMAIL_ADDRESS_PATTERN = Pattern.compile(
+    private val EMAIL_ADDRESS_PATTERN = Pattern.compile(
         "[a-zA-Z\\d+._%\\-]{1,256}" +            //  \\d == 0 to 9
                 "@" +
                 "[a-zA-Z\\d][a-zA-Z\\d\\-]{0,64}" +
@@ -34,18 +42,22 @@ class RegistrationActivity : AppCompatActivity(), ConnectivityReceiver.Connectiv
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registrastion)
 
+        val fullName: EditText = reg_edtxt_name
+        val email: EditText = reg_edtxt_email
+        val phoneNumber: EditText = reg_edtxt_contact
+        val password1: EditText = reg_create_password
+        val password2: EditText = reg_reEnter_password
+        val radioGroup: RadioGroup = reg_rg
+
         //  DISABLING TOOLBAR/ACTIONBAR
         supportActionBar?.hide()
 
 	    //  REGISTERING BROADCAST RECEIVER FOR INTERNET CONNECTIVITY
         registerReceiver(ConnectivityReceiver(), IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
 
-        val fullname = findViewById<EditText>(R.id.reg_edtxt_name)
-        val username = findViewById<EditText>(R.id.reg_edtxt_username)
-        val password1 = findViewById<EditText>(R.id.reg_create_password)
-        val password2 = findViewById<EditText>(R.id.reg_reEnter_password)
-        val email = findViewById<EditText>(R.id.reg_edtxt_email)
-        val phoneNumber = findViewById<EditText>(R.id.reg_edtxt_contact)
+        //  INITIALIZING FIREBASE-AUTH and DATABASE-REFERENCE
+        auth = Firebase.auth
+        database = Firebase.database.reference
 
         //  LOGIN PAGE
         findViewById<TextView>(R.id.reg_txt_alreadyUser).setOnClickListener {
@@ -55,48 +67,88 @@ class RegistrationActivity : AppCompatActivity(), ConnectivityReceiver.Connectiv
 
         //  REGISTER
         findViewById<Button>(R.id.btnRegister).setOnClickListener {
-            if (fullname.text.toString() == "") {
-                password1.setError("Empty Field")
+            if (fullName.text.toString() == "") {
+                password1.error = "Empty Field"
             }
             else if (email.text.toString() == "") {
-                password1.setError("Empty Field")
+                password1.error = "Empty Field"
             }
             else if (password1.text.toString() == ""){
-                password1.setError("Empty Field")
+                password1.error = "Empty Field"
             }
             else if (password1.length() <= 8 || password1.length() >= 12) {
-                password2.setError("Password length mast be between 8 to 12 characters")
+                password2.error = "Password length mast be between 8 to 12 characters"
             }
             else if (password2.text.toString() == "") {
-                password1.setError("Empty Field")
+                password1.error = "Empty Field"
             }
             else if (email.text.toString() == "") {
-                password1.setError("Empty Field")
+                password1.error = "Empty Field"
             }
             else if(!isValidString(email.text.toString())) {
-                email.setError("Invalid Email!")
+                email.error = "Invalid Email!"
             }
             else if (phoneNumber.text.toString() == "") {
-                phoneNumber.setError("Empty Field")
+                phoneNumber.error = "Empty Field"
             }
             else if (phoneNumber.length() != 10) {
-                phoneNumber.setError("Invalid Phone Number")
+                phoneNumber.error = "Invalid Phone Number"
             }
             else if (password1.text.toString() != password2.text.toString()) {
-                password2.setError("Different Password")
+                password2.error = "Different Password"
             }
             else if (password1.text.toString() == password2.text.toString()) {          //ACCEPT CONDITION
-                val intent = Intent(this, LoginActivity::class.java)
-                intent.putExtra("username", username.text.toString())
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                startActivity(intent)
+                val mail = email.text.toString()
+                val pass = password1.text.toString()
+
+                auth.createUserWithEmailAndPassword(mail, pass).addOnCompleteListener(this) {
+                    if (it.isSuccessful) {
+                        auth.currentUser?.sendEmailVerification()
+                            ?.addOnSuccessListener {
+                                addNewUser()
+                                updateUI()
+                            }
+                            ?.addOnFailureListener {
+                                Toast.makeText(this, "Something went wrong! Please try again!!", Toast.LENGTH_SHORT).show()
+                            }
+                    }
+                }
             }
         }
+    }
 
+    // ADDING USER DETAILS INTO FIREBASE
+    private fun addNewUser() {
+        val fullName: EditText = reg_edtxt_name
+        val email: EditText = reg_edtxt_email
+        val phoneNumber: EditText = reg_edtxt_contact
+        val password1: EditText = reg_create_password
+        val radioGroup: RadioGroup = reg_rg
+        val radioButton: RadioButton
+
+        val selectedID = radioGroup.checkedRadioButtonId
+        radioButton = findViewById(selectedID)
+
+        val registerUserData = NewUserEntryDataClass(
+            fullName = fullName.text.toString().trim(),
+            email = email.text.toString().trim(),
+            contact = phoneNumber.text.toString().trim(),
+            gender = radioButton.text.toString(),
+            password = password1.text.toString().trim()
+        )
+
+        val userID = FirebaseAuth.getInstance().currentUser!!.uid
+        database.child("Users").child(userID).setValue(registerUserData)
+    }
+
+    //  INTENT
+    private fun updateUI() {
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
     }
 
     //  CHECKING ENTERED EMAIL VALIDITY
-    fun isValidString(str: String): Boolean{
+    private fun isValidString(str: String): Boolean{
         return EMAIL_ADDRESS_PATTERN.matcher(str).matches()
     }
 
@@ -137,5 +189,4 @@ class RegistrationActivity : AppCompatActivity(), ConnectivityReceiver.Connectiv
             snackBar?.dismiss()
         }
     }
-
 }

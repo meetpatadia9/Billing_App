@@ -50,6 +50,7 @@
                     android:layout_height="wrap_content"
                     app:boxCornerRadiusTopEnd="15dp"
                     app:boxCornerRadiusTopStart="15dp"
+                    app:boxBackgroundColor="#0A000000"
                     app:startIconDrawable="@drawable/baseline_person_24">
 
                     <EditText
@@ -58,80 +59,6 @@
                         android:layout_height="wrap_content"
                         android:hint="Full Name"
                         android:singleLine="true"/>
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </LinearLayout>
-
-            <!--  USERNAME  -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxCornerRadiusTopEnd="15dp"
-                    app:boxCornerRadiusTopStart="15dp"
-                    app:startIconDrawable="@drawable/baseline_assignment_ind_24">
-
-                    <EditText
-                        android:id="@+id/reg_edtxt_username"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Username"
-                        android:singleLine="true"/>
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </LinearLayout>
-
-            <!--  PASSWORD  -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:passwordToggleEnabled="true"
-                    app:boxCornerRadiusTopEnd="15dp"
-                    app:boxCornerRadiusTopStart="15dp"
-                    app:startIconDrawable="@drawable/baseline_vpn_key_24">
-
-                    <EditText
-                        android:id="@+id/reg_create_password"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Create Password"
-                        android:inputType="textPassword"
-                        android:singleLine="true"/>
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </LinearLayout>
-
-            <!--  CONFORM PASSWORD  -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxCornerRadiusTopEnd="15dp"
-                    app:boxCornerRadiusTopStart="15dp"
-                    app:startIconDrawable="@drawable/baseline_password_24">
-
-                    <EditText
-                        android:id="@+id/reg_reEnter_password"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Re-enter Password"
-                        android:singleLine="true" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -148,6 +75,7 @@
                     android:layout_height="wrap_content"
                     app:boxCornerRadiusTopEnd="15dp"
                     app:boxCornerRadiusTopStart="15dp"
+                    app:boxBackgroundColor="#0A000000"
                     app:startIconDrawable="@drawable/baseline_mail_outline_24">
 
                     <EditText
@@ -173,6 +101,7 @@
                     android:layout_height="wrap_content"
                     app:boxCornerRadiusTopEnd="15dp"
                     app:boxCornerRadiusTopStart="15dp"
+                    app:boxBackgroundColor="#0A000000"
                     app:startIconDrawable="@drawable/baseline_phone_24">
 
                     <EditText
@@ -182,6 +111,83 @@
                         android:hint="Contact"
                         android:inputType="phone"
                         android:singleLine="true"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <!--  USERNAME  -->
+            <!--            <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:boxCornerRadiusTopEnd="15dp"
+                                app:boxCornerRadiusTopStart="15dp"
+                                app:startIconDrawable="@drawable/baseline_assignment_ind_24">
+
+                                <EditText
+                                    android:id="@+id/reg_edtxt_username"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="Username"
+                                    android:singleLine="true"/>
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                        </LinearLayout>
+            -->
+
+            <!--  PASSWORD  -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:passwordToggleEnabled="true"
+                    app:boxCornerRadiusTopEnd="15dp"
+                    app:boxCornerRadiusTopStart="15dp"
+                    app:boxBackgroundColor="#0A000000"
+                    app:startIconDrawable="@drawable/baseline_vpn_key_24">
+
+                    <EditText
+                        android:id="@+id/reg_create_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Create Password"
+                        android:inputType="textPassword"
+                        android:singleLine="true"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <!--  CONFORM PASSWORD  -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:boxCornerRadiusTopEnd="15dp"
+                    app:boxCornerRadiusTopStart="15dp"
+                    app:boxBackgroundColor="#0A000000"
+                    app:startIconDrawable="@drawable/baseline_password_24">
+
+                    <EditText
+                        android:id="@+id/reg_reEnter_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Re-enter Password"
+                        android:singleLine="true" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 

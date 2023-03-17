@@ -8,14 +8,21 @@ import android.view.Gravity
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.codebyzebru.myapplication.R
-import com.codebyzebru.myapplication.adapters.PrefManager
 import com.codebyzebru.myapplication.broadcastreceiver.ConnectivityReceiver
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 class LoginActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityReceiverListener {
 
-    lateinit var prefManager: PrefManager
+    private lateinit var auth: FirebaseAuth
+    private lateinit var database: DatabaseReference
+
     private var isConnected: Boolean = true
     private var snackBar: Snackbar? = null
 
@@ -23,28 +30,18 @@ class LoginActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRece
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        val email: EditText = findViewById(R.id.login_edtxt_email)
+        val password: EditText = findViewById(R.id.login_edtxt_password)
+
+        //  DISABLING TOOLBAR/ACTIONBAR
         supportActionBar?.hide()
 
         //  REGISTERING BROADCAST RECEIVER FOR INTERNET CONNECTIVITY
         registerReceiver(ConnectivityReceiver(), IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
 
-        val username = findViewById<EditText>(R.id.login_edtxt_username)
-        val password = findViewById<EditText>(R.id.login_edtxt_password)
-
-        //  GETTING USERNAME, ENTERED BY USER IN `RegistrationActivity.kt`
-        val bundle: Bundle? = intent.extras
-        val displayData = bundle?.getString("username")
-        username.setText(displayData)
-
-        /*
-                SharedPreferences for one-time login
-        */
-        prefManager = PrefManager(this)
-        if (prefManager.isLogin()) {
-            val intent = Intent(this, HomeActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
+        //  INITIALIZING FIREBASE-AUTH and DATABASE-REFERENCE
+        auth = Firebase.auth
+        database = Firebase.database.reference
 
         //  REGISTRATION PAGE
         findViewById<TextView>(R.id.login_txt_newUser).setOnClickListener {
@@ -60,25 +57,44 @@ class LoginActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRece
 
         //  LOGIN
         findViewById<Button>(R.id.btnLogin).setOnClickListener {
-            if (username.text.toString() == "") {
-                username.error = "Enter Username"
+            if (email.text.toString() == "") {
+                email.error = "Enter Username"
             }
             else if (password.text.toString() == "") {
                 password.error = "Enter Password"
             }
-            else if (username.text.toString() == "TestUser" && password.text.toString() == "test123" && isConnected) {   //ACCEPT CONDITION
-                prefManager.setLogin(true)
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                startActivity(intent)
-            }
-            else if (username.text.toString() == "TestUser" && password.text.toString() == "test123" && !isConnected) {
+            else if (email.text.toString() != "" && password.text.toString() != "" && !isConnected) {
                 Toast.makeText(this, "OOPS!!!! No Internet!!!!!", Toast.LENGTH_SHORT).show()
             }
-            else {
-                Toast.makeText(this, "Username or Password incorrect", Toast.LENGTH_SHORT).show()
+            else {          //ACCEPT CONDITION
+                val mail = email.text.toString()
+                val pass = password.text.toString()
+
+                auth.signInWithEmailAndPassword(mail, pass).addOnCompleteListener(this) {
+                    if (it.isSuccessful) {
+                        val user = auth.currentUser
+                        updateUI(user)
+                    } else {
+                        Toast.makeText(this, "Email or Password incorrect!!", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
+    }
 
+    //  INTENT
+    private fun updateUI(user: FirebaseUser?) {
+        val intent = Intent(this, HomeActivity::class.java)
+        startActivity(intent)
+    }
+
+    //  ONE-TIME LOGIN FOR FIREBASE
+    override fun onStart() {
+        super.onStart()
+        val signedInUser = auth.currentUser
+        if (signedInUser != null) {
+            updateUI(signedInUser)
+        }
     }
 
     /*
@@ -119,30 +135,4 @@ class LoginActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRece
             snackBar?.dismiss()
         }
     }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//            val snackBarView = Snackbar.make(findViewById(R.id.layout_login), "SnackBar Message" , Snackbar.LENGTH_LONG)
-//            val view = snackBarView.view
-//            val params = view.layoutParams as FrameLayout.LayoutParams
-//            params.gravity = Gravity.TOP
-//            view.layoutParams = params
-//            view.background = ContextCompat.getDrawable(this,R.drawable.baseline_signal_cellular_connected_no_internet_4_bar_24) // for custom background
-//            snackBarView.animationMode = BaseTransientBottomBar.ANIMATION_MODE_FADE
-//            snackBarView.show()

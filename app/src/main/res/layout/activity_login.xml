@@ -59,13 +59,14 @@
                     android:layout_height="wrap_content"
                     app:boxCornerRadiusTopEnd="15dp"
                     app:boxCornerRadiusTopStart="15dp"
-                    app:startIconDrawable="@drawable/baseline_person_24">
+                    app:boxBackgroundColor="#0A000000"
+                    app:startIconDrawable="@drawable/baseline_mail_outline_24">
 
                     <EditText
-                        android:id="@+id/login_edtxt_username"
+                        android:id="@+id/login_edtxt_email"
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
-                        android:hint="Username"
+                        android:hint="Email"
                         android:singleLine="true"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -84,6 +85,7 @@
                     app:boxCornerRadiusTopEnd="15dp"
                     app:boxCornerRadiusTopStart="15dp"
                     app:passwordToggleEnabled="true"
+                    app:boxBackgroundColor="#0A000000"
                     app:startIconDrawable="@drawable/baseline_vpn_key_24">
 
                     <EditText

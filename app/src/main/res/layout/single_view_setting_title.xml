@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="15dp">
+
+    <ImageView
+        android:id="@+id/setting_icon"
+        android:layout_width="27dp"
+        android:layout_height="27dp"
+        android:src="@drawable/baseline_person_4_24"
+        android:layout_centerVertical="true" />
+
+    <TextView
+        android:id="@+id/setting_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="User Details"
+        android:textColor="@color/green"
+        android:textStyle="bold"
+        android:layout_toRightOf="@id/setting_icon"
+        android:layout_marginLeft="15dp"
+        android:layout_centerVertical="true"/>
+
+</RelativeLayout>

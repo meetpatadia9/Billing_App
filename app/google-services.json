@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "269998307964",
+    "project_id": "bill-app-a7ae9",
+    "storage_bucket": "bill-app-a7ae9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:269998307964:android:78e0a6e9de6b01fc7d67f9",
+        "android_client_info": {
+          "package_name": "com.codebyzebru.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "269998307964-6qojeb2onkghl8rdaib05fvv4k0nut9q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDjFj1GppXlsl5MVKfoOVeDOZzSlfMAEY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "269998307964-6qojeb2onkghl8rdaib05fvv4k0nut9q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
