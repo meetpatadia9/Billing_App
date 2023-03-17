@@ -48,7 +48,7 @@ class InventoryFragment : Fragment() {
                 2)  Create AdapterFile
         */
         //  STATIC DATA TO PLACE IN RECYCLE-VIEW
-        itemList = ArrayList<InventoryDataClass>()
+        itemList = ArrayList()
         itemList.apply {
             add(InventoryDataClass("Facewash", 60))
             add(InventoryDataClass("Racto Herb", 120))

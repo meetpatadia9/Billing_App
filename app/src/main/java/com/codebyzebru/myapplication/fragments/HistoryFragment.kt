@@ -21,7 +21,7 @@ class HistoryFragment : Fragment() {
                 and `title` of the activity must be sync with fragment.
         */
         (activity as HomeActivity).naviView.menu.findItem(R.id.drawer_item_history).isChecked = true
-        (activity as HomeActivity).setTitle("History")
+        (activity as HomeActivity).title = "History"
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_history, container, false)

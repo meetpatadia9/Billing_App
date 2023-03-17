@@ -7,11 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.codebyzebru.myapplication.R
-import com.codebyzebru.myapplication.activities.HomeActivity
 import com.codebyzebru.myapplication.activities.LoginActivity
 import com.codebyzebru.myapplication.dataclasses.SettingTitleDataClass
 import com.google.firebase.auth.FirebaseAuth

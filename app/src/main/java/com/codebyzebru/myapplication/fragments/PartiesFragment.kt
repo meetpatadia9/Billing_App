@@ -44,7 +44,7 @@ class PartiesFragment : Fragment() {
         val recyclerView = view.findViewById<RecyclerView>(R.id.parties_recyclerView)
 
         //  STATIC DATA TO PLACE IN RECYCLE-VIEW
-        partyList = ArrayList<PartyDataClass>()
+        partyList = ArrayList()
         partyList.apply {
             add(PartyDataClass("Akhilesh Jani", "Jani Pvt. Ltd", 30024))
             add(PartyDataClass("Maharshi Pandya", "Well-care medical store", 6020))

@@ -1,6 +1,5 @@
 package com.codebyzebru.myapplication.activities
 
-import android.content.Intent
 import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.os.Bundle
@@ -12,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.codebyzebru.myapplication.R
-import com.codebyzebru.myapplication.adapters.PrefManager
 import com.codebyzebru.myapplication.broadcastreceiver.ConnectivityReceiver
 import com.codebyzebru.myapplication.fragments.*
 import com.google.android.material.navigation.NavigationView
@@ -21,7 +19,6 @@ import com.google.android.material.snackbar.Snackbar
 
 class HomeActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityReceiverListener {
 
-    private lateinit var prefManager: PrefManager
     private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
     private lateinit var drawerLayout: DrawerLayout
     lateinit var naviView: NavigationView
@@ -35,7 +32,6 @@ class HomeActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
         //  REGISTERING BROADCAST RECEIVER FOR INTERNET CONNECTIVITY
         registerReceiver(ConnectivityReceiver(), IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
 
-        prefManager = PrefManager(this)
         naviView = findViewById(R.id.home_navigationView)
 
         /*

@@ -1,7 +1,8 @@
 plugins {
-    id 'com.google.gms.google-services'
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    //  ENABLING GOOGLE APIs or FIREBASE SERVICES
+    id 'com.google.gms.google-services'
 }
 
 android {

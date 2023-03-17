@@ -18,7 +18,6 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_registrastion.*
-import kotlinx.android.synthetic.main.popup_layout_addparty.*
 import java.util.regex.Pattern
 
 class RegistrationActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityReceiverListener {
@@ -47,7 +46,6 @@ class RegistrationActivity : AppCompatActivity(), ConnectivityReceiver.Connectiv
         val phoneNumber: EditText = reg_edtxt_contact
         val password1: EditText = reg_create_password
         val password2: EditText = reg_reEnter_password
-        val radioGroup: RadioGroup = reg_rg
 
         //  DISABLING TOOLBAR/ACTIONBAR
         supportActionBar?.hide()
