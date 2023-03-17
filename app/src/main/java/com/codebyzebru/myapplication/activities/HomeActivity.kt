@@ -69,10 +69,6 @@ class HomeActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
                 R.id.drawer_item_parties -> replaceFragments(PartiesFragment(), it.title.toString())
                 R.id.drawer_item_history -> replaceFragments(HistoryFragment(), it.title.toString())
                 R.id.drawer_item_setting -> replaceFragments(SettingFragment(), it.title.toString())
-                R.id.drawer_item_logout -> {
-                    logout()
-                    true
-                }
                 else -> {
                     true
                 }
@@ -95,15 +91,6 @@ class HomeActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
             return true
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    //  UNSETTING FLAG ON "Logout"
-    private fun logout() {
-        prefManager.clearData()
-        val intent = Intent(this, LoginActivity::class.java)
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        startActivity(intent)
-        finish()
     }
 
     /*

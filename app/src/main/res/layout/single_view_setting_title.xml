@@ -16,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="User Details"
-        android:textColor="@color/green"
+        android:textColor="@color/blur_green"
         android:textStyle="bold"
         android:layout_toRightOf="@id/setting_icon"
         android:layout_marginLeft="15dp"
