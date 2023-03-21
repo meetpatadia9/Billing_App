@@ -58,7 +58,6 @@ class SettingFragment : Fragment() {
         settingList.add(SettingTitleDataClass(R.drawable.baseline_person_4_24, "User Profile"))
         settingList.add(SettingTitleDataClass(R.drawable.baseline_info_24, "About Us"))
         settingList.add(SettingTitleDataClass(R.drawable.baseline_logout_24, "Logout"))
-
         settingFrag_recyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             adapter = SettingListAdapter(context, settingList)
