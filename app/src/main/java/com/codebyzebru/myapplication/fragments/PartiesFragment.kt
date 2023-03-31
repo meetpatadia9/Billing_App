@@ -2,9 +2,12 @@ package com.codebyzebru.myapplication.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Button
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,17 +15,27 @@ import androidx.recyclerview.widget.RecyclerView
 import com.codebyzebru.myapplication.R
 import com.codebyzebru.myapplication.activities.HomeActivity
 import com.codebyzebru.myapplication.adapters.PartyAdapter
-import com.codebyzebru.myapplication.dataclasses.PartyDataClass
+import com.codebyzebru.myapplication.dataclasses.AddPartyDataClass
+import com.codebyzebru.myapplication.dataclasses.ViewPartyDataClass
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.popup_layout_addparty.*
+import kotlinx.android.synthetic.main.popup_layout_addparty.view.*
 
 class PartiesFragment : Fragment() {
 
     private lateinit var popupView: View
-    private var partyList = arrayListOf<PartyDataClass>()
+    private var partyList = arrayListOf<ViewPartyDataClass>()
+
+    private lateinit var database: DatabaseReference
+    private var dbRef = FirebaseDatabase.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //TO ENABLE OPTION MENU IN FRAGMENT
+        //  TO ENABLE OPTION MENU IN FRAGMENT
         setHasOptionsMenu(true)
     }
 
@@ -43,51 +56,48 @@ class PartiesFragment : Fragment() {
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.parties_recyclerView)
 
-        //  STATIC DATA TO PLACE IN RECYCLE-VIEW
-        /*partyList = ArrayList()
-        partyList.apply {
-            add(PartyDataClass("Akhilesh Jani", "Jani Pvt. Ltd", 30024))
-            add(PartyDataClass("Maharshi Pandya", "Well-care medical store", 6020))
-            add(PartyDataClass("Keval Patel", "S. S. Ayurveda", 31053))
-            add(PartyDataClass("Vishal Dodiya", "Vishal Clinic", 13300))
-            add(PartyDataClass("Karan Sharma", "Ambika Ayurveda Store", 3000))
+        database = Firebase.database.reference
 
-            add(PartyDataClass("Akhilesh Jani", "Jani Pvt. Ltd", 30024))
-            add(PartyDataClass("Maharshi Pandya", "Well-care medical store", 6020))
-            add(PartyDataClass("Akhilesh Jani", "Jani Pvt. Ltd", 30024))
-            add(PartyDataClass("Maharshi Pandya", "Well-care medical store", 6020))
-            add(PartyDataClass("Keval Patel", "S. S. Ayurveda", 31053))
-            add(PartyDataClass("Vishal Dodiya", "Vishal Clinic", 13300))
-            add(PartyDataClass("Karan Sharma", "Ambika Ayurveda Store", 3000))
+        val userID = FirebaseAuth.getInstance().currentUser!!.uid
+        val dbRef = FirebaseDatabase.getInstance().getReference("Users/$userID/Party Data")
 
-            add(PartyDataClass("Akhilesh Jani", "Jani Pvt. Ltd", 30024))
-            add(PartyDataClass("Maharshi Pandya", "Well-care medical store", 6020))
-            add(PartyDataClass("Keval Patel", "S. S. Ayurveda", 31053))
-            add(PartyDataClass("Vishal Dodiya", "Vishal Clinic", 13300))
-            add(PartyDataClass("Karan Sharma", "Ambika Ayurveda Store", 3000))
-
-            add(PartyDataClass("Akhilesh Jani", "Jani Pvt. Ltd", 30024))
-            add(PartyDataClass("Maharshi Pandya", "Well-care medical store", 6020))
-            add(PartyDataClass("Vishal Dodiya", "Vishal Clinic", 13300))
-            add(PartyDataClass("Karan Sharma", "Ambika Ayurveda Store", 3000))
-            add(PartyDataClass("Keval Patel", "S. S. Ayurveda", 31053))
-            add(PartyDataClass("Vishal Dodiya", "Vishal Clinic", 13300))
-            add(PartyDataClass("Karan Sharma", "Ambika Ayurveda Store", 3000))
-        }*/
 
         //  applying `Layout` to Recyclerview
         recyclerView.layoutManager =LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        //  applying `adapter` to Recyclerview
-        recyclerView.adapter = PartyAdapter(requireContext(), partyList)
+
+        dbRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    for (item in snapshot.children) {
+                        val listedData = item.getValue(ViewPartyDataClass::class.java)
+                        listedData!!.key = item.key.toString()
+                        partyList.add(listedData)
+                    }
+                    recyclerView.adapter = PartyAdapter(requireContext(), partyList,
+                        object : PartyAdapter.OnItemClick {
+                            override fun onClick(listDataClass: ViewPartyDataClass) {
+                                requireActivity().supportFragmentManager.beginTransaction()
+                                    .replace(R.id.layout_home, PartyUpdateFragment(listDataClass))
+                                    .addToBackStack(null)
+                                    .commit()
+                            }
+                        })
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.d("Error", error.toString())
+            }
+        })
     }
 
-    //TO INFLATE OPTION MENU
+    //  TO INFLATE OPTION MENU
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.party_fragment_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    //menu click listener
+    //  menu click listener
     @SuppressLint("InflateParams")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
@@ -102,8 +112,28 @@ class PartiesFragment : Fragment() {
                 val alertDialog = builder.create()
                 alertDialog.show()
 
+                val radioGroup: RadioGroup = popupView.findViewById(R.id.addParty_rg_type)
+                var radioButton: RadioButton?
+
                 popupView.findViewById<Button>(R.id.btnSaveParty).setOnClickListener {
-                    Toast.makeText(context, "Party Added", Toast.LENGTH_SHORT).show()
+                    partyList.clear()
+
+                    val selectedID = radioGroup.checkedRadioButtonId
+                    radioButton = popupView.findViewById(selectedID)
+
+                    val addParty = AddPartyDataClass(
+                        partyName = popupView.addParty_edtxt_partyName.text.toString(),
+                        companyName = popupView.addParty_edtxt_company_name.text.toString(),
+                        address = popupView.addParty_edtxt_address.text.toString(),
+                        email = popupView.addParty_edtxt_email.text.toString(),
+                        contact = popupView.addParty_edtxt_contact.text.toString(),
+                        type = radioButton!!.text.toString()
+                    )
+
+                    val userID = FirebaseAuth.getInstance().currentUser!!.uid
+                    val key = database.child("Party Data").push().key.toString()
+                    dbRef.getReference("Users/$userID").child("Party Data").child(key).setValue(addParty)
+
                     alertDialog.dismiss()
                 }
 
@@ -113,6 +143,11 @@ class PartiesFragment : Fragment() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        partyList.clear()
     }
 
 }

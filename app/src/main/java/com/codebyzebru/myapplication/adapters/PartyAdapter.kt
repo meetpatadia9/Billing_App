@@ -8,7 +8,7 @@ import android.view.animation.AnimationUtils
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.codebyzebru.myapplication.R
-import com.codebyzebru.myapplication.dataclasses.PartyDataClass
+import com.codebyzebru.myapplication.dataclasses.ViewPartyDataClass
 
 /*
         RECYCLERVIEW ADAPTER:
@@ -26,7 +26,8 @@ import com.codebyzebru.myapplication.dataclasses.PartyDataClass
             iii. onBindViewHolder()    --->  fetch appropriate data and uses data to fill in ViewHolder's layout
 */
 
-class PartyAdapter(val context: Context, private val partyList: ArrayList<PartyDataClass>) : RecyclerView.Adapter<PartyAdapter.PartyViewHolders>() {
+class PartyAdapter(val context: Context, private val partyList: ArrayList<ViewPartyDataClass>, private val onItemClick: OnItemClick)
+    : RecyclerView.Adapter<PartyAdapter.PartyViewHolders>() {
 
     class PartyViewHolders(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var partyName:TextView = itemView.findViewById(R.id.singleView_party_name)
@@ -49,9 +50,18 @@ class PartyAdapter(val context: Context, private val partyList: ArrayList<PartyD
             partyName.text = partyList[position].partyName
             companyName.text = partyList[position].companyName
             totalPurchase.text = partyList[position].totalPurchase.toString()
+
+            itemView.setOnClickListener {
+                onItemClick.onClick(partyList[position])
+            }
+
             //  Animation on Recyclerview, when it loads new ItemView
             itemView.animation = AnimationUtils.loadAnimation(holder.itemView.context, R.anim.anim_recyclerview)
         }
+    }
+
+    interface OnItemClick {
+        fun onClick(listDataClass: ViewPartyDataClass)
     }
 
 }

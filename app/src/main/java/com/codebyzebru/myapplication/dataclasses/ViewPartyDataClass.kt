@@ -1,6 +1,7 @@
 package com.codebyzebru.myapplication.dataclasses
 
-class PartyDataClass(
+data class ViewPartyDataClass(
+    var key: String = "",
     val partyName: String = "",
     val companyName: String = "",
     val address: String = "",

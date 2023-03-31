@@ -25,7 +25,6 @@ class InventoryFragment : Fragment() {
 
     private lateinit var popupView: View
     private var itemList = arrayListOf<ViewInventoryDataClass>()
-    var key = ""
 
     private lateinit var database: DatabaseReference
     private var dbRef = FirebaseDatabase.getInstance()
@@ -60,6 +59,7 @@ class InventoryFragment : Fragment() {
         val userID = FirebaseAuth.getInstance().currentUser!!.uid
         val dbRef = FirebaseDatabase.getInstance().getReference("Users/$userID/Inventory Data")
 
+        //  applying `Layout` to Recyclerview
         recyclerView.layoutManager =LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         dbRef.addValueEventListener(object : ValueEventListener {
