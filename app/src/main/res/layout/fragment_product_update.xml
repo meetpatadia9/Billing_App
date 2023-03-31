@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="380dp"
-    android:layout_height="wrap_content"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="20dp"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.ProductUpdateFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="20dp"
+        android:orientation="vertical">
 
         <!--    NAME    -->
         <LinearLayout
@@ -20,7 +26,7 @@
                 app:boxBackgroundColor="@color/app_background">
 
                 <EditText
-                    android:id="@+id/addItem_edtxt_productName"
+                    android:id="@+id/update_productName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Product Name"
@@ -45,11 +51,10 @@
                 app:boxBackgroundColor="@color/app_background">
 
                 <EditText
-                    android:id="@+id/addItem_edtxt_purchasePrise"
+                    android:id="@+id/update_purchasePrise"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Purchasing Price"
-                    android:inputType="number"
                     android:singleLine="true"/>
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -71,11 +76,10 @@
                 app:boxBackgroundColor="@color/app_background">
 
                 <EditText
-                    android:id="@+id/addItem_edtxt_sellingPrice"
+                    android:id="@+id/update_sellingPrice"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Selling Price"
-                    android:inputType="number"
                     android:singleLine="true"/>
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -97,11 +101,10 @@
                 app:boxBackgroundColor="@color/app_background">
 
                 <EditText
-                    android:id="@+id/addItem_edtxt_productQty"
+                    android:id="@+id/update_productQty"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Product Quantity"
-                    android:inputType="number"
                     android:singleLine="true"/>
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -109,17 +112,27 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/btnSaveItem"
+            android:id="@+id/btnUpdateItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
             android:background="@drawable/shape_btn"
-            android:text="Save"
+            android:text="Update"
             android:textSize="16sp" />
 
         <Button
-            android:id="@+id/btn_additem_cancel"
+            android:id="@+id/btnDeleteItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/shape_btn"
+            android:text="Delete"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/btn_update_cancel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -128,4 +141,6 @@
             android:text="Cancel"
             android:textSize="16sp" />
 
-</LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>

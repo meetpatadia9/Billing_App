@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.codebyzebru.myapplication.R
@@ -43,11 +44,13 @@ class PartyAdapter(val context: Context, private val partyList: ArrayList<PartyD
     }
 
     override fun onBindViewHolder(holder: PartyViewHolders, position: Int) {
-        //scope functions `apply`
+        //  scope functions `apply`
         holder.apply {
             partyName.text = partyList[position].partyName
             companyName.text = partyList[position].companyName
             totalPurchase.text = partyList[position].totalPurchase.toString()
+            //  Animation on Recyclerview, when it loads new ItemView
+            itemView.animation = AnimationUtils.loadAnimation(holder.itemView.context, R.anim.anim_recyclerview)
         }
     }
 

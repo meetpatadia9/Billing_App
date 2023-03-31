@@ -4,10 +4,12 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.codebyzebru.myapplication.R
-import com.codebyzebru.myapplication.dataclasses.InventoryDataClass
+import com.codebyzebru.myapplication.dataclasses.AddInventoryDataClass
+import com.codebyzebru.myapplication.dataclasses.ViewInventoryDataClass
 import kotlinx.android.synthetic.main.single_view_product.view.*
 
 /*
@@ -26,7 +28,8 @@ import kotlinx.android.synthetic.main.single_view_product.view.*
             iii. onBindViewHolder()    --->  fetch appropriate data and uses data to fill in ViewHolder's layout
 */
 
-class ProductAdapter(val context: Context, private val itemList: ArrayList<InventoryDataClass>) : RecyclerView.Adapter<ProductAdapter.ProductViewHolders>() {
+class ProductAdapter(val context: Context, private val itemList: ArrayList<ViewInventoryDataClass>, private val onItemClick: OnItemClick)
+    : RecyclerView.Adapter<ProductAdapter.ProductViewHolders>() {
 
     class ProductViewHolders(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val productName: TextView = itemView.singleView_product_name
@@ -44,11 +47,23 @@ class ProductAdapter(val context: Context, private val itemList: ArrayList<Inven
     }
 
     override fun onBindViewHolder(holder: ProductViewHolders, position: Int) {
-        //scope functions `apply`
+        //  scope functions `apply`
         holder.apply {
             productName.text = itemList[position].productName
-            productPrice.text = itemList[position].productPrice.toString()
+            productQty.text = itemList[position].productQty.toString()
+            productPrice.text = itemList[position].sellingPrice.toString()
+
+            itemView.setOnClickListener {
+                onItemClick.onClick(itemList[position])
+            }
+
+            //  Animation on Recyclerview, when it loads new ItemView
+            itemView.animation = AnimationUtils.loadAnimation(holder.itemView.context, R.anim.anim_recyclerview)
         }
+    }
+
+    interface OnItemClick {
+        fun onClick(listDataClass: ViewInventoryDataClass)
     }
 
 }

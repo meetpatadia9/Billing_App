@@ -2,6 +2,7 @@ package com.codebyzebru.myapplication.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
@@ -11,17 +12,28 @@ import androidx.recyclerview.widget.RecyclerView
 import com.codebyzebru.myapplication.R
 import com.codebyzebru.myapplication.activities.HomeActivity
 import com.codebyzebru.myapplication.adapters.ProductAdapter
-import com.codebyzebru.myapplication.dataclasses.InventoryDataClass
+import com.codebyzebru.myapplication.dataclasses.AddInventoryDataClass
+import com.codebyzebru.myapplication.dataclasses.ViewInventoryDataClass
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.fragment_inventory.*
+import kotlinx.android.synthetic.main.popup_layout_additem.view.*
 
 class InventoryFragment : Fragment() {
 
     private lateinit var popupView: View
-    private var itemList = arrayListOf<InventoryDataClass>()
+    private var itemList = arrayListOf<ViewInventoryDataClass>()
+    var key = ""
+
+    private lateinit var database: DatabaseReference
+    private var dbRef = FirebaseDatabase.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //TO ENABLE OPTION MENU IN FRAGMENT
+        //  TO ENABLE OPTION MENU IN FRAGMENT
         setHasOptionsMenu(true)
     }
 
@@ -43,66 +55,37 @@ class InventoryFragment : Fragment() {
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.inventory_recyclerView)
 
-        /*
-                1)  Create DataClass with required parameters
-                2)  Create AdapterFile
-        */
-        //  STATIC DATA TO PLACE IN RECYCLE-VIEW
-        itemList = ArrayList()
-        itemList.apply {
-            add(InventoryDataClass("Facewash", 60))
-            add(InventoryDataClass("Racto Herb", 120))
-            add(InventoryDataClass("Bronco Herb", 110))
-            add(InventoryDataClass("Lekhni Kashai", 160))
-            add(InventoryDataClass("Dabar Avla", 110))
-            add(InventoryDataClass("Sorex", 80))
-            add(InventoryDataClass("Glucon-D", 150))
+        database = Firebase.database.reference
 
-            add(InventoryDataClass("Facewash", 60))
-            add(InventoryDataClass("Racto Herb", 120))
-            add(InventoryDataClass("Bronco Herb", 110))
-            add(InventoryDataClass("Lekhni Kashai", 160))
-            add(InventoryDataClass("Dabar Avla", 110))
-            add(InventoryDataClass("Sorex", 80))
-            add(InventoryDataClass("Glucon-D", 150))
+        val userID = FirebaseAuth.getInstance().currentUser!!.uid
+        val dbRef = FirebaseDatabase.getInstance().getReference("Users/$userID/Inventory Data")
 
-            add(InventoryDataClass("Facewash", 60))
-            add(InventoryDataClass("Racto Herb", 120))
-            add(InventoryDataClass("Bronco Herb", 110))
-            add(InventoryDataClass("Lekhni Kashai", 160))
-            add(InventoryDataClass("Dabar Avla", 110))
-            add(InventoryDataClass("Sorex", 80))
-            add(InventoryDataClass("Glucon-D", 150))
+        recyclerView.layoutManager =LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-            add(InventoryDataClass("Facewash", 60))
-            add(InventoryDataClass("Racto Herb", 120))
-            add(InventoryDataClass("Bronco Herb", 110))
-            add(InventoryDataClass("Lekhni Kashai", 160))
-            add(InventoryDataClass("Dabar Avla", 110))
-            add(InventoryDataClass("Sorex", 80))
-            add(InventoryDataClass("Glucon-D", 150))
+        dbRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    for (item in snapshot.children) {
+                        val listedData = item.getValue(ViewInventoryDataClass::class.java)
+                        listedData!!.key = item.key.toString()
+                        itemList.add(listedData)
+                    }
+                    recyclerView.adapter = ProductAdapter(requireContext(), itemList,
+                        object : ProductAdapter.OnItemClick {
+                            override fun onClick(listDataClass: ViewInventoryDataClass) {
+                                requireActivity().supportFragmentManager.beginTransaction()
+                                    .replace(R.id.layout_home, ProductUpdateFragment(listDataClass))
+                                    .addToBackStack(null)
+                                    .commit()
+                            }
+                        })
+                }
+            }
 
-            add(InventoryDataClass("Facewash", 60))
-            add(InventoryDataClass("Racto Herb", 120))
-            add(InventoryDataClass("Bronco Herb", 110))
-            add(InventoryDataClass("Lekhni Kashai", 160))
-            add(InventoryDataClass("Dabar Avla", 110))
-            add(InventoryDataClass("Sorex", 80))
-            add(InventoryDataClass("Glucon-D", 150))
-
-            add(InventoryDataClass("Facewash", 60))
-            add(InventoryDataClass("Racto Herb", 120))
-            add(InventoryDataClass("Bronco Herb", 110))
-            add(InventoryDataClass("Lekhni Kashai", 160))
-            add(InventoryDataClass("Dabar Avla", 110))
-            add(InventoryDataClass("Sorex", 80))
-            add(InventoryDataClass("Glucon-D", 150))
-        }
-
-        //  applying `Layout` to Recyclerview
-        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        //  applying `adapter` to Recyclerview
-        recyclerView.adapter = ProductAdapter(requireContext(), itemList)
+            override fun onCancelled(error: DatabaseError) {
+                Log.d("Error", error.toString())
+            }
+        })
     }
 
     //  TO INFLATE OPTION MENU
@@ -126,7 +109,19 @@ class InventoryFragment : Fragment() {
                 alertDialog.show()
 
                 popupView.findViewById<Button>(R.id.btnSaveItem).setOnClickListener {
-                    Toast.makeText(context, "Item Added to Inventory", Toast.LENGTH_SHORT).show()
+                    itemList.clear()
+
+                    val addItem = AddInventoryDataClass(
+                        productName = popupView.addItem_edtxt_productName.text.toString(),
+                        purchasingPrice = popupView.addItem_edtxt_purchasePrise.text.toString().toInt(),
+                        sellingPrice = popupView.addItem_edtxt_sellingPrice.text.toString().toInt(),
+                        productQty = popupView.addItem_edtxt_productQty.text.toString().toInt()
+                    )
+
+                    val userID = FirebaseAuth.getInstance().currentUser!!.uid
+                    val key = database.child("Inventory Data").push().key.toString()
+                    dbRef.getReference("Users/$userID").child("Inventory Data").child(key).setValue(addItem)
+
                     alertDialog.dismiss()
                 }
 
@@ -136,6 +131,11 @@ class InventoryFragment : Fragment() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        itemList.clear()
     }
 
 }
