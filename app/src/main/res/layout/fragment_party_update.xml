@@ -129,12 +129,14 @@
                 android:id="@+id/update_rBtn_B2B"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="B2B" />
+                android:text="B2B"
+                android:buttonTint="@color/green" />
             <RadioButton
                 android:id="@+id/update_rBtn_B2C"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="B2C" />
+                android:text="B2C"
+                android:buttonTint="@color/green" />
         </RadioGroup>
 
         <Button
