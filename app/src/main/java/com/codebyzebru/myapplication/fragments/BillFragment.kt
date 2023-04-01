@@ -2,15 +2,24 @@ package com.codebyzebru.myapplication.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.codebyzebru.myapplication.R
 import com.codebyzebru.myapplication.activities.HomeActivity
+import com.codebyzebru.myapplication.dataclasses.ViewInventoryDataClass
+import com.codebyzebru.myapplication.dataclasses.ViewPartyDataClass
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_bill.*
 import kotlinx.android.synthetic.main.fragment_bill.view.*
 import java.text.SimpleDateFormat
@@ -20,9 +29,15 @@ class BillFragment : Fragment() {
 
     private lateinit var popupView: View
 
+    private var dataList = arrayListOf<String>()
+
+    private lateinit var database: DatabaseReference
+    private var dbRef = FirebaseDatabase.getInstance()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        database = Firebase.database.reference
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -53,6 +68,36 @@ class BillFragment : Fragment() {
 
         view.billFrag_txt_date.text = day.toString() + "-" + (month+1).toString() + "-" + year.toString()
         */
+
+        val userID = FirebaseAuth.getInstance().currentUser!!.uid
+        val dbRef = FirebaseDatabase.getInstance().getReference("Users/$userID/Party Data")
+
+        dbRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    for (item in snapshot.children) {
+                        val listedData = item.getValue(ViewPartyDataClass::class.java)
+                        listedData!!.key = item.key.toString()
+                        dataList.add(listedData.partyName)
+                        Log.d("listedData", dataList.toString())
+
+                        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, dataList)
+                        billFrag_autoTxt_name.setAdapter(adapter)
+
+                        billFrag_autoTxt_name.setOnItemClickListener(object : AdapterView.OnItemClickListener {
+                            override fun onItemClick(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                                TODO("Not yet implemented")
+                            }
+                        })
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.d("Error", error.toString())
+            }
+        })
+
 
         view.findViewById<Button>(R.id.billFrag_btn_addItem).setOnClickListener {
             //  subclass of `Dialog`
