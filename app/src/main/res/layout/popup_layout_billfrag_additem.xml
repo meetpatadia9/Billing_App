@@ -22,9 +22,10 @@
             <AutoCompleteTextView
                 android:id="@+id/additem_billFrag_autotxt_productName"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:hint="Product Name"
-                android:singleLine="true"/>
+                android:singleLine="true"
+                android:completionThreshold="1" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -44,7 +45,7 @@
             app:startIconDrawable="@drawable/baseline_add_shopping_cart_24"
             app:boxBackgroundColor="@color/app_background">
 
-            <AutoCompleteTextView
+            <EditText
                 android:id="@+id/addParty_edtxt_contact"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

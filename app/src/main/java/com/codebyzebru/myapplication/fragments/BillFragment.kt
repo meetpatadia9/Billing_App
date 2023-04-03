@@ -13,6 +13,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.codebyzebru.myapplication.R
 import com.codebyzebru.myapplication.activities.HomeActivity
+import com.codebyzebru.myapplication.dataclasses.ViewInventoryDataClass
 import com.codebyzebru.myapplication.dataclasses.ViewPartyDataClass
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -20,6 +21,8 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_bill.*
 import kotlinx.android.synthetic.main.fragment_bill.view.*
+import kotlinx.android.synthetic.main.popup_layout_billfrag_additem.*
+import kotlinx.android.synthetic.main.popup_layout_billfrag_additem.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -29,6 +32,7 @@ class BillFragment : Fragment() {
     private var billNo = 0
     private lateinit var popupView: View
     private var dataList = arrayListOf<String>()
+    private var itemList = arrayListOf<String>()
 
     private lateinit var database: DatabaseReference
     private var dbRef = FirebaseDatabase.getInstance()
@@ -56,6 +60,7 @@ class BillFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val autoCompleteTextView = view.findViewById<AutoCompleteTextView>(R.id.billFrag_autoTxt_name)
+
         val sharedPreferences = requireActivity().getSharedPreferences("MySharedPref", MODE_PRIVATE)
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
         billNo = sharedPreferences.getInt("billNo", 1)
@@ -129,6 +134,41 @@ class BillFragment : Fragment() {
 
             val alertDialog = builder.create()
             alertDialog.show()
+
+            val pName = popupView.findViewById<AutoCompleteTextView>(R.id.additem_billFrag_autotxt_productName)
+            pName.setPadding(0, 25, 0, 0)
+
+            val inventoryRef = FirebaseDatabase.getInstance().getReference("Users/$userID/Inventory Data")
+
+            inventoryRef.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        for (item in snapshot.children) {
+                            val listedItem = item.getValue(ViewInventoryDataClass::class.java)
+                            listedItem!!.key = item.key.toString()
+                            itemList.add(listedItem.productName)
+                            Log.d("dataList", itemList.toString())
+
+                            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, itemList)
+                            pName.setAdapter(adapter)
+                        }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.d("Error", error.toString())
+                }
+            })
+
+
+
+
+
+
+
+
+
+
 
             popupView.findViewById<Button>(R.id.billFrag_addItem_btnAdd).setOnClickListener {
                 Toast.makeText(context, "Item Added to Purchase List", Toast.LENGTH_SHORT).show()
