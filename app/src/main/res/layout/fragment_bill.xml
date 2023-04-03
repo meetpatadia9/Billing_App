@@ -169,12 +169,43 @@
 
         <!--    ADD-ITEM RECYCLERVIEW    -->
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/purchase_recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@id/btnGenerateBill"
+            android:layout_above="@id/billFrag_subLayout_6"
             android:layout_below="@id/billFrag_btn_addItem"
             android:textColor="@color/app_background"
             android:padding="12dp"/>
+
+        <!--    BILL TOTAL    -->
+        <LinearLayout
+            android:id="@+id/billFrag_subLayout_6"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/btnGenerateBill"
+            android:weightSum="2"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="5dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:text="Total:"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/billFrag_edtxt_total"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:padding="12dp"
+                android:inputType="number"
+                android:singleLine="true"
+                android:textAlignment="viewEnd" />
+
+        </LinearLayout>
 
         <!--    GENERATE BILL BUTTON    -->
         <Button

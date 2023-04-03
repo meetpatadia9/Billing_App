@@ -11,8 +11,12 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.codebyzebru.myapplication.R
 import com.codebyzebru.myapplication.activities.HomeActivity
+import com.codebyzebru.myapplication.adapters.PurchasedItemAdapter
+import com.codebyzebru.myapplication.dataclasses.PurchasedItemDataClass
 import com.codebyzebru.myapplication.dataclasses.ViewInventoryDataClass
 import com.codebyzebru.myapplication.dataclasses.ViewPartyDataClass
 import com.google.firebase.auth.FirebaseAuth
@@ -21,18 +25,20 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_bill.*
 import kotlinx.android.synthetic.main.fragment_bill.view.*
+import kotlinx.android.synthetic.main.popup_layout_additem.*
 import kotlinx.android.synthetic.main.popup_layout_billfrag_additem.*
 import kotlinx.android.synthetic.main.popup_layout_billfrag_additem.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 class BillFragment : Fragment() {
 
     private var billNo = 0
     private lateinit var popupView: View
+
     private var dataList = arrayListOf<String>()
     private var itemList = arrayListOf<String>()
+    private var purchasedItemList = arrayListOf<PurchasedItemDataClass>()
 
     private lateinit var database: DatabaseReference
     private var dbRef = FirebaseDatabase.getInstance()
@@ -60,12 +66,16 @@ class BillFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val autoCompleteTextView = view.findViewById<AutoCompleteTextView>(R.id.billFrag_autoTxt_name)
+        val purchaseRecyclerView = view.findViewById<RecyclerView>(R.id.purchase_recyclerView)
+
+        purchaseRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
         val sharedPreferences = requireActivity().getSharedPreferences("MySharedPref", MODE_PRIVATE)
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
         billNo = sharedPreferences.getInt("billNo", 1)
         billFrag_txt_billNo.setText(billNo.toString())
         Log.d("billNo", billNo.toString())
+
 
         view.billFrag_txt_date?.text = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date()).toString()
         /**
@@ -136,6 +146,9 @@ class BillFragment : Fragment() {
             alertDialog.show()
 
             val pName = popupView.findViewById<AutoCompleteTextView>(R.id.additem_billFrag_autotxt_productName)
+            val pQty = popupView.findViewById<EditText>(R.id.additem_billFrag_edittxt_qty)
+            val pPrice = popupView.findViewById<EditText>(R.id.additem_billFrag_edittxt_price)
+
             pName.setPadding(0, 25, 0, 0)
 
             val inventoryRef = FirebaseDatabase.getInstance().getReference("Users/$userID/Inventory Data")
@@ -151,6 +164,23 @@ class BillFragment : Fragment() {
 
                             val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, itemList)
                             pName.setAdapter(adapter)
+
+                            pName.setOnItemClickListener(object : AdapterView.OnItemClickListener {
+                                override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                                    val selected = parent!!.getItemAtPosition(position) as String
+                                    Log.d("Selected Position", itemList.indexOf(pName.text.toString()).toString())
+                                    Log.d("Selected Product", selected)
+
+                                    for (product in snapshot.children) {
+                                        val pNameData = product.getValue(ViewInventoryDataClass::class.java)
+                                        if (pNameData?.productName.equals(selected)) {
+                                            Log.d("partyNameData", pNameData.toString())
+                                            pPrice.setText(pNameData?.purchasingPrice.toString())
+
+                                        }
+                                    }
+                                }
+                            })
                         }
                     }
                 }
@@ -161,17 +191,13 @@ class BillFragment : Fragment() {
             })
 
 
-
-
-
-
-
-
-
-
-
             popupView.findViewById<Button>(R.id.billFrag_addItem_btnAdd).setOnClickListener {
-                Toast.makeText(context, "Item Added to Purchase List", Toast.LENGTH_SHORT).show()
+                purchasedItemList.add(
+                    PurchasedItemDataClass(pName.text.toString(), pQty.text.toString(), pPrice.text.toString().toInt())
+                )
+                Log.d("purchasedItemList", purchaseRecyclerView.toString())
+
+                purchaseRecyclerView.adapter = PurchasedItemAdapter(requireContext(), purchasedItemList)
                 alertDialog.dismiss()
             }
         }

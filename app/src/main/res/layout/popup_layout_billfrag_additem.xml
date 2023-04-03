@@ -46,10 +46,36 @@
             app:boxBackgroundColor="@color/app_background">
 
             <EditText
-                android:id="@+id/addParty_edtxt_contact"
+                android:id="@+id/additem_billFrag_edittxt_qty"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Quantity"
+                android:singleLine="true"
+                android:inputType="number"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+
+    <!--    PRODUCT PRICE    -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:boxCornerRadiusTopEnd="15dp"
+            app:boxCornerRadiusTopStart="15dp"
+            app:startIconDrawable="@drawable/baseline_currency_rupee_24"
+            app:boxBackgroundColor="@color/app_background">
+
+            <EditText
+                android:id="@+id/additem_billFrag_edittxt_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Price of One"
                 android:singleLine="true"
                 android:inputType="number"/>
 

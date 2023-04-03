@@ -13,4 +13,6 @@
     <color name="app_background">#F6FFED</color>
     <color name="red">#FF0202</color>
     <color name="blur_green">#A3005904</color>
+
+    <color name="deep_red">#850101</color>
 </resources>
