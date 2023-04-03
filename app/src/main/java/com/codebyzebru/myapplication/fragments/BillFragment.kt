@@ -3,18 +3,14 @@ package com.codebyzebru.myapplication.fragments
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
 import com.codebyzebru.myapplication.R
 import com.codebyzebru.myapplication.activities.HomeActivity
-import com.codebyzebru.myapplication.dataclasses.ViewInventoryDataClass
 import com.codebyzebru.myapplication.dataclasses.ViewPartyDataClass
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -56,6 +52,8 @@ class BillFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val autoCompleteTextView = view.findViewById<AutoCompleteTextView>(R.id.billFrag_autoTxt_name)
+
         view.billFrag_txt_date?.text = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date()).toString()
         /*
         OR YOU CAN USE THIS METHOD ALSO TO GET LOCAL DATE, BY GETTING INSTANCE OF CALENDAR
@@ -79,14 +77,28 @@ class BillFragment : Fragment() {
                         val listedData = item.getValue(ViewPartyDataClass::class.java)
                         listedData!!.key = item.key.toString()
                         dataList.add(listedData.partyName)
-                        Log.d("listedData", dataList.toString())
+                        Log.d("dataList", dataList.toString())
 
                         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, dataList)
-                        billFrag_autoTxt_name.setAdapter(adapter)
+                        autoCompleteTextView.setAdapter(adapter)
 
-                        billFrag_autoTxt_name.setOnItemClickListener(object : AdapterView.OnItemClickListener {
-                            override fun onItemClick(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                                TODO("Not yet implemented")
+                        autoCompleteTextView.setOnItemClickListener(object : AdapterView.OnItemClickListener {
+                            override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                                val selected = parent!!.getItemAtPosition(position) as String
+                                Log.d("Selected Position", dataList.indexOf(autoCompleteTextView.text.toString()).toString())
+                                Log.d("Selected Name", selected)
+
+                                for (party in snapshot.children) {
+                                    val partyNameData = party.getValue(ViewPartyDataClass::class.java)
+                                    if (partyNameData?.partyName.equals(selected)) {
+                                        Log.d("partyNameData", partyNameData.toString())
+                                        Log.d("Matched?", "Match Found")
+                                        billFrag_edtxt_email.setText(partyNameData?.email)
+                                        billFrag_edtxt_companyName.setText(partyNameData?.companyName)
+                                        billFrag_edtxt_companyAddr.setText(partyNameData?.address)
+                                        billFrag_edtxt_contact.setText(partyNameData?.contact)
+                                    }
+                                }
                             }
                         })
                     }
@@ -117,7 +129,7 @@ class BillFragment : Fragment() {
         }
 
         view.btnGenerateBill.setOnClickListener {
-            billFrag_autoTxt_name.text.clear()
+            autoCompleteTextView.text.clear()
             billFrag_edtxt_email.text.clear()
             billFrag_edtxt_companyName.text.clear()
             billFrag_edtxt_companyAddr.text.clear()
