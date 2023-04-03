@@ -1,6 +1,8 @@
 package com.codebyzebru.myapplication.fragments
 
 import android.annotation.SuppressLint
+import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -21,10 +23,11 @@ import kotlinx.android.synthetic.main.fragment_bill.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
+
 class BillFragment : Fragment() {
 
+    private var billNo = 0
     private lateinit var popupView: View
-
     private var dataList = arrayListOf<String>()
 
     private lateinit var database: DatabaseReference
@@ -53,9 +56,14 @@ class BillFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val autoCompleteTextView = view.findViewById<AutoCompleteTextView>(R.id.billFrag_autoTxt_name)
+        val sharedPreferences = requireActivity().getSharedPreferences("MySharedPref", MODE_PRIVATE)
+        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+        billNo = sharedPreferences.getInt("billNo", 1)
+        billFrag_txt_billNo.setText(billNo.toString())
+        Log.d("billNo", billNo.toString())
 
         view.billFrag_txt_date?.text = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date()).toString()
-        /*
+        /**
         OR YOU CAN USE THIS METHOD ALSO TO GET LOCAL DATE, BY GETTING INSTANCE OF CALENDAR
 
         val calendar = Calendar.getInstance()
@@ -92,7 +100,7 @@ class BillFragment : Fragment() {
                                     val partyNameData = party.getValue(ViewPartyDataClass::class.java)
                                     if (partyNameData?.partyName.equals(selected)) {
                                         Log.d("partyNameData", partyNameData.toString())
-                                        Log.d("Matched?", "Match Found")
+
                                         billFrag_edtxt_email.setText(partyNameData?.email)
                                         billFrag_edtxt_companyName.setText(partyNameData?.companyName)
                                         billFrag_edtxt_companyAddr.setText(partyNameData?.address)
@@ -134,6 +142,11 @@ class BillFragment : Fragment() {
             billFrag_edtxt_companyName.text.clear()
             billFrag_edtxt_companyAddr.text.clear()
             billFrag_edtxt_contact.text.clear()
+
+            billNo += 1
+            Log.d("billNo", billNo.toString())
+            editor.putInt("billNo", billNo)
+                .apply()
         }
     }
 

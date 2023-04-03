@@ -16,20 +16,22 @@
             android:layout_height="wrap_content"
             android:text="DD-MM-YYYY" />
 
-        <TextView
+        <EditText
             android:id="@+id/billFrag_txt_billNo"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="0001" />
+            android:textSize="14dp"
+            android:textAlignment="viewEnd" />
 
         <!--    NAME    -->
         <LinearLayout
             android:id="@+id/billFrag_subLayout_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:weightSum="2">
+            android:layout_marginTop="5dp"
+            android:weightSum="2"
+            android:layout_below="@id/billFrag_txt_billNo">
 
             <TextView
                 android:layout_width="0dp"
