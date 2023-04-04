@@ -74,8 +74,8 @@ class RegistrationActivity : AppCompatActivity(), ConnectivityReceiver.Connectiv
             else if (password1.text.toString() == ""){
                 password1.error = "Empty Field"
             }
-            else if (password1.length() <= 8 || password1.length() >= 12) {
-                password2.error = "Password length mast be between 8 to 12 characters"
+            else if (password1.length() <= 6) {
+                password2.error = "Password length mast be more than 6 characters"
             }
             else if (password2.text.toString() == "") {
                 password1.error = "Empty Field"
@@ -122,7 +122,7 @@ class RegistrationActivity : AppCompatActivity(), ConnectivityReceiver.Connectiv
         val phoneNumber: EditText = reg_edtxt_contact
         val password1: EditText = reg_create_password
         val radioGroup: RadioGroup = reg_rg
-        val radioButton: RadioButton
+        val radioButton: RadioButton?
 
         val selectedID = radioGroup.checkedRadioButtonId
         radioButton = findViewById(selectedID)
@@ -131,7 +131,7 @@ class RegistrationActivity : AppCompatActivity(), ConnectivityReceiver.Connectiv
             fullName = fullName.text.toString().trim(),
             email = email.text.toString().trim(),
             contact = phoneNumber.text.toString().trim(),
-            gender = radioButton.text.toString(),
+            gender = radioButton?.text.toString(),
             password = password1.text.toString().trim()
         )
 

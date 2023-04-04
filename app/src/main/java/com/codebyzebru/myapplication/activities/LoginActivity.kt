@@ -1,18 +1,27 @@
 package com.codebyzebru.myapplication.activities
 
+import android.app.Activity
 import android.content.Intent
 import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.widget.*
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.codebyzebru.myapplication.R
 import com.codebyzebru.myapplication.broadcastreceiver.ConnectivityReceiver
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.tasks.Task
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
@@ -25,6 +34,8 @@ class LoginActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRece
 
     private var isConnected: Boolean = true
     private var snackBar: Snackbar? = null
+
+    private lateinit var googleSignInClient: GoogleSignInClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,17 +84,65 @@ class LoginActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRece
                 auth.signInWithEmailAndPassword(mail, pass).addOnCompleteListener(this) {
                     if (it.isSuccessful) {
                         val user = auth.currentUser
-                        updateUI(user)
+                        updateUI()
                     } else {
                         Toast.makeText(this, "Email or Password incorrect!!", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
         }
+        
+        //  GOOGLE LOGIN
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.client_id))
+            .requestEmail()
+            .build()
+
+        googleSignInClient = GoogleSignIn.getClient(this, gso)
+
+        findViewById<ImageView>(R.id.loginGoogle).setOnClickListener {
+            signInWithGoogle()
+        }
+    }
+
+    private fun signInWithGoogle() {
+        val signInIntent = googleSignInClient.signInIntent
+        launcher.launch(signInIntent)
+    }
+
+    private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+            handleResult(task)
+        }
+    }
+
+    private fun handleResult(task: Task<GoogleSignInAccount>) {
+        if (task.isSuccessful) {
+            val account: GoogleSignInAccount? = task.result
+            if (account != null) {
+                val credentials = GoogleAuthProvider.getCredential(account.idToken, null)
+                auth.signInWithCredential(credentials).addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        Log.d("Credential", credentials.toString())
+                        updateUI()
+                    }
+                    else {
+                        Log.d("ACCOUNT FAIL", it.exception.toString())
+                        Toast.makeText(this, it.exception.toString(), Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+        else {
+            Log.d("TASK FAIL", task.exception.toString())
+            Toast.makeText(this, task.exception.toString(), Toast.LENGTH_SHORT).show()
+        }
     }
 
     //  INTENT
-    private fun updateUI(user: FirebaseUser?) {
+    private fun updateUI() {
         val intent = Intent(this, HomeActivity::class.java)
         startActivity(intent)
     }
@@ -93,7 +152,7 @@ class LoginActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRece
         super.onStart()
         val signedInUser = auth.currentUser
         if (signedInUser != null) {
-            updateUI(signedInUser)
+            updateUI()
         }
     }
 

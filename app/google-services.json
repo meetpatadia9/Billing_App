@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "269998307964",
+    "firebase_url": "https://bill-app-a7ae9-default-rtdb.firebaseio.com",
     "project_id": "bill-app-a7ae9",
     "storage_bucket": "bill-app-a7ae9.appspot.com"
   },
@@ -14,7 +15,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "269998307964-6qojeb2onkghl8rdaib05fvv4k0nut9q.apps.googleusercontent.com",
+          "client_id": "269998307964-ob3lqo5fbqhrn01e8jt6gcsss2gku5tk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.codebyzebru.myapplication",
+            "certificate_hash": "9bbc97b94e2ae1c6d871aeab0a81ed5d815a0400"
+          }
+        },
+        {
+          "client_id": "269998307964-gtu80c8er1fpfg6igddofi4inhrdpe6i.apps.googleusercontent.com",
           "client_type": 3
         }
       ],

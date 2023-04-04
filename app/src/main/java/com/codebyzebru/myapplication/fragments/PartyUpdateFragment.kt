@@ -66,7 +66,7 @@ class PartyUpdateFragment(private val listDataClass: ViewPartyDataClass) : Fragm
                 address = update_address.text.toString(),
                 email = update_email.text.toString(),
                 contact = update_contact.text.toString(),
-                type = radioButton!!.text.toString()
+                type = radioButton?.text.toString()
             )
 
             val userID = FirebaseAuth.getInstance().currentUser!!.uid

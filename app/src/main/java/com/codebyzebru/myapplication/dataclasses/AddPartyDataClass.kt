@@ -6,6 +6,6 @@ class AddPartyDataClass(
     val address: String,
     val email: String,
     val contact: String,
-    val type: String,
+    val type: String?,
     val totalPurchase: Int = 0
 )

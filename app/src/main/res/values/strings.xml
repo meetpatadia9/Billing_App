@@ -6,4 +6,7 @@
     <string name="nav_close">Close</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <string name="client_id">269998307964-gtu80c8er1fpfg6igddofi4inhrdpe6i.apps.googleusercontent.com</string>
 </resources>

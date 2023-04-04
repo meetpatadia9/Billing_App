@@ -127,7 +127,7 @@ class PartiesFragment : Fragment() {
                         address = popupView.addParty_edtxt_address.text.toString(),
                         email = popupView.addParty_edtxt_email.text.toString(),
                         contact = popupView.addParty_edtxt_contact.text.toString(),
-                        type = radioButton!!.text.toString()
+                        type = radioButton?.text.toString()
                     )
 
                     val userID = FirebaseAuth.getInstance().currentUser!!.uid
