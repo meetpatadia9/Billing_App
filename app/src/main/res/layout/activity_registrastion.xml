@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/green"
+    android:background="@color/light_blur_green"
     tools:context=".activities.RegistrationActivity"
     android:id="@+id/layout_registration">
 
@@ -12,7 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@drawable/shape_background_layout1"
         android:layout_marginTop="10dp">
 
         <TextView
@@ -20,235 +19,252 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Registration"
-            android:textColor="@color/app_background"
+            android:textColor="@color/green"
             android:textSize="36dp"
             android:textStyle="bold"
+            android:typeface="serif"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="11dp"/>
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="18dp"/>
 
-        <LinearLayout
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/txtRegistration"
-            android:orientation="vertical"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="5dp"
-            android:gravity="center_horizontal"
-            android:background="@drawable/shape_background_layout2"
-            android:padding="20dp">
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="30dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            app:cardCornerRadius="15dp">
 
-            <!--  NAME  -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_height="match_parent"
+                android:layout_below="@id/txtRegistration"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:padding="20dp">
 
-                <com.google.android.material.textfield.TextInputLayout
+                <!--  NAME  -->
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:boxCornerRadiusTopEnd="15dp"
-                    app:boxCornerRadiusTopStart="15dp"
-                    app:boxBackgroundColor="#0A000000"
-                    app:startIconDrawable="@drawable/baseline_person_24">
+                    android:layout_marginTop="10dp">
 
-                    <EditText
-                        android:id="@+id/reg_edtxt_name"
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Full Name"
-                        android:singleLine="true"/>
+                        app:boxCornerRadiusTopEnd="15dp"
+                        app:boxCornerRadiusTopStart="15dp"
+                        app:boxBackgroundColor="@color/app_background"
+                        app:startIconDrawable="@drawable/baseline_person_24"
+                        app:startIconTint="@color/green">
 
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </LinearLayout>
-
-            <!--  EMAIL  -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxCornerRadiusTopEnd="15dp"
-                    app:boxCornerRadiusTopStart="15dp"
-                    app:boxBackgroundColor="#0A000000"
-                    app:startIconDrawable="@drawable/baseline_mail_outline_24">
-
-                    <EditText
-                        android:id="@+id/reg_edtxt_email"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Email"
-                        android:inputType="textEmailAddress"
-                        android:singleLine="true"/>
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </LinearLayout>
-
-            <!--  CONTACT / PHONE NUMBER  -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxCornerRadiusTopEnd="15dp"
-                    app:boxCornerRadiusTopStart="15dp"
-                    app:boxBackgroundColor="#0A000000"
-                    app:startIconDrawable="@drawable/baseline_phone_24">
-
-                    <EditText
-                        android:id="@+id/reg_edtxt_contact"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Contact"
-                        android:inputType="phone"
-                        android:singleLine="true"/>
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </LinearLayout>
-
-            <!--  USERNAME  -->
-            <!--            <LinearLayout
+                        <EditText
+                            android:id="@+id/reg_edtxt_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="15dp">
+                            android:hint="Full Name"
+                            android:singleLine="true"/>
 
-                            <com.google.android.material.textfield.TextInputLayout
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <!--  EMAIL  -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:boxCornerRadiusTopEnd="15dp"
+                        app:boxCornerRadiusTopStart="15dp"
+                        app:boxBackgroundColor="@color/app_background"
+                        app:startIconDrawable="@drawable/baseline_mail_outline_24"
+                        app:startIconTint="@color/green">
+
+                        <EditText
+                            android:id="@+id/reg_edtxt_email"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Email"
+                            android:inputType="textEmailAddress"
+                            android:singleLine="true"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <!--  CONTACT / PHONE NUMBER  -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:boxCornerRadiusTopEnd="15dp"
+                        app:boxCornerRadiusTopStart="15dp"
+                        app:boxBackgroundColor="@color/app_background"
+                        app:startIconDrawable="@drawable/baseline_phone_24"
+                        app:startIconTint="@color/green">
+
+                        <EditText
+                            android:id="@+id/reg_edtxt_contact"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Contact"
+                            android:inputType="phone"
+                            android:singleLine="true"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <!--  USERNAME  -->
+                <!--            <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                app:boxCornerRadiusTopEnd="15dp"
-                                app:boxCornerRadiusTopStart="15dp"
-                                app:startIconDrawable="@drawable/baseline_assignment_ind_24">
+                                android:layout_marginTop="15dp">
 
-                                <EditText
-                                    android:id="@+id/reg_edtxt_username"
+                                <com.google.android.material.textfield.TextInputLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:hint="Username"
-                                    android:singleLine="true"/>
+                                    app:boxCornerRadiusTopEnd="15dp"
+                                    app:boxCornerRadiusTopStart="15dp"
+                                    app:startIconDrawable="@drawable/baseline_assignment_ind_24">
 
-                            </com.google.android.material.textfield.TextInputLayout>
+                                    <EditText
+                                        android:id="@+id/reg_edtxt_username"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:hint="Username"
+                                        android:singleLine="true"/>
 
-                        </LinearLayout>
-            -->
+                                </com.google.android.material.textfield.TextInputLayout>
 
-            <!--  PASSWORD  -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                            </LinearLayout>
+                -->
 
-                <com.google.android.material.textfield.TextInputLayout
+                <!--  PASSWORD  -->
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:passwordToggleEnabled="true"
-                    app:boxCornerRadiusTopEnd="15dp"
-                    app:boxCornerRadiusTopStart="15dp"
-                    app:boxBackgroundColor="#0A000000"
-                    app:startIconDrawable="@drawable/baseline_vpn_key_24">
+                    android:layout_marginTop="10dp">
 
-                    <EditText
-                        android:id="@+id/reg_create_password"
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Create Password"
-                        android:inputType="textPassword"
-                        android:singleLine="true"/>
+                        app:passwordToggleEnabled="true"
+                        app:boxCornerRadiusTopEnd="15dp"
+                        app:boxCornerRadiusTopStart="15dp"
+                        app:boxBackgroundColor="@color/app_background"
+                        app:startIconDrawable="@drawable/baseline_vpn_key_24"
+                        app:startIconTint="@color/green">
 
-                </com.google.android.material.textfield.TextInputLayout>
+                        <EditText
+                            android:id="@+id/reg_create_password"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Create Password"
+                            android:inputType="textPassword"
+                            android:singleLine="true"/>
 
-            </LinearLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-            <!--  CONFORM PASSWORD  -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                </LinearLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
+                <!--  CONFORM PASSWORD  -->
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:boxCornerRadiusTopEnd="15dp"
-                    app:boxCornerRadiusTopStart="15dp"
-                    app:boxBackgroundColor="#0A000000"
-                    app:startIconDrawable="@drawable/baseline_password_24">
+                    android:layout_marginTop="10dp">
 
-                    <EditText
-                        android:id="@+id/reg_reEnter_password"
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Re-enter Password"
-                        android:singleLine="true" />
+                        app:boxCornerRadiusTopEnd="15dp"
+                        app:boxCornerRadiusTopStart="15dp"
+                        app:boxBackgroundColor="@color/app_background"
+                        app:startIconDrawable="@drawable/baseline_password_24"
+                        app:startIconTint="@color/green">
 
-                </com.google.android.material.textfield.TextInputLayout>
+                        <EditText
+                            android:id="@+id/reg_reEnter_password"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Re-enter Password"
+                            android:singleLine="true" />
 
-            </LinearLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-            <!--  GENDER  -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="vertical"
-                android:paddingLeft="17dp">
+                </LinearLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <!--  GENDER  -->
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="Gender"/>
+                    android:orientation="vertical"
+                    android:paddingLeft="17dp">
 
-                <RadioGroup
-                    android:id="@+id/reg_rg"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Gender"/>
+
+                    <RadioGroup
+                        android:id="@+id/reg_rg"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.radiobutton.MaterialRadioButton
+                            android:id="@+id/reg_rb_male"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Male"
+                            android:buttonTint="@color/green"/>
+
+                        <com.google.android.material.radiobutton.MaterialRadioButton
+                            android:id="@+id/reg_rb_female"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Female"
+                            android:buttonTint="@color/green"/>
+
+                    </RadioGroup>
+
+                </LinearLayout>
+
+                <!--  LOGIN  -->
+                <TextView
+                    android:id="@+id/reg_txt_alreadyUser"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Already a User? Login here"
+                    android:layout_marginTop="15dp"
+                    android:textColor="@color/green"/>
+
+                <!--  REGISTER BUTTON  -->
+                <Button
+                    android:id="@+id/btnRegister"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:id="@+id/reg_rb_male"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Male"/>
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:id="@+id/reg_rb_female"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Female"/>
-
-                </RadioGroup>
+                    android:text="Register"
+                    android:typeface="normal"
+                    android:background="@drawable/shape_btn"
+                    android:textSize="16sp"
+                    android:layout_marginTop="20dp"/>
 
             </LinearLayout>
 
-            <!--  LOGIN  -->
-            <TextView
-                android:id="@+id/reg_txt_alreadyUser"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Already a User? Login here"
-                android:layout_marginTop="15dp"
-                android:textColor="@color/green"/>
-
-            <!--  REGISTER BUTTON  -->
-            <Button
-                android:id="@+id/btnRegister"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Register"
-                android:background="@drawable/shape_btn"
-                android:textSize="16sp"
-                android:layout_marginTop="20dp"/>
-
-        </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
     </LinearLayout>
 
