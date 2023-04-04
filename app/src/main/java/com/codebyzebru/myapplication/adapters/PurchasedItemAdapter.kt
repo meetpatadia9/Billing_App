@@ -1,6 +1,7 @@
 package com.codebyzebru.myapplication.adapters
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,9 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.codebyzebru.myapplication.R
 import com.codebyzebru.myapplication.dataclasses.PurchasedItemDataClass
 
-class PurchasedItemAdapter(val context: Context, private val itemList: List<PurchasedItemDataClass>)
+class PurchasedItemAdapter(val context: Context, private val itemList: List<PurchasedItemDataClass>, val totalListener: SubTotalListener)
     : RecyclerView.Adapter<PurchasedItemAdapter.PurchaseViewHolder>() {
 
+    private var mytotal = arrayListOf<Int>()
 
     class PurchaseViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val name:TextView = itemView.findViewById(R.id.purchased_pName)
@@ -40,6 +42,16 @@ class PurchasedItemAdapter(val context: Context, private val itemList: List<Purc
             qty.text = itemList[position].pQty
             price.text = total.toString()
 
+            mytotal.add(total)
+            Log.d("mytotal", mytotal.toString())
+
+            val sum = mytotal.sum()
+            Log.d("sum", sum.toString())
+            totalListener.onSubTotalUpdate(sum)
         }
+    }
+
+    interface SubTotalListener {
+        fun onSubTotalUpdate(total: Int)
     }
 }

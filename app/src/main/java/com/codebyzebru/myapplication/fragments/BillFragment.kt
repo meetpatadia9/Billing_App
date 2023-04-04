@@ -31,17 +31,16 @@ import kotlinx.android.synthetic.main.popup_layout_billfrag_additem.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class BillFragment : Fragment() {
+class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
 
     private var billNo = 0
     private lateinit var popupView: View
 
+    private lateinit var database: DatabaseReference
+
     private var dataList = arrayListOf<String>()
     private var itemList = arrayListOf<String>()
     private var purchasedItemList = arrayListOf<PurchasedItemDataClass>()
-
-    private lateinit var database: DatabaseReference
-    private var dbRef = FirebaseDatabase.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -135,6 +134,7 @@ class BillFragment : Fragment() {
 
 
         view.findViewById<Button>(R.id.billFrag_btn_addItem).setOnClickListener {
+            itemList.clear()
             //  subclass of `Dialog`
             val builder = AlertDialog.Builder(requireContext())
             //  Instantiates a layout XML file into its corresponding `View` objects
@@ -197,23 +197,30 @@ class BillFragment : Fragment() {
                 )
                 Log.d("purchasedItemList", purchaseRecyclerView.toString())
 
-                purchaseRecyclerView.adapter = PurchasedItemAdapter(requireContext(), purchasedItemList)
+
+
+                purchaseRecyclerView.adapter = PurchasedItemAdapter(requireContext(), purchasedItemList, this)
                 alertDialog.dismiss()
             }
         }
 
-        view.btnGenerateBill.setOnClickListener {
-            autoCompleteTextView.text.clear()
-            billFrag_edtxt_email.text.clear()
-            billFrag_edtxt_companyName.text.clear()
-            billFrag_edtxt_companyAddr.text.clear()
-            billFrag_edtxt_contact.text.clear()
 
+
+        view.btnGenerateBill.setOnClickListener {
             billNo += 1
             Log.d("billNo", billNo.toString())
             editor.putInt("billNo", billNo)
                 .apply()
+
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.layout_home, HomeFragment())
+                .addToBackStack(null)
+                .commit()
         }
+    }
+
+    override fun onSubTotalUpdate(total: Int) {
+        view?.billFrag_edtxt_total?.setText(total.toString())
     }
 
 }
