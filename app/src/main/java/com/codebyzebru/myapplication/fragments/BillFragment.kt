@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.codebyzebru.myapplication.R
 import com.codebyzebru.myapplication.activities.HomeActivity
 import com.codebyzebru.myapplication.adapters.PurchasedItemAdapter
+import com.codebyzebru.myapplication.dataclasses.BillDataClass
 import com.codebyzebru.myapplication.dataclasses.PurchasedItemDataClass
 import com.codebyzebru.myapplication.dataclasses.ViewInventoryDataClass
 import com.codebyzebru.myapplication.dataclasses.ViewPartyDataClass
@@ -37,6 +38,7 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
     private lateinit var popupView: View
 
     private lateinit var database: DatabaseReference
+    private var billDbRef = FirebaseDatabase.getInstance()
 
     private var dataList = arrayListOf<String>()
     private var itemList = arrayListOf<String>()
@@ -64,7 +66,15 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val txtDate = view.findViewById<TextView>(R.id.billFrag_txt_date)
+        val edtxtBillNo = view.findViewById<EditText>(R.id.billFrag_txt_billNo)
         val autoCompleteTextView = view.findViewById<AutoCompleteTextView>(R.id.billFrag_autoTxt_name)
+        val email = view.findViewById<EditText>(R.id.billFrag_edtxt_email)
+        val organization = view.findViewById<EditText>(R.id.billFrag_edtxt_companyName)
+        val address = view.findViewById<EditText>(R.id.billFrag_edtxt_companyAddr)
+        val contact = view.findViewById<EditText>(R.id.billFrag_edtxt_contact)
+        val billTotal = view.findViewById<EditText>(R.id.billFrag_edtxt_total)
+
         val purchaseRecyclerView = view.findViewById<RecyclerView>(R.id.purchase_recyclerView)
 
         purchaseRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -211,6 +221,21 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
             Log.d("billNo", billNo.toString())
             editor.putInt("billNo", billNo)
                 .apply()
+
+            val bill = BillDataClass(
+                date = txtDate.text.toString(),
+                billNo = edtxtBillNo.text.toString(),
+                buyer = autoCompleteTextView.text.toString(),
+                email = email.text.toString(),
+                organization = organization.text.toString(),
+                address = address.text.toString(),
+                contact = contact.text.toString(),
+                purchasedItems = purchasedItemList,
+                billTotal = billTotal.text.toString().toInt()
+            )
+
+            val billKey = database.child("Bills").push().key.toString()
+            billDbRef.getReference("Users/$userID").child("Bills").child(billKey).setValue(bill)
 
             requireActivity().supportFragmentManager.beginTransaction()
                 .replace(R.id.layout_home, HomeFragment())
