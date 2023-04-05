@@ -21,6 +21,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_inventory.*
 import kotlinx.android.synthetic.main.popup_layout_additem.view.*
+import java.util.*
 
 class InventoryFragment : Fragment() {
 
@@ -58,7 +59,7 @@ class InventoryFragment : Fragment() {
         database = Firebase.database.reference
 
         val userID = FirebaseAuth.getInstance().currentUser!!.uid
-        val dbRef = FirebaseDatabase.getInstance().getReference("Users/$userID/Inventory Data")
+        val dbRef = FirebaseDatabase.getInstance().getReference("Users/$userID/Inventory Data").orderByChild("productName")
 
         //  applying `Layout` to Recyclerview
         recyclerView.layoutManager =LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)

@@ -59,7 +59,7 @@ class PartiesFragment : Fragment() {
         database = Firebase.database.reference
 
         val userID = FirebaseAuth.getInstance().currentUser!!.uid
-        val dbRef = FirebaseDatabase.getInstance().getReference("Users/$userID/Party Data")
+        val dbRef = FirebaseDatabase.getInstance().getReference("Users/$userID/Party Data").orderByChild("partyName")
 
 
         //  applying `Layout` to Recyclerview
