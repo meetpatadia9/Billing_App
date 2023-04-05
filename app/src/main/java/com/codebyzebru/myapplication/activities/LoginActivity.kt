@@ -20,7 +20,6 @@ import com.google.android.gms.tasks.Task
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
@@ -66,7 +65,9 @@ class LoginActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRece
             startActivity(intent)
         }
 
-        //  LOGIN
+        /*
+            EMAIL-PASSWORD LOGIN
+        */
         findViewById<Button>(R.id.btnLogin).setOnClickListener {
             if (email.text.toString() == "") {
                 email.error = "Enter Username"
@@ -77,7 +78,7 @@ class LoginActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRece
             else if (email.text.toString() != "" && password.text.toString() != "" && !isConnected) {
                 Toast.makeText(this, "OOPS!!!! No Internet!!!!!", Toast.LENGTH_SHORT).show()
             }
-            else {          //ACCEPT CONDITION
+            else {          //ACCEPTING CONDITION
                 val mail = email.text.toString()
                 val pass = password.text.toString()
 
@@ -91,8 +92,10 @@ class LoginActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRece
                 }
             }
         }
-        
-        //  GOOGLE LOGIN
+
+        /*
+            GOOGLE LOGIN
+        */
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.client_id))
             .requestEmail()

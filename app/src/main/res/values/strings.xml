@@ -9,4 +9,6 @@
 
 
     <string name="client_id">269998307964-gtu80c8er1fpfg6igddofi4inhrdpe6i.apps.googleusercontent.com</string>
+    <string name="sign_in"> <u>Sign In</u> </string>
+    <string name="sign_up"> <u>Sign Up</u> </string>
 </resources>
