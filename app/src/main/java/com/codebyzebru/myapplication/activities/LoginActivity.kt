@@ -25,6 +25,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import dmax.dialog.SpotsDialog
 
 class LoginActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityReceiverListener {
 
@@ -33,12 +34,16 @@ class LoginActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRece
 
     private var isConnected: Boolean = true
     private var snackBar: Snackbar? = null
+    private lateinit var progress: SpotsDialog
 
     private lateinit var googleSignInClient: GoogleSignInClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        progress = SpotsDialog(this, R.style.Custom)
+        progress.setTitle("Please Wait!!")
 
         val email: EditText = findViewById(R.id.login_edtxt_email)
         val password: EditText = findViewById(R.id.login_edtxt_password)
@@ -79,11 +84,14 @@ class LoginActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRece
                 Toast.makeText(this, "OOPS!!!! No Internet!!!!!", Toast.LENGTH_SHORT).show()
             }
             else {          //ACCEPTING CONDITION
+                progress.show()
+
                 val mail = email.text.toString()
                 val pass = password.text.toString()
 
                 auth.signInWithEmailAndPassword(mail, pass).addOnCompleteListener(this) {
                     if (it.isSuccessful) {
+                        progress.dismiss()
                         updateUI()
                     } else {
                         Toast.makeText(this, "Email or Password incorrect!!", Toast.LENGTH_SHORT).show()
@@ -103,6 +111,7 @@ class LoginActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRece
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
         findViewById<ImageView>(R.id.loginGoogle).setOnClickListener {
+            progress.show()
             signInWithGoogle()
         }
     }
@@ -128,6 +137,7 @@ class LoginActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRece
                 auth.signInWithCredential(credentials).addOnCompleteListener {
                     if (it.isSuccessful) {
                         Log.d("Credential", credentials.toString())
+                        progress.dismiss()
                         updateUI()
                     }
                     else {

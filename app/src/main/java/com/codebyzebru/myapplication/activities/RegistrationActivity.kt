@@ -17,6 +17,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import dmax.dialog.SpotsDialog
 import kotlinx.android.synthetic.main.activity_registrastion.*
 import java.util.regex.Pattern
 
@@ -27,6 +28,7 @@ class RegistrationActivity : AppCompatActivity(), ConnectivityReceiver.Connectiv
 
     private var isConnected: Boolean = true
     private var snackBar: Snackbar? = null
+    private lateinit var progress: SpotsDialog
     private val EMAIL_ADDRESS_PATTERN = Pattern.compile(
         "[a-zA-Z\\d+._%\\-]{1,256}" +            //  \\d == 0 to 9
                 "@" +
@@ -40,6 +42,9 @@ class RegistrationActivity : AppCompatActivity(), ConnectivityReceiver.Connectiv
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registrastion)
+
+        progress = SpotsDialog(this, R.style.Custom)
+        progress.setTitle("Please Wait!!")
 
         val fullName: EditText = reg_edtxt_name
         val email: EditText = reg_edtxt_email
@@ -96,6 +101,7 @@ class RegistrationActivity : AppCompatActivity(), ConnectivityReceiver.Connectiv
                 password2.error = "Different Password"
             }
             else if (password1.text.toString() == password2.text.toString()) {          //ACCEPT CONDITION
+                progress.show()
                 val mail = email.text.toString()
                 val pass = password1.text.toString()
 
@@ -105,6 +111,7 @@ class RegistrationActivity : AppCompatActivity(), ConnectivityReceiver.Connectiv
                             ?.addOnSuccessListener {
                                 addNewUser()
                                 updateUI()
+                                progress.dismiss()
                             }
                             ?.addOnFailureListener {
                                 Toast.makeText(this, "Something went wrong! Please try again!!", Toast.LENGTH_SHORT).show()
