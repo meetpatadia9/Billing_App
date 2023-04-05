@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="2dp"
+    android:layout_margin="3dp"
+    app:cardCornerRadius="5dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="9dp">
+
+        <TextView
+            android:id="@+id/singleView_history_billNo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="billNo"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/singleView_history_buyer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Buyer Name"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginLeft="50dp"/>
+
+        <TextView
+            android:id="@+id/singleView_history_billAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="5000"
+            android:textSize="16sp"
+            android:layout_alignParentRight="true"
+            android:textStyle="italic"/>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
