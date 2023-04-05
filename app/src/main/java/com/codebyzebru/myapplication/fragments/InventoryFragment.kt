@@ -64,6 +64,7 @@ class InventoryFragment : Fragment() {
         //  applying `Layout` to Recyclerview
         recyclerView.layoutManager =LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
+        //  Fetching Inventory Data
         dbRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
@@ -76,7 +77,7 @@ class InventoryFragment : Fragment() {
                         object : ProductAdapter.OnItemClick {
                             override fun onClick(listDataClass: ViewInventoryDataClass) {
                                 requireActivity().supportFragmentManager.beginTransaction()
-                                    .replace(R.id.layout_home, ProductUpdateFragment(listDataClass))
+                                    .replace(R.id.layout_home, ProductUpdateFragment(listDataClass))        //  Sending selected party details
                                     .addToBackStack(null)
                                     .commit()
                             }

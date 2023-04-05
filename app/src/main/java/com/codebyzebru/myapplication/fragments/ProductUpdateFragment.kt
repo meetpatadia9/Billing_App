@@ -38,12 +38,14 @@ class ProductUpdateFragment (private val listedData: ViewInventoryDataClass) : F
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //  Setting data came from `PartiesFragment`
         key = listedData.key
         update_productName.setText(listedData.productName)
         update_purchasePrise.setText(listedData.purchasingPrice.toString())
         update_sellingPrice.setText(listedData.sellingPrice.toString())
         update_productQty.setText(listedData.productQty.toString())
 
+        //  UPDATE BUTTON
         btnUpdateItem.setOnClickListener {
             val addItem = AddInventoryDataClass(
                 productName = update_productName.text.toString(),
@@ -58,20 +60,28 @@ class ProductUpdateFragment (private val listedData: ViewInventoryDataClass) : F
 
             FirebaseDatabase.getInstance().getReference("Users/$userID/Inventory Data").child(key).removeValue()
                 .addOnSuccessListener {
-                    requireActivity().supportFragmentManager.beginTransaction().replace(R.id.layout_home, InventoryFragment()).addToBackStack(null).commit()
+                    requireActivity().supportFragmentManager.beginTransaction()
+                        .replace(R.id.layout_home, InventoryFragment())
+                        .addToBackStack(null)
+                        .commit()
                     Toast.makeText(context, "Item Updated!!", Toast.LENGTH_SHORT).show()
                 }
         }
 
+        //  DELETE BUTTON
         btnDeleteItem.setOnClickListener {
             val userID = FirebaseAuth.getInstance().currentUser!!.uid
             FirebaseDatabase.getInstance().getReference("Users/$userID/Inventory Data").child(key).removeValue()
                 .addOnSuccessListener {
-                    requireActivity().supportFragmentManager.beginTransaction().replace(R.id.layout_home, InventoryFragment()).addToBackStack(null).commit()
+                    requireActivity().supportFragmentManager.beginTransaction()
+                        .replace(R.id.layout_home, InventoryFragment())
+                        .addToBackStack(null)
+                        .commit()
                     Toast.makeText(context, "Item Deleted!!", Toast.LENGTH_SHORT).show()
                 }
         }
 
+        //  CANCEL BUTTON
         btn_update_cancel.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction()
                 .replace(R.id.layout_home, InventoryFragment())

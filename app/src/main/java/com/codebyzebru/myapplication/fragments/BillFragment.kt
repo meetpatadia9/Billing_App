@@ -79,9 +79,10 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
 
         purchaseRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
+        //  SharedPreferences for Bill-Number
         val sharedPreferences = requireActivity().getSharedPreferences("MySharedPref", MODE_PRIVATE)
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
-        billNo = sharedPreferences.getInt("billNo", 1)
+        billNo = sharedPreferences.getInt("billNo", 1)      //  setting default as 1
         billFrag_txt_billNo.setText(billNo.toString())
         Log.d("billNo", billNo.toString())
 
@@ -102,26 +103,31 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
         val userID = FirebaseAuth.getInstance().currentUser!!.uid
         val dbRef = FirebaseDatabase.getInstance().getReference("Users/$userID/Party Data")
 
+        //  Fetching Party Data
         dbRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     for (item in snapshot.children) {
                         val listedData = item.getValue(ViewPartyDataClass::class.java)
                         listedData!!.key = item.key.toString()
-                        dataList.add(listedData.partyName)
+                        dataList.add(listedData.partyName)      //  storing `partyName` into separate arraylist
                         Log.d("dataList", dataList.toString())
 
+                        //  Setting adapter to `AutoCompleteTextView`
                         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, dataList)
                         autoCompleteTextView.setAdapter(adapter)
 
+                        //  `AutoCompleteTextView` item-click-listener
                         autoCompleteTextView.setOnItemClickListener(object : AdapterView.OnItemClickListener {
                             override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                                val selected = parent!!.getItemAtPosition(position) as String
+                                val selected = parent!!.getItemAtPosition(position) as String       //  getting text of selected item
                                 Log.d("Selected Position", dataList.indexOf(autoCompleteTextView.text.toString()).toString())
                                 Log.d("Selected Name", selected)
 
+                                //  Loop to set data as per Data-Class
                                 for (party in snapshot.children) {
                                     val partyNameData = party.getValue(ViewPartyDataClass::class.java)
+                                    //  Checking, Is selected item exist in `snapshot.children`
                                     if (partyNameData?.partyName.equals(selected)) {
                                         Log.d("partyNameData", partyNameData.toString())
 
@@ -142,7 +148,7 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
             }
         })
 
-
+        //  ADD-ITEM BUTTON
         view.findViewById<Button>(R.id.billFrag_btn_addItem).setOnClickListener {
             itemList.clear()
             //  subclass of `Dialog`
@@ -159,10 +165,11 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
             val pQty = popupView.findViewById<EditText>(R.id.additem_billFrag_edittxt_qty)
             val pPrice = popupView.findViewById<EditText>(R.id.additem_billFrag_edittxt_price)
 
-            pName.setPadding(0, 25, 0, 0)
+            pName.setPadding(0, 25, 0, 0)       //  Applying padding between Floating Label and EditText
 
             val inventoryRef = FirebaseDatabase.getInstance().getReference("Users/$userID/Inventory Data")
 
+            //  Fetching Inventory Data
             inventoryRef.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
@@ -172,17 +179,21 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
                             itemList.add(listedItem.productName)
                             Log.d("dataList", itemList.toString())
 
+                            //  Setting adapter to `AutoCompleteTextView`
                             val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, itemList)
                             pName.setAdapter(adapter)
 
+                            //  `AutoCompleteTextView` item-click-listener
                             pName.setOnItemClickListener(object : AdapterView.OnItemClickListener {
                                 override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                                     val selected = parent!!.getItemAtPosition(position) as String
                                     Log.d("Selected Position", itemList.indexOf(pName.text.toString()).toString())
                                     Log.d("Selected Product", selected)
 
+                                    //  Loop to set data as per Data-Class
                                     for (product in snapshot.children) {
                                         val pNameData = product.getValue(ViewInventoryDataClass::class.java)
+                                        //  Checking, Is selected item exist in `snapshot.children`
                                         if (pNameData?.productName.equals(selected)) {
                                             Log.d("partyNameData", pNameData.toString())
                                             pPrice.setText(pNameData?.purchasingPrice.toString())
@@ -200,26 +211,23 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
                 }
             })
 
-
+            //  POPUP ADD-ITEM BUTTON
             popupView.findViewById<Button>(R.id.billFrag_addItem_btnAdd).setOnClickListener {
                 purchasedItemList.add(
                     PurchasedItemDataClass(pName.text.toString(), pQty.text.toString(), pPrice.text.toString().toInt())
                 )
                 Log.d("purchasedItemList", purchaseRecyclerView.toString())
 
-
-
                 purchaseRecyclerView.adapter = PurchasedItemAdapter(requireContext(), purchasedItemList, this)
                 alertDialog.dismiss()
             }
         }
 
-
-
+        //  GENERATE BILL BUTTON
         view.btnGenerateBill.setOnClickListener {
-            billNo += 1
+            billNo += 1     //  incrementing Bill-Number by 1
             Log.d("billNo", billNo.toString())
-            editor.putInt("billNo", billNo)
+            editor.putInt("billNo", billNo)     //  saving new value in editor
                 .apply()
 
             val bill = BillDataClass(

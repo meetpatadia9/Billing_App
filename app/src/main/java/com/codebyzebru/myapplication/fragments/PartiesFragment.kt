@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import android.widget.Button
 import android.widget.RadioButton
 import android.widget.RadioGroup
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -65,6 +64,7 @@ class PartiesFragment : Fragment() {
         //  applying `Layout` to Recyclerview
         recyclerView.layoutManager =LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
+        //  Fetching Party Data
         dbRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
@@ -77,7 +77,7 @@ class PartiesFragment : Fragment() {
                         object : PartyAdapter.OnItemClick {
                             override fun onClick(listDataClass: ViewPartyDataClass) {
                                 requireActivity().supportFragmentManager.beginTransaction()
-                                    .replace(R.id.layout_home, PartyUpdateFragment(listDataClass))
+                                    .replace(R.id.layout_home, PartyUpdateFragment(listDataClass))      //  Sending selected party details
                                     .addToBackStack(null)
                                     .commit()
                             }

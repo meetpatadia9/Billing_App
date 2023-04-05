@@ -52,6 +52,7 @@ class HistoryFragment : Fragment() {
         //  applying `Layout` to Recyclerview
         recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
+        //  Fetching Bill Data
         dbRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {

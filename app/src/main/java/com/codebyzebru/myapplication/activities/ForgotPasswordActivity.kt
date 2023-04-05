@@ -37,7 +37,6 @@ class ForgotPasswordActivity : AppCompatActivity(), ConnectivityReceiver.Connect
                 startActivity(intent)
             }
         }
-
     }
 
 

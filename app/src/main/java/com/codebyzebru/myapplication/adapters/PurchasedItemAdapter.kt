@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.codebyzebru.myapplication.R
 import com.codebyzebru.myapplication.dataclasses.PurchasedItemDataClass
 
-class PurchasedItemAdapter(val context: Context, private val itemList: List<PurchasedItemDataClass>, val totalListener: SubTotalListener)
+class PurchasedItemAdapter(val context: Context, private val itemList: List<PurchasedItemDataClass>, private val totalListener: SubTotalListener)
     : RecyclerView.Adapter<PurchasedItemAdapter.PurchaseViewHolder>() {
 
     private var mytotal = arrayListOf<Int>()

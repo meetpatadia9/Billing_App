@@ -40,6 +40,7 @@ class PartyUpdateFragment(private val listDataClass: ViewPartyDataClass) : Fragm
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //  Setting data came from `PartiesFragment`
         key = listDataClass.key
         update_partyName.setText(listDataClass.partyName)
         update_company_name.setText(listDataClass.companyName)
@@ -56,6 +57,7 @@ class PartyUpdateFragment(private val listDataClass: ViewPartyDataClass) : Fragm
         val radioGroup: RadioGroup = view.findViewById(R.id.update_rg_type)
         var radioButton: RadioButton?
 
+        //  UPDATE BUTTON
         btnUpdateParty.setOnClickListener {
             val selectedID = radioGroup.checkedRadioButtonId
             radioButton = view.findViewById(selectedID)
@@ -75,20 +77,28 @@ class PartyUpdateFragment(private val listDataClass: ViewPartyDataClass) : Fragm
 
             FirebaseDatabase.getInstance().getReference("Users/$userID/Party Data").child(key).removeValue()
                 .addOnSuccessListener {
-                    requireActivity().supportFragmentManager.beginTransaction().replace(R.id.layout_home, PartiesFragment()).addToBackStack(null).commit()
+                    requireActivity().supportFragmentManager.beginTransaction()
+                        .replace(R.id.layout_home, PartiesFragment())
+                        .addToBackStack(null)
+                        .commit()
                     Toast.makeText(context, "Party Updated!!", Toast.LENGTH_SHORT).show()
                 }
         }
 
+        //  DELETE BUTTON
         btnDeleteParty.setOnClickListener {
             val userID = FirebaseAuth.getInstance().currentUser!!.uid
             FirebaseDatabase.getInstance().getReference("Users/$userID/Party Data").child(key).removeValue()
                 .addOnSuccessListener {
-                    requireActivity().supportFragmentManager.beginTransaction().replace(R.id.layout_home, PartiesFragment()).addToBackStack(null).commit()
+                    requireActivity().supportFragmentManager.beginTransaction()
+                        .replace(R.id.layout_home, PartiesFragment())
+                        .addToBackStack(null)
+                        .commit()
                     Toast.makeText(context, "Party Deleted!!", Toast.LENGTH_SHORT).show()
                 }
         }
 
+        //  CANCEL BUTTON
         btn_update_party_cancel.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction()
                 .replace(R.id.layout_home, PartiesFragment())

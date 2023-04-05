@@ -84,7 +84,6 @@ class LoginActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRece
 
                 auth.signInWithEmailAndPassword(mail, pass).addOnCompleteListener(this) {
                     if (it.isSuccessful) {
-                        val user = auth.currentUser
                         updateUI()
                     } else {
                         Toast.makeText(this, "Email or Password incorrect!!", Toast.LENGTH_SHORT).show()

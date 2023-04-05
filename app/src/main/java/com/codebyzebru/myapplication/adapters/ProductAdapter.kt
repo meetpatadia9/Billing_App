@@ -8,7 +8,6 @@ import android.view.animation.AnimationUtils
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.codebyzebru.myapplication.R
-import com.codebyzebru.myapplication.dataclasses.AddInventoryDataClass
 import com.codebyzebru.myapplication.dataclasses.ViewInventoryDataClass
 import kotlinx.android.synthetic.main.single_view_product.view.*
 

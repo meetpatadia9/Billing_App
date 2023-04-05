@@ -38,8 +38,7 @@ class HomeActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
                 DRAWER LAYOUT
         */
         drawerLayout = findViewById(R.id.home_drawerLayout)
-        actionBarDrawerToggle =
-            ActionBarDrawerToggle(this, drawerLayout, R.string.nav_open, R.string.nav_close)
+        actionBarDrawerToggle = ActionBarDrawerToggle(this, drawerLayout, R.string.nav_open, R.string.nav_close)
         drawerLayout.addDrawerListener(actionBarDrawerToggle)
         actionBarDrawerToggle.syncState()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -74,8 +73,10 @@ class HomeActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
     }
 
     private fun replaceFragments(fragment: Fragment, title: String): Boolean {
-        supportFragmentManager.beginTransaction().replace(R.id.layout_home, fragment)
-            .addToBackStack(null).commit()
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.layout_home, fragment)
+            .addToBackStack(null)
+            .commit()
         drawerLayout.closeDrawers()
         setTitle(title)
         return true

@@ -45,7 +45,6 @@ class CreateNewPasswordActivity : AppCompatActivity(), ConnectivityReceiver.Conn
                 startActivity(intent)
             }
         }
-
     }
 
     /*
