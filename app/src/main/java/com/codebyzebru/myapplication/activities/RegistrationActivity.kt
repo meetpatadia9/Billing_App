@@ -135,7 +135,9 @@ class RegistrationActivity : AppCompatActivity(), ConnectivityReceiver.Connectiv
         radioButton = findViewById(selectedID)
 
         val registerUserData = NewUserEntryDataClass(
+            profileImg = "",
             fullName = fullName.text.toString().trim(),
+            companyName = "",
             email = email.text.toString().trim(),
             contact = phoneNumber.text.toString().trim(),
             gender = radioButton?.text.toString(),
@@ -194,4 +196,5 @@ class RegistrationActivity : AppCompatActivity(), ConnectivityReceiver.Connectiv
             snackBar?.dismiss()
         }
     }
+
 }

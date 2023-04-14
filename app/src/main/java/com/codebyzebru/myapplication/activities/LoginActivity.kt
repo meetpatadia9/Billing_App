@@ -94,6 +94,7 @@ class LoginActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRece
                         progress.dismiss()
                         updateUI()
                     } else {
+                        progress.dismiss()
                         Toast.makeText(this, "Email or Password incorrect!!", Toast.LENGTH_SHORT).show()
                     }
                 }
