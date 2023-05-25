@@ -3,4 +3,4 @@
 <layoutAnimation xmlns:android="http://schemas.android.com/apk/res/android"
     android:animation="@anim/anim_recyclerview"
     android:animationOrder="normal"
-    android:delay="15%" />
+    android:delay="5%" />

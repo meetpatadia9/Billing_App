@@ -3,119 +3,153 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/_15sdp"
     tools:context=".fragments.PartyUpdateFragment">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="20dp"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <!--    NAME    -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <com.google.android.material.textfield.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til1"
+            android:layout_width="@dimen/_220sdp"
+            android:layout_height="wrap_content"
+            app:boxBackgroundColor="@color/light_color1"
+            app:boxBackgroundMode="outline"
+            app:boxCornerRadiusBottomEnd="@dimen/_3sdp"
+            app:boxCornerRadiusBottomStart="@dimen/_3sdp"
+            app:boxCornerRadiusTopEnd="@dimen/_3sdp"
+            app:boxCornerRadiusTopStart="@dimen/_3sdp"
+            app:boxStrokeColor="@color/color2"
+            app:boxStrokeWidth="@dimen/_1sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <EditText
+                android:id="@+id/update_partyName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:boxBackgroundColor="@color/app_background"
-                app:boxCornerRadiusTopEnd="15dp"
-                app:boxCornerRadiusTopStart="15dp"
-                app:startIconDrawable="@drawable/baseline_person_24">
-                <EditText
-                    android:id="@+id/update_partyName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Party Name"
-                    android:singleLine="true" />
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
+                android:hint="Party Name"
+                android:padding="@dimen/_9sdp"
+                android:singleLine="true" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!--    COMPANY NAME    -->
-        <LinearLayout
-            android:layout_width="match_parent"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til2"
+            android:layout_width="@dimen/_220sdp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp">
-            <com.google.android.material.textfield.TextInputLayout
+            android:layout_marginTop="@dimen/_3sdp"
+            app:boxBackgroundColor="@color/light_color1"
+            app:boxBackgroundMode="outline"
+            app:boxCornerRadiusBottomEnd="@dimen/_3sdp"
+            app:boxCornerRadiusBottomStart="@dimen/_3sdp"
+            app:boxCornerRadiusTopEnd="@dimen/_3sdp"
+            app:boxCornerRadiusTopStart="@dimen/_3sdp"
+            app:boxStrokeColor="@color/color2"
+            app:boxStrokeWidth="@dimen/_1sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/til1">
+
+            <EditText
+                android:id="@+id/update_company_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:boxBackgroundColor="@color/app_background"
-                app:boxCornerRadiusTopEnd="15dp"
-                app:boxCornerRadiusTopStart="15dp"
-                app:startIconDrawable="@drawable/baseline_business_24">
-                <EditText
-                    android:id="@+id/update_company_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Company Name"
-                    android:singleLine="true" />
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
+                android:hint="Company Name"
+                android:padding="@dimen/_9sdp"
+                android:singleLine="true" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!--    COMPANY ADDRESS    -->
-        <LinearLayout
-            android:layout_width="match_parent"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til3"
+            android:layout_width="@dimen/_220sdp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp">
-            <com.google.android.material.textfield.TextInputLayout
+            android:layout_marginTop="@dimen/_3sdp"
+            app:boxBackgroundColor="@color/light_color1"
+            app:boxBackgroundMode="outline"
+            app:boxCornerRadiusBottomEnd="@dimen/_3sdp"
+            app:boxCornerRadiusBottomStart="@dimen/_3sdp"
+            app:boxCornerRadiusTopEnd="@dimen/_3sdp"
+            app:boxCornerRadiusTopStart="@dimen/_3sdp"
+            app:boxStrokeColor="@color/color2"
+            app:boxStrokeWidth="@dimen/_1sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/til2">
+
+            <EditText
+                android:id="@+id/update_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:boxBackgroundColor="@color/app_background"
-                app:boxCornerRadiusTopEnd="15dp"
-                app:boxCornerRadiusTopStart="15dp"
-                app:startIconDrawable="@drawable/baseline_location_on_24">
-                <EditText
-                    android:id="@+id/update_address"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Address"
-                    android:singleLine="true" />
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
+                android:hint="Address"
+                android:padding="@dimen/_9sdp"
+                android:singleLine="true" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!--    EMAIL    -->
-        <LinearLayout
-            android:layout_width="match_parent"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til4"
+            android:layout_width="@dimen/_220sdp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp">
-            <com.google.android.material.textfield.TextInputLayout
+            android:layout_marginTop="@dimen/_3sdp"
+            app:boxBackgroundColor="@color/light_color1"
+            app:boxBackgroundMode="outline"
+            app:boxCornerRadiusBottomEnd="@dimen/_3sdp"
+            app:boxCornerRadiusBottomStart="@dimen/_3sdp"
+            app:boxCornerRadiusTopEnd="@dimen/_3sdp"
+            app:boxCornerRadiusTopStart="@dimen/_3sdp"
+            app:boxStrokeColor="@color/color2"
+            app:boxStrokeWidth="@dimen/_1sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/til3">
+
+            <EditText
+                android:id="@+id/update_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:boxBackgroundColor="@color/app_background"
-                app:boxCornerRadiusTopEnd="15dp"
-                app:boxCornerRadiusTopStart="15dp"
-                app:startIconDrawable="@drawable/baseline_mail_outline_24">
-                <EditText
-                    android:id="@+id/update_email"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="E-mail"
-                    android:singleLine="true" />
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
+                android:hint="E-mail"
+                android:padding="@dimen/_9sdp"
+                android:singleLine="true" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!--    CONTACT / PHONE NUMBER    -->
-        <LinearLayout
-            android:layout_width="match_parent"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til5"
+            android:layout_width="@dimen/_220sdp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp">
-            <com.google.android.material.textfield.TextInputLayout
+            android:layout_marginTop="@dimen/_3sdp"
+            app:boxBackgroundColor="@color/light_color1"
+            app:boxBackgroundMode="outline"
+            app:boxCornerRadiusBottomEnd="@dimen/_3sdp"
+            app:boxCornerRadiusBottomStart="@dimen/_3sdp"
+            app:boxCornerRadiusTopEnd="@dimen/_3sdp"
+            app:boxCornerRadiusTopStart="@dimen/_3sdp"
+            app:boxStrokeColor="@color/color2"
+            app:boxStrokeWidth="@dimen/_1sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/til4">
+
+            <EditText
+                android:id="@+id/update_contact"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:boxBackgroundColor="@color/app_background"
-                app:boxCornerRadiusTopEnd="15dp"
-                app:boxCornerRadiusTopStart="15dp"
-                app:startIconDrawable="@drawable/baseline_phone_24">
-                <EditText
-                    android:id="@+id/update_contact"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Contact"
-                    android:inputType="number"
-                    android:singleLine="true" />
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
+                android:hint="Contact"
+                android:inputType="number"
+                android:padding="@dimen/_9sdp"
+                android:singleLine="true" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!--    TYPE (B2B/B2C)     -->
         <RadioGroup
@@ -124,51 +158,77 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/til5">
+
             <RadioButton
                 android:id="@+id/update_rBtn_B2B"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="B2B"
-                android:buttonTint="@color/green" />
+                android:textColor="@color/color2"
+                android:buttonTint="@color/blur_color2" />
+
             <RadioButton
                 android:id="@+id/update_rBtn_B2C"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="B2C"
-                android:buttonTint="@color/green" />
+                android:textColor="@color/color2"
+                android:buttonTint="@color/blur_color2" />
+
         </RadioGroup>
 
-        <Button
+        <!--    UPDATE BUTTON    -->
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnUpdateParty"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/shape_btn"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_marginTop="@dimen/_9sdp"
+            android:background="@drawable/shape_btn_green"
             android:text="Update"
-            android:textSize="16sp" />
+            android:textAllCaps="false"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color5"
+            android:textSize="16sp"
+            android:elevation="0dp"
+            android:shadowColor="@color/white"
+            android:typeface="normal"
+            app:layout_constraintStart_toStartOf="@id/til5"
+            app:layout_constraintTop_toBottomOf="@id/update_rg_type" />
 
-        <Button
+        <!--    DELETE BUTTON    -->
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnDeleteParty"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/shape_btn"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_marginTop="@dimen/_9sdp"
+            android:background="@drawable/shape_btn_red"
             android:text="Delete"
-            android:textSize="16sp" />
-
-        <Button
-            android:id="@+id/btn_update_party_cancel"
-            android:layout_width="match_parent"
+            android:textAllCaps="false"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/shape_btn"
-            android:text="Cancel"
-            android:textSize="16sp" />
+            android:textColor="@color/color4"
+            android:textSize="16sp"
+            android:elevation="0dp"
+            android:shadowColor="@color/white"
+            android:typeface="normal"
+            app:layout_constraintEnd_toEndOf="@id/til5"
+            app:layout_constraintTop_toBottomOf="@id/update_rg_type" />
 
-    </LinearLayout>
+        <!--    CANCEL BUTTON    -->
+        <!--<androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_update_party_cancel"
+            android:layout_width="@dimen/_150sdp"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:layout_marginTop="@dimen/_9sdp"
+            android:background="@drawable/shape_btn"
+            android:textAllCaps="false"
+            android:textColor="@color/color2"
+            android:textSize="16sp"
+            android:typeface="normal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnDeleteParty" />-->
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

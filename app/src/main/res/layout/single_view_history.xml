@@ -3,17 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_margin="3dp"
-    android:padding="10dp"
-    android:elevation="2dp"
+    android:elevation="@dimen/_2sdp"
+    android:padding="@dimen/_7sdp"
     app:cardCornerRadius="5dp">
 
     <TextView
         android:id="@+id/singleView_history_billNo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="billNo"
-        android:textSize="16sp"
+        android:textColor="@color/color1"
+        android:textSize="@dimen/_12ssp"
+        tools:text="1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -22,21 +24,22 @@
         android:id="@+id/singleView_history_buyer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Buyer Name"
-        android:textSize="16sp"
+        android:layout_marginStart="@dimen/_40sdp"
+        android:textColor="@color/blur_color2"
         android:textStyle="bold"
-        android:layout_marginStart="45dp"
+        android:textSize="@dimen/_12ssp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        tools:text="Customer 1" />
 
     <TextView
         android:id="@+id/singleView_history_billAmount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:text="5000"
-        android:textSize="16sp"
+        android:textColor="@color/color1"
+        android:textSize="@dimen/_12sdp"
+        tools:text="1000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

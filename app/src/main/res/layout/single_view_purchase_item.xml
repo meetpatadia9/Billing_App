@@ -1,44 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="@dimen/_9sdp">
 
     <TextView
         android:id="@+id/purchased_pName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Femicare"
-        android:textStyle="italic"
-        android:layout_centerVertical="true" />
+        tools:text="Product name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/btn_remove_purchased_item"
+        app:layout_constraintBottom_toBottomOf="@id/btn_remove_purchased_item" />
 
     <TextView
         android:id="@+id/purchased_pQty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="12"
-        android:layout_toLeftOf="@id/purchased_pPrice"
-        android:layout_marginRight="30dp"
+        tools:text="10"
+        app:layout_constraintEnd_toStartOf="@id/purchased_pPrice"
+        android:layout_marginEnd="@dimen/_20sdp"
         android:textStyle="italic"
-        android:layout_centerVertical="true" />
+        android:layout_centerVertical="true"
+        app:layout_constraintTop_toTopOf="@id/btn_remove_purchased_item"
+        app:layout_constraintBottom_toBottomOf="@id/btn_remove_purchased_item"/>
 
     <TextView
         android:id="@+id/purchased_pPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="90"
-        android:layout_toLeftOf="@id/btn_remove_purchased_item"
-        android:layout_marginRight="10dp"
+        tools:text="100"
+        app:layout_constraintEnd_toStartOf="@id/btn_remove_purchased_item"
+        android:layout_marginEnd="@dimen/_20sdp"
         android:textStyle="italic"
-        android:layout_centerVertical="true" />
+        app:layout_constraintTop_toTopOf="@id/btn_remove_purchased_item"
+        app:layout_constraintBottom_toBottomOf="@id/btn_remove_purchased_item" />
 
     <ImageButton
         android:id="@+id/btn_remove_purchased_item"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="@dimen/_20sdp"
         android:src="@drawable/baseline_delete_24"
-        android:layout_alignParentRight="true"
-        android:backgroundTint="@color/white"/>
+        android:backgroundTint="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

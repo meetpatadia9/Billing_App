@@ -2,22 +2,17 @@ package com.codebyzebru.myapplication.adapters
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.codebyzebru.myapplication.R
-import com.codebyzebru.myapplication.activities.HomeActivity
-import com.codebyzebru.myapplication.activities.LoginActivity
+import com.codebyzebru.myapplication.activities.SignInSignUpActivity
 import com.codebyzebru.myapplication.dataclasses.ProfileDataClass
 import com.codebyzebru.myapplication.dataclasses.SettingTitleDataClass
-import com.codebyzebru.myapplication.fragments.ProfileFragment
-import com.codebyzebru.myapplication.fragments.SettingFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
@@ -25,11 +20,12 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.single_view_setting_title.view.*
 
-class SettingListAdapter(val context: Context, private val settingTitles: List<SettingTitleDataClass>):
+class SettingListAdapter(val context: Context, private val settingTitles: List<SettingTitleDataClass>, val listener: SettingInterface):
     RecyclerView.Adapter<SettingListAdapter.SettingListViewHolder>() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var database: DatabaseReference
+    val userData = arrayListOf<ProfileDataClass>()
 
     class SettingListViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val icon: ImageView = itemView.setting_icon
@@ -46,9 +42,6 @@ class SettingListAdapter(val context: Context, private val settingTitles: List<S
     }
 
     override fun onBindViewHolder(holder: SettingListViewHolder, position: Int) {
-        val userID = FirebaseAuth.getInstance().currentUser!!.uid
-        val dbRef = FirebaseDatabase.getInstance().getReference("Users/$userID/Party Data").orderByChild("partyName")
-
         holder.apply {
             Glide.with(context).load(settingTitles[position].icon).into(icon)
             title.text = settingTitles[position].settingTitle
@@ -58,29 +51,23 @@ class SettingListAdapter(val context: Context, private val settingTitles: List<S
 
             itemView.setOnClickListener {
                 if (settingTitles[position].settingTitle == "User Profile") {
-                    dbRef.addValueEventListener(object : ValueEventListener {
-                        override fun onDataChange(snapshot: DataSnapshot) {
-                            if (snapshot.exists()) {
-                                for (item in snapshot.children) {
-                                    val user = item.getValue(ProfileDataClass::class.java)
-                                    user!!.key = item.key.toString()
-                                    Toast.makeText(context, item.key.toString(), Toast.LENGTH_SHORT).show()
-                                }
-                            }
-                        }
-
-                        override fun onCancelled(error: DatabaseError) {
-                            Log.d("Error ~ Profile", error.toString())
-                        }
-                    })
+                    listener.onCLick(FirebaseAuth.getInstance().currentUser!!.uid)
                 }
                 else if (settingTitles[position].settingTitle == "Logout") {
                     Firebase.auth.signOut()
-                    val intent = Intent(context, LoginActivity::class.java)
-                    context.startActivity(intent)
+                    context.startActivity(
+                        Intent(context, SignInSignUpActivity::class.java)
+                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    )
                 }
             }
         }
+    }
+
+    interface SettingInterface {
+        fun onCLick(userID: String)
     }
 
 }

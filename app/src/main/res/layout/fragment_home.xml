@@ -15,8 +15,8 @@
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:padding="5dp"
+            android:layout_margin="@dimen/_8sdp"
+            android:padding="@dimen/_3sdp"
             app:elevation="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -32,9 +32,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:tabBackground="@drawable/selector_selected_tab"
-                    app:tabPadding="5dp"
-                    app:tabTextColor="@color/green"
-                    app:tabSelectedTextColor="@color/white">
+                    app:tabPadding="@dimen/_3sdp"
+                    app:tabTextColor="@color/color2"
+                    app:tabSelectedTextColor="@color/color2">
 
                 </com.google.android.material.tabs.TabLayout>
 

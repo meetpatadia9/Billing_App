@@ -99,12 +99,12 @@ class PartyUpdateFragment(private val listDataClass: ViewPartyDataClass) : Fragm
         }
 
         //  CANCEL BUTTON
-        btn_update_party_cancel.setOnClickListener {
+        /*btn_update_party_cancel.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction()
                 .replace(R.id.layout_home, PartiesFragment())
                 .addToBackStack(null)
                 .commit()
-        }
+        }*/
     }
 
 }

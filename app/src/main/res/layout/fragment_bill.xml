@@ -3,221 +3,323 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.BillFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragments.BillFragment"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="5dp">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/billFrag_txt_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="DD-MM-YYYY" />
+        <ScrollView
+            android:id="@+id/billFrag_scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:padding="@dimen/_3sdp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/billFrag_subFrameLayout">
 
-        <EditText
-            android:id="@+id/billFrag_txt_billNo"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:textSize="14dp"
-            android:textAlignment="viewEnd" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <!--    NAME    -->
-        <LinearLayout
-            android:id="@+id/billFrag_subLayout_1"
+                <!--    DATE    -->
+                <TextView
+                    android:id="@+id/billFrag_txt_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/blur_color2"
+                    app:layout_constraintBottom_toBottomOf="@id/billFrag_txt_billNo"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/billFrag_txt_billNo"
+                    tools:text="DD-MM-YYYY" />
+
+                <!--    BILL NUMBER    -->
+                <TextView
+                    android:id="@+id/txtBillNo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/blur_color2"
+                    app:layout_constraintBottom_toBottomOf="@id/billFrag_txt_billNo"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/billFrag_txt_billNo"
+                    android:text="Bill no.:" />
+
+                <EditText
+                    android:id="@+id/billFrag_txt_billNo"
+                    android:layout_width="@dimen/_40sdp"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:textAlignment="viewEnd"
+                    android:textSize="@dimen/_11ssp"
+                    android:layout_marginStart="@dimen/_2sdp"
+                    app:layout_constraintStart_toEndOf="@id/txtBillNo"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="1" />
+
+                <!--    NAME    -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til1"
+                    android:layout_width="@dimen/_250sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_9sdp"
+                    app:boxBackgroundColor="@color/light_color1"
+                    app:boxBackgroundMode="outline"
+                    app:boxCornerRadiusBottomEnd="@dimen/_3sdp"
+                    app:boxCornerRadiusBottomStart="@dimen/_3sdp"
+                    app:boxCornerRadiusTopEnd="@dimen/_3sdp"
+                    app:boxCornerRadiusTopStart="@dimen/_3sdp"
+                    app:boxStrokeColor="@color/color2"
+                    app:boxStrokeWidth="@dimen/_1sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/billFrag_txt_billNo"
+                    app:startIconTint="@color/color1">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/billFrag_autoTxt_name"
+                        android:layout_width="@dimen/_250sdp"
+                        android:layout_height="wrap_content"
+                        android:completionThreshold="1"
+                        android:hint="Customer"
+                        android:padding="@dimen/_9sdp"
+                        android:textColorHint="@color/blur_color2" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--    EMAIL    -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til2"
+                    android:layout_width="@dimen/_250sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    app:boxBackgroundColor="@color/light_color1"
+                    app:boxBackgroundMode="outline"
+                    app:boxCornerRadiusBottomEnd="@dimen/_3sdp"
+                    app:boxCornerRadiusBottomStart="@dimen/_3sdp"
+                    app:boxCornerRadiusTopEnd="@dimen/_3sdp"
+                    app:boxCornerRadiusTopStart="@dimen/_3sdp"
+                    app:boxStrokeColor="@color/color2"
+                    app:boxStrokeWidth="@dimen/_1sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/til1"
+                    app:startIconTint="@color/color1">
+
+                    <EditText
+                        android:id="@+id/billFrag_edtxt_email"
+                        android:layout_width="@dimen/_250sdp"
+                        android:layout_height="wrap_content"
+                        android:autofillHints="emailAddress"
+                        android:editable="false"
+                        android:hint="Email"
+                        android:inputType="textEmailAddress"
+                        android:padding="@dimen/_9sdp"
+                        android:textColorHint="@color/blur_color2"
+                        tools:ignore="Deprecated" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--    COMPANY NAME / ORGANIZATION    -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til3"
+                    android:layout_width="@dimen/_250sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    app:boxBackgroundColor="@color/light_color1"
+                    app:boxBackgroundMode="outline"
+                    app:boxCornerRadiusBottomEnd="@dimen/_3sdp"
+                    app:boxCornerRadiusBottomStart="@dimen/_3sdp"
+                    app:boxCornerRadiusTopEnd="@dimen/_3sdp"
+                    app:boxCornerRadiusTopStart="@dimen/_3sdp"
+                    app:boxStrokeColor="@color/color2"
+                    app:boxStrokeWidth="@dimen/_1sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/til2"
+                    app:startIconTint="@color/color1">
+
+                    <EditText
+                        android:id="@+id/billFrag_edtxt_companyName"
+                        android:layout_width="@dimen/_250sdp"
+                        android:layout_height="wrap_content"
+                        android:editable="false"
+                        android:hint="Company Name"
+                        android:padding="@dimen/_9sdp"
+                        android:textColorHint="@color/blur_color2"
+                        tools:ignore="Deprecated" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--    COMPANY NAME / ORGANIZATION    -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til4"
+                    android:layout_width="@dimen/_250sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    app:boxBackgroundColor="@color/light_color1"
+                    app:boxBackgroundMode="outline"
+                    app:boxCornerRadiusBottomEnd="@dimen/_3sdp"
+                    app:boxCornerRadiusBottomStart="@dimen/_3sdp"
+                    app:boxCornerRadiusTopEnd="@dimen/_3sdp"
+                    app:boxCornerRadiusTopStart="@dimen/_3sdp"
+                    app:boxStrokeColor="@color/color2"
+                    app:boxStrokeWidth="@dimen/_1sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/til3"
+                    app:startIconTint="@color/color1">
+
+                    <EditText
+                        android:id="@+id/billFrag_edtxt_companyAddr"
+                        android:layout_width="@dimen/_250sdp"
+                        android:layout_height="wrap_content"
+                        android:autofillHints="postalAddress"
+                        android:editable="false"
+                        android:hint="Address"
+                        android:padding="@dimen/_9sdp"
+                        android:textColorHint="@color/blur_color2"
+                        tools:ignore="Deprecated" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--    CONTACT    -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til5"
+                    android:layout_width="@dimen/_250sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    app:boxBackgroundColor="@color/light_color1"
+                    app:boxBackgroundMode="outline"
+                    app:boxCornerRadiusBottomEnd="@dimen/_3sdp"
+                    app:boxCornerRadiusBottomStart="@dimen/_3sdp"
+                    app:boxCornerRadiusTopEnd="@dimen/_3sdp"
+                    app:boxCornerRadiusTopStart="@dimen/_3sdp"
+                    app:boxStrokeColor="@color/color2"
+                    app:boxStrokeWidth="@dimen/_1sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/til4"
+                    app:startIconTint="@color/color1">
+
+                    <EditText
+                        android:id="@+id/billFrag_edtxt_contact"
+                        android:layout_width="@dimen/_250sdp"
+                        android:layout_height="wrap_content"
+                        android:editable="false"
+                        android:hint="Contact"
+                        android:inputType="phone"
+                        android:padding="12dp"
+                        android:textColorHint="@color/blur_color2"
+                        tools:ignore="Deprecated" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--    ADD ITEM BUTTON    -->
+                <Button
+                    android:id="@+id/billFrag_btn_addItem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#00FFFFFF"
+                    android:text="Add item"
+                    android:textColor="@color/blur_color2"
+                    android:textSize="@dimen/_10ssp"
+                    app:layout_constraintEnd_toEndOf="@id/til5"
+                    app:layout_constraintTop_toBottomOf="@id/til5" />
+
+                <!--    ADD-ITEM RECYCLERVIEW    -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/purchase_recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_9sdp"
+                    android:overScrollMode="never"
+                    android:textColor="@color/app_background"
+                    app:layout_constraintBottom_toTopOf="@id/billFrag_subLayout_total"
+                    app:layout_constraintTop_toBottomOf="@id/billFrag_btn_addItem" />
+
+                <!--    BILL TOTAL    -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/billFrag_subLayout_total"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <TextView
+                        android:id="@+id/txtTotal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/blur_color2"
+                        android:paddingStart="@dimen/_3sdp"
+                        android:paddingEnd="@dimen/_3sdp"
+                        android:rotation="-90"
+                        android:text="Total"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12ssp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/txtTotalAmt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Total Amount"
+                        android:textSize="@dimen/_14ssp"
+                        android:textColor="@color/blur_color2"
+                        android:textStyle="bold"
+                        app:layout_constraintTop_toTopOf="@id/txtTotal"
+                        app:layout_constraintBottom_toBottomOf="@id/txtTotal"
+                        app:layout_constraintStart_toEndOf="@id/txtTotal"/>
+
+                    <EditText
+                        android:id="@+id/billFrag_edtxt_total"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:autofillHints="phone"
+                        android:inputType="number"
+                        android:layout_marginStart="@dimen/_45sdp"
+                        android:padding="@dimen/_9sdp"
+                        android:singleLine="true"
+                        android:layout_marginEnd="@dimen/_4sdp"
+                        android:textAlignment="viewEnd"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/txtTotalAmt"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+
+        <FrameLayout
+            android:id="@+id/billFrag_subFrameLayout"
+            android:background="#F4F4F4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:weightSum="2"
-            android:layout_below="@id/billFrag_txt_billNo">
+            android:layout_gravity="bottom"
+            android:padding="@dimen/_3sdp"
+            app:layout_constraintBottom_toBottomOf="parent">
 
-            <TextView
-                android:layout_width="0dp"
+            <!--    GENERATE BILL    -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnGenerateBill"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="@dimen/_150sdp"
+                android:text="Save"
+                android:textAllCaps="false"
+                android:textColor="@color/color5"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.6"
-                android:text="Name:"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
+                android:background="@drawable/shape_btn_green"
+                android:textSize="@dimen/_12ssp"
+                android:typeface="normal" />
 
-            <AutoCompleteTextView
-                android:id="@+id/billFrag_autoTxt_name"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.4"
-                android:padding="12dp"
-                android:completionThreshold="1" />
+        </FrameLayout>
 
-        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!--    EMAIL    -->
-        <LinearLayout
-            android:id="@+id/billFrag_subLayout_2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/billFrag_subLayout_1"
-            android:weightSum="2">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.6"
-                android:text="Email:"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
-
-            <EditText
-                android:id="@+id/billFrag_edtxt_email"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.4"
-                android:padding="12dp"
-                android:editable="false" />
-
-        </LinearLayout>
-
-        <!--    COMPANY NAME / ORGANIZATION    -->
-        <LinearLayout
-            android:id="@+id/billFrag_subLayout_3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/billFrag_subLayout_2"
-            android:weightSum="2">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.6"
-                android:text="Organization:"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
-
-            <EditText
-                android:id="@+id/billFrag_edtxt_companyName"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.4"
-                android:padding="12dp"
-                android:editable="false" />
-
-        </LinearLayout>
-
-        <!--    COMPANY ADDRESS/LOCATION    -->
-        <LinearLayout
-            android:id="@+id/billFrag_subLayout_4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/billFrag_subLayout_3"
-            android:weightSum="2">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.6"
-                android:text="Address:"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
-
-            <EditText
-                android:id="@+id/billFrag_edtxt_companyAddr"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.4"
-                android:padding="12dp"
-                android:editable="false" />
-
-        </LinearLayout>
-
-        <!--    CONTACT / PHONE NUMBER    -->
-        <LinearLayout
-            android:id="@+id/billFrag_subLayout_5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/billFrag_subLayout_4"
-            android:weightSum="2">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.6"
-                android:text="Contact:"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
-
-            <EditText
-                android:id="@+id/billFrag_edtxt_contact"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.4"
-                android:padding="12dp"
-                android:editable="false" />
-
-        </LinearLayout>
-
-        <!--    ADD ITEM BUTTON    -->
-        <Button
-            android:id="@+id/billFrag_btn_addItem"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/billFrag_subLayout_5"
-            android:layout_alignParentRight="true"
-            android:background="#00FFFFFF"
-            android:text="Add item"
-            android:textColor="@color/green"
-            android:textSize="12sp" />
-
-        <!--    ADD-ITEM RECYCLERVIEW    -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/purchase_recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@id/billFrag_subLayout_6"
-            android:layout_below="@id/billFrag_btn_addItem"
-            android:textColor="@color/app_background"
-            android:padding="12dp"/>
-
-        <!--    BILL TOTAL    -->
-        <LinearLayout
-            android:id="@+id/billFrag_subLayout_6"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/btnGenerateBill"
-            android:weightSum="2"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="5dp">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:text="Total:"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
-
-            <EditText
-                android:id="@+id/billFrag_edtxt_total"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.5"
-                android:padding="12dp"
-                android:inputType="number"
-                android:singleLine="true"
-                android:textAlignment="viewEnd" />
-
-        </LinearLayout>
-
-        <!--    GENERATE BILL BUTTON    -->
-        <Button
-            android:id="@+id/btnGenerateBill"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/shape_btn"
-            android:text="Create"
-            android:textSize="16sp" />
-
-    </RelativeLayout>
 
 </FrameLayout>

@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.codebyzebru.myapplication.R
-import com.codebyzebru.myapplication.activities.HomeActivity
 import com.codebyzebru.myapplication.adapters.HistoryAdapter
 import com.codebyzebru.myapplication.dataclasses.HistoryDataClass
 import com.google.firebase.auth.FirebaseAuth
@@ -22,10 +21,11 @@ class HistoryFragment : Fragment() {
     val billList = arrayListOf<HistoryDataClass>()
 
     lateinit var database: DatabaseReference
+    lateinit var userID: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        userID = FirebaseAuth.getInstance().currentUser!!.uid
         database = Firebase.database.reference
     }
 
@@ -46,7 +46,6 @@ class HistoryFragment : Fragment() {
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.historyFrag_recyclerView)
 
-        val userID = FirebaseAuth.getInstance().currentUser!!.uid
         val dbRef = FirebaseDatabase.getInstance().getReference("Users/$userID/Bills")
 
         //  applying `Layout` to Recyclerview
@@ -61,7 +60,7 @@ class HistoryFragment : Fragment() {
                         listedData!!.key = item.key.toString()
                         billList.add(listedData)
                     }
-                    recyclerView.adapter = HistoryAdapter(requireContext(), billList)
+                    recyclerView.adapter = HistoryAdapter(context!!, billList)
                 }
             }
 
@@ -69,11 +68,6 @@ class HistoryFragment : Fragment() {
                 Log.d("Error", error.toString())
             }
         })
-    }
-
-    override fun onResume() {
-        super.onResume()
-        billList.clear()
     }
 
 }

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.SettingFragment">
 
     <androidx.core.widget.NestedScrollView
@@ -10,63 +11,80 @@
         android:layout_height="match_parent"
         android:fillViewport="true">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/settingFrag_subLayout1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/app_background"
+                android:background="@color/light_color1"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="18dp">
+                android:padding="@dimen/_15sdp"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/profile_image"
-                    android:layout_width="108dp"
-                    android:layout_height="108dp"
+                    android:layout_width="@dimen/_90sdp"
+                    android:layout_height="@dimen/_90sdp"
                     android:src="@drawable/user_default_img"
-                    app:civ_border_width="0dp"
-                    app:civ_border_color="#56000000"/>
+                    app:civ_border_width="1dp"
+                    app:civ_border_color="@color/mid_color1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="10dp">
+                    android:padding="@dimen/_8sdp"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    app:layout_constraintStart_toEndOf="@id/profile_image"
+                    app:layout_constraintTop_toTopOf="@id/profile_image"
+                    app:layout_constraintBottom_toBottomOf="@id/profile_image">
 
                     <TextView
                         android:id="@+id/settingFrag_user_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/dark_green"
-                        android:textSize="18dp" />
+                        android:textColor="@color/color2"
+                        tools:text="Meet Patadia"
+                        android:fontFamily="sans-serif-light"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/_15ssp" />
 
                     <TextView
                         android:id="@+id/settingFrag_user_email"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/green"
-                        android:textSize="14dp" />
+                        tools:text="patadiam09@gmail.com"
+                        android:fontFamily="sans-serif-black"
+                        android:textColor="@color/blur_color2"
+                        android:textSize="@dimen/_10ssp" />
 
                 </LinearLayout>
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/settingFrag_subLayout2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/settingFrag_subLayout1">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/settingFrag_recyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"/>
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </FrameLayout>

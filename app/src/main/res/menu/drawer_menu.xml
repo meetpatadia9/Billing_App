@@ -14,7 +14,8 @@
 
 
     <!--  BILL  -->
-    <item android:title="Bill">
+    <item android:title="Bill"
+        android:id="@+id/itemBill">
         <menu>
             <group
                 android:checkableBehavior="single">

@@ -82,12 +82,12 @@ class ProductUpdateFragment (private val listedData: ViewInventoryDataClass) : F
         }
 
         //  CANCEL BUTTON
-        btn_update_cancel.setOnClickListener {
+        /*btn_update_cancel.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction()
                 .replace(R.id.layout_home, InventoryFragment())
                 .addToBackStack(null)
                 .commit()
-        }
+        }*/
     }
 
 }

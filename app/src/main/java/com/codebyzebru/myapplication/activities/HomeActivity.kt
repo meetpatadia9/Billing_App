@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.codebyzebru.myapplication.activities
 
 import android.content.IntentFilter
@@ -12,12 +14,15 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.codebyzebru.myapplication.R
 import com.codebyzebru.myapplication.broadcastreceiver.ConnectivityReceiver
+import com.codebyzebru.myapplication.databinding.ActivityHomeBinding
 import com.codebyzebru.myapplication.fragments.*
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 
 class HomeActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityReceiverListener {
+
+    lateinit var binding: ActivityHomeBinding
 
     private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
     private lateinit var drawerLayout: DrawerLayout
@@ -27,27 +32,25 @@ class HomeActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
+
+        binding = ActivityHomeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         //  REGISTERING BROADCAST RECEIVER FOR INTERNET CONNECTIVITY
         registerReceiver(ConnectivityReceiver(), IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
 
-        naviView = findViewById(R.id.home_navigationView)
+        naviView = binding.homeNavigationView
 
-        /*
-                DRAWER LAYOUT
-        */
-        drawerLayout = findViewById(R.id.home_drawerLayout)
+        //  DRAWER LAYOUT
+        drawerLayout = binding.homeDrawerLayout
         actionBarDrawerToggle = ActionBarDrawerToggle(this, drawerLayout, R.string.nav_open, R.string.nav_close)
         drawerLayout.addDrawerListener(actionBarDrawerToggle)
         actionBarDrawerToggle.syncState()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        /*
-                DEFAULT FRAGMENT
-        */
+        //  DEFAULT FRAGMENT
         if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction().replace(R.id.layout_home, HomeFragment()).commit()
+            supportFragmentManager.beginTransaction().replace(R.id.layout_home, HomeFragment(), "HOME").commit()
             title = "Home"
         }
 
@@ -55,26 +58,26 @@ class HomeActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
         naviView.setNavigationItemSelectedListener {
             it.isChecked = true
             when (it.itemId) {
-                R.id.drawer_item_home -> replaceFragments(HomeFragment(), it.title.toString())
-                R.id.drawer_item_bill -> replaceFragments(BillFragment(), it.title.toString())
+                R.id.drawer_item_home -> replaceFragments(HomeFragment(), it.title.toString(), "HOME")
+                R.id.drawer_item_bill -> replaceFragments(BillFragment(), it.title.toString(), "BILL")
                 R.id.drawer_item_inventory -> replaceFragments(
                     InventoryFragment(),
-                    it.title.toString()
+                    it.title.toString(),
+                    "INVENTORY"
                 )
-                R.id.drawer_item_parties -> replaceFragments(PartiesFragment(), it.title.toString())
-                R.id.drawer_item_history -> replaceFragments(HistoryFragment(), it.title.toString())
-                R.id.drawer_item_setting -> replaceFragments(SettingFragment(), it.title.toString())
+                R.id.drawer_item_parties -> replaceFragments(PartiesFragment(), it.title.toString(), "PARTIES")
+                R.id.drawer_item_history -> replaceFragments(HistoryFragment(), it.title.toString(), "HISTORY")
+                R.id.drawer_item_setting -> replaceFragments(SettingFragment(), it.title.toString(), "SETTING")
                 else -> {
                     true
                 }
             }
         }
-
     }
 
-    private fun replaceFragments(fragment: Fragment, title: String): Boolean {
+    private fun replaceFragments(fragment: Fragment, title: String, tag: String): Boolean {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.layout_home, fragment)
+            .replace(R.id.layout_home, fragment, tag)
             .addToBackStack(null)
             .commit()
         drawerLayout.closeDrawers()
@@ -124,6 +127,15 @@ class HomeActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
         } else {
             snackBar?.dismiss()
             internetConnected()
+        }
+    }
+
+    @Deprecated("Deprecated in Java", ReplaceWith("super.onBackPressed()", "androidx.appcompat.app.AppCompatActivity"))
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val myFragment: HomeFragment? = supportFragmentManager.findFragmentByTag("MY_FRAGMENT") as HomeFragment?
+        if (myFragment != null && myFragment.isVisible) {
+            finish()
         }
     }
 

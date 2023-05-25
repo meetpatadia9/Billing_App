@@ -1,131 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="380dp"
-    android:layout_height="wrap_content"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="20dp"
-    android:orientation="vertical">
+    android:layout_width="@dimen/_300sdp"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/_15sdp">
 
-        <!--    NAME    -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+    <!--    NAME    -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til1"
+        android:layout_width="@dimen/_220sdp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_2sdp"
+        app:boxBackgroundColor="@color/light_color1"
+        app:boxBackgroundMode="outline"
+        app:boxCornerRadiusBottomEnd="@dimen/_3sdp"
+        app:boxCornerRadiusBottomStart="@dimen/_3sdp"
+        app:boxCornerRadiusTopEnd="@dimen/_3sdp"
+        app:boxCornerRadiusTopStart="@dimen/_3sdp"
+        app:boxStrokeColor="@color/color2"
+        app:boxStrokeWidth="@dimen/_1sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:boxCornerRadiusTopEnd="15dp"
-                app:boxCornerRadiusTopStart="15dp"
-                app:startIconDrawable="@drawable/baseline_shopping_bag_24"
-                app:boxBackgroundColor="@color/app_background">
-
-                <EditText
-                    android:id="@+id/addItem_edtxt_productName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Product Name"
-                    android:singleLine="true"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-        </LinearLayout>
-
-        <!--    PURCHASE PRICE    -->
-        <LinearLayout
+        <EditText
+            android:id="@+id/addItem_edtxt_productName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp">
+            android:hint="Product Name"
+            android:padding="@dimen/_9sdp"
+            android:singleLine="true" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:boxCornerRadiusTopEnd="15dp"
-                app:boxCornerRadiusTopStart="15dp"
-                app:startIconDrawable="@drawable/baseline_shopping_cart_24"
-                app:boxBackgroundColor="@color/app_background">
+    </com.google.android.material.textfield.TextInputLayout>
 
-                <EditText
-                    android:id="@+id/addItem_edtxt_purchasePrise"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Purchasing Price"
-                    android:inputType="number"
-                    android:singleLine="true"/>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til2"
+        android:layout_width="@dimen/_220sdp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_2sdp"
+        app:boxBackgroundColor="@color/light_color1"
+        app:boxBackgroundMode="outline"
+        app:boxCornerRadiusBottomEnd="@dimen/_3sdp"
+        app:boxCornerRadiusBottomStart="@dimen/_3sdp"
+        app:boxCornerRadiusTopEnd="@dimen/_3sdp"
+        app:boxCornerRadiusTopStart="@dimen/_3sdp"
+        app:boxStrokeColor="@color/color2"
+        app:boxStrokeWidth="@dimen/_1sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/til1">
 
-            </com.google.android.material.textfield.TextInputLayout>
-
-        </LinearLayout>
-
-        <!--    SELLING PRICE    -->
-        <LinearLayout
+        <EditText
+            android:id="@+id/addItem_edtxt_purchasePrise"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp">
+            android:hint="Purchasing Price"
+            android:inputType="number"
+            android:padding="@dimen/_9sdp"
+            android:singleLine="true" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:boxCornerRadiusTopEnd="15dp"
-                app:boxCornerRadiusTopStart="15dp"
-                app:startIconDrawable="@drawable/baseline_currency_rupee_24"
-                app:boxBackgroundColor="@color/app_background">
+    </com.google.android.material.textfield.TextInputLayout>
 
-                <EditText
-                    android:id="@+id/addItem_edtxt_sellingPrice"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Selling Price"
-                    android:inputType="number"
-                    android:singleLine="true"/>
+    <!--    SELLING PRICE    -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til3"
+        android:layout_width="@dimen/_220sdp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_2sdp"
+        app:boxBackgroundColor="@color/light_color1"
+        app:boxBackgroundMode="outline"
+        app:boxCornerRadiusBottomEnd="@dimen/_3sdp"
+        app:boxCornerRadiusBottomStart="@dimen/_3sdp"
+        app:boxCornerRadiusTopEnd="@dimen/_3sdp"
+        app:boxCornerRadiusTopStart="@dimen/_3sdp"
+        app:boxStrokeColor="@color/color2"
+        app:boxStrokeWidth="@dimen/_1sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/til2">
 
-            </com.google.android.material.textfield.TextInputLayout>
-
-        </LinearLayout>
-
-        <!--    QUANTITY    -->
-        <LinearLayout
+        <EditText
+            android:id="@+id/addItem_edtxt_sellingPrice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp">
+            android:hint="Selling Price"
+            android:inputType="number"
+            android:padding="@dimen/_9sdp"
+            android:singleLine="true" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:boxCornerRadiusTopEnd="15dp"
-                app:boxCornerRadiusTopStart="15dp"
-                app:startIconDrawable="@drawable/baseline_add_shopping_cart_24"
-                app:boxBackgroundColor="@color/app_background">
+    </com.google.android.material.textfield.TextInputLayout>
 
-                <EditText
-                    android:id="@+id/addItem_edtxt_productQty"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Product Quantity"
-                    android:inputType="number"
-                    android:singleLine="true"/>
+    <!--    QUANTITY    -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til4"
+        android:layout_width="@dimen/_220sdp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_2sdp"
+        app:boxBackgroundColor="@color/light_color1"
+        app:boxBackgroundMode="outline"
+        app:boxCornerRadiusBottomEnd="@dimen/_3sdp"
+        app:boxCornerRadiusBottomStart="@dimen/_3sdp"
+        app:boxCornerRadiusTopEnd="@dimen/_3sdp"
+        app:boxCornerRadiusTopStart="@dimen/_3sdp"
+        app:boxStrokeColor="@color/color2"
+        app:boxStrokeWidth="@dimen/_1sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/til3">
 
-            </com.google.android.material.textfield.TextInputLayout>
-
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/btnSaveItem"
+        <EditText
+            android:id="@+id/addItem_edtxt_productQty"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/shape_btn"
-            android:text="Save"
-            android:textSize="16sp" />
+            android:hint="Product Quantity"
+            android:inputType="number"
+            android:padding="@dimen/_9sdp"
+            android:singleLine="true" />
 
-        <Button
-            android:id="@+id/btn_additem_cancel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/shape_btn"
-            android:text="Cancel"
-            android:textSize="16sp" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-</LinearLayout>
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnSaveItem"
+        android:layout_width="@dimen/_150sdp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_9sdp"
+        android:background="@drawable/shape_btn_green"
+        android:text="Save"
+        android:textAllCaps="false"
+        android:textColor="@color/color5"
+        android:textSize="16sp"
+        android:typeface="normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/til4" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_additem_cancel"
+        android:layout_width="@dimen/_150sdp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_9sdp"
+        android:background="@drawable/shape_btn_red"
+        android:text="Cancel"
+        android:textAllCaps="false"
+        android:textColor="@color/color4"
+        android:textSize="16sp"
+        android:typeface="normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnSaveItem" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

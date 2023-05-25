@@ -15,4 +15,13 @@
     <color name="blur_green">#A3005904</color>
     <color name="deep_red">#850101</color>
     <color name="light_blur_green">#458BC34A</color>
+
+    <color name="color1">#5d62b5</color>
+    <color name="light_color1">#F6F4F4FD</color>
+    <color name="mid_color1">#F6E1E1FD</color>
+    <color name="color2">#4b50a3</color>
+    <color name="blur_color2">#A44B50A3</color>
+    <color name="color3">#dadada</color>
+    <color name="color4">#cb3f3f</color>
+    <color name="color5">#61b937</color>
 </resources>

@@ -3,39 +3,48 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:elevation="2dp"
-    android:layout_margin="3dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_margin="@dimen/_3sdp"
+    android:elevation="@dimen/_2sdp"
     app:cardCornerRadius="5dp">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="9dp">
+        android:padding="@dimen/_7sdp">
 
         <TextView
             android:id="@+id/singleView_party_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Meet Patadia"
+            android:textColor="@color/color1"
+            android:textStyle="bold"
             android:textSize="16sp"
-            android:textStyle="bold"/>
+            app:layout_constraintBottom_toTopOf="@id/singleView_party_company"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Customer 1" />
 
         <TextView
             android:id="@+id/singleView_party_company"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="IT Path Solutions"
-            android:layout_below="@id/singleView_party_name"/>
-
+            android:textColor="@color/blur_color2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/singleView_party_name"
+            tools:text="C1 Pvt. Ltd." />
 
         <TextView
             android:id="@+id/singleView_party_totalPurchase"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="50000"
-            android:layout_marginTop="10dp"
-            android:layout_alignParentRight="true"/>
+            android:textColor="@color/color1"
+            app:layout_constraintBottom_toBottomOf="@id/singleView_party_company"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/singleView_party_name"
+            tools:text="10000" />
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

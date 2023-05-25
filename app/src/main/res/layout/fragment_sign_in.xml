@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.SignInFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:padding="@dimen/_5sdp">
+
+        <!--  EMAIL  -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til1"
+            android:layout_width="@dimen/_250sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:boxBackgroundColor="@color/light_color1"
+            app:boxCornerRadiusTopEnd="15dp"
+            app:boxCornerRadiusTopStart="15dp"
+            app:helperTextTextColor="@color/color4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:placeholderText="ex: abc@gmail.com"
+            app:placeholderTextColor="@color/blur_color2"
+            app:startIconDrawable="@drawable/baseline_mail_outline_24"
+            app:startIconTint="@color/color1">
+
+            <EditText
+                android:id="@+id/login_edtxt_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Email"
+                android:inputType="textEmailAddress"
+                android:singleLine="true"
+                android:textColorHint="@color/color1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--  PASSWORD  -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til2"
+            android:layout_width="@dimen/_250sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:boxBackgroundColor="@color/light_color1"
+            app:boxCornerRadiusTopEnd="15dp"
+            app:boxCornerRadiusTopStart="15dp"
+            app:helperTextTextColor="@color/color4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/til1"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@color/blur_color2"
+            app:startIconDrawable="@drawable/baseline_vpn_key_24"
+            app:startIconTint="@color/color1">
+
+            <EditText
+                android:id="@+id/login_edtxt_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:singleLine="true" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--  GET CREDENTIALS  -->
+        <TextView
+            android:id="@+id/txtNoCredentials"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:text="Don't have credentials?"
+            android:textColor="@color/color1"
+            app:layout_constraintStart_toStartOf="@id/til2"
+            app:layout_constraintTop_toBottomOf="@id/til2" />
+
+        <TextView
+            android:id="@+id/loginGetCredentials"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_2sdp"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:text="@string/click_here"
+            android:textColor="@color/color1"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/txtNoCredentials"
+            app:layout_constraintTop_toBottomOf="@id/til2" />
+
+        <ProgressBar
+            android:id="@+id/progressbar_signIn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtNoCredentials" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnLogin"
+            android:layout_width="@dimen/_150sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:background="@drawable/shape_btn"
+            android:text="Sign In"
+            android:textAllCaps="false"
+            android:textColor="@color/color2"
+            android:textSize="@dimen/_13ssp"
+            android:typeface="normal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtNoCredentials" />
+
+        <TextView
+            android:id="@+id/txtOR"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:text="⌜ OR ⌟"
+            android:textColor="@color/color2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnLogin" />
+
+        <ImageView
+            android:id="@+id/loginGoogle"
+            android:layout_width="@dimen/_45sdp"
+            android:layout_height="@dimen/_45sdp"
+            android:layout_marginTop="@dimen/_7sdp"
+            android:padding="5dp"
+            android:src="@drawable/icon_google"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtOR" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>
