@@ -50,6 +50,7 @@
             app:boxCornerRadiusTopStart="@dimen/_3sdp"
             app:boxStrokeColor="@color/color2"
             app:boxStrokeWidth="@dimen/_1sdp"
+            app:helperTextTextColor="@color/color4"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/til1">
@@ -78,6 +79,7 @@
             app:boxCornerRadiusTopStart="@dimen/_3sdp"
             app:boxStrokeColor="@color/color2"
             app:boxStrokeWidth="@dimen/_1sdp"
+            app:helperTextTextColor="@color/color4"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/til2">
@@ -104,6 +106,7 @@
             app:boxCornerRadiusBottomStart="@dimen/_3sdp"
             app:boxCornerRadiusTopEnd="@dimen/_3sdp"
             app:boxCornerRadiusTopStart="@dimen/_3sdp"
+            app:helperTextTextColor="@color/color4"
             app:boxStrokeColor="@color/color2"
             app:boxStrokeWidth="@dimen/_1sdp"
             app:layout_constraintEnd_toEndOf="parent"

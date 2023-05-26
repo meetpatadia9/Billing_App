@@ -17,6 +17,7 @@
         app:boxCornerRadiusBottomStart="@dimen/_3sdp"
         app:boxCornerRadiusTopEnd="@dimen/_3sdp"
         app:boxCornerRadiusTopStart="@dimen/_3sdp"
+        app:helperTextTextColor="@color/color4"
         app:boxStrokeColor="@color/color2"
         app:boxStrokeWidth="@dimen/_1sdp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -45,6 +46,7 @@
         app:boxCornerRadiusBottomStart="@dimen/_3sdp"
         app:boxCornerRadiusTopEnd="@dimen/_3sdp"
         app:boxCornerRadiusTopStart="@dimen/_3sdp"
+        app:helperTextTextColor="@color/color4"
         app:boxStrokeColor="@color/color2"
         app:boxStrokeWidth="@dimen/_1sdp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -74,6 +76,7 @@
         app:boxCornerRadiusBottomStart="@dimen/_3sdp"
         app:boxCornerRadiusTopEnd="@dimen/_3sdp"
         app:boxCornerRadiusTopStart="@dimen/_3sdp"
+        app:helperTextTextColor="@color/color4"
         app:boxStrokeColor="@color/color2"
         app:boxStrokeWidth="@dimen/_1sdp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -102,6 +105,7 @@
         app:boxCornerRadiusBottomStart="@dimen/_3sdp"
         app:boxCornerRadiusTopEnd="@dimen/_3sdp"
         app:boxCornerRadiusTopStart="@dimen/_3sdp"
+        app:helperTextTextColor="@color/color4"
         app:boxStrokeColor="@color/color2"
         app:boxStrokeWidth="@dimen/_1sdp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -113,6 +117,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="E-mail"
+            android:inputType="textEmailAddress"
             android:padding="@dimen/_9sdp"
             android:singleLine="true" />
 
@@ -130,6 +135,7 @@
         app:boxCornerRadiusBottomStart="@dimen/_3sdp"
         app:boxCornerRadiusTopEnd="@dimen/_3sdp"
         app:boxCornerRadiusTopStart="@dimen/_3sdp"
+        app:helperTextTextColor="@color/color4"
         app:boxStrokeColor="@color/color2"
         app:boxStrokeWidth="@dimen/_1sdp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -141,7 +147,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Contact"
-            android:inputType="number"
+            android:inputType="phone"
             android:padding="@dimen/_9sdp"
             android:singleLine="true" />
 
@@ -150,7 +156,7 @@
     <!--    TYPE (B2B/B2C)     -->
     <RadioGroup
         android:id="@+id/addParty_rg_type"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/_220sdp"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:gravity="center"
@@ -180,7 +186,7 @@
     <!--  SAVE  -->
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnSaveParty"
-        android:layout_width="@dimen/_150sdp"
+        android:layout_width="@dimen/_100sdp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_9sdp"
         android:background="@drawable/shape_btn_green"
@@ -189,13 +195,12 @@
         android:textColor="@color/color5"
         android:textSize="16sp"
         android:typeface="normal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@id/til5"
         app:layout_constraintTop_toBottomOf="@id/addParty_rg_type" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_addparty_cancel"
-        android:layout_width="@dimen/_150sdp"
+        android:layout_width="@dimen/_100sdp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_9sdp"
         android:background="@drawable/shape_btn_red"
@@ -204,8 +209,7 @@
         android:textColor="@color/color4"
         android:textSize="16sp"
         android:typeface="normal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnSaveParty" />
+        app:layout_constraintEnd_toEndOf="@id/til5"
+        app:layout_constraintTop_toBottomOf="@id/addParty_rg_type" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

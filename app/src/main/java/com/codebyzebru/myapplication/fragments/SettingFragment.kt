@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.codebyzebru.myapplication.R
@@ -24,7 +23,6 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-import kotlinx.android.synthetic.main.fragment_setting.*
 import java.io.File
 
 class SettingFragment : Fragment() {
@@ -40,7 +38,7 @@ class SettingFragment : Fragment() {
         databaseReference = Firebase.database.reference
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         /*
                 when the fragment come in picture, respected navigation `menu item` must be highlighted
                 and `title` of the activity must be sync with fragment.
@@ -87,7 +85,7 @@ class SettingFragment : Fragment() {
         settingList.add(SettingTitleDataClass(R.drawable.baseline_info_24, "About Us"))
         settingList.add(SettingTitleDataClass(R.drawable.baseline_logout_24, "Logout"))
 
-        settingFrag_recyclerView.apply {
+        binding.settingFragRecyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             adapter = SettingListAdapter(context, settingList,
             object : SettingListAdapter.SettingInterface {

@@ -1,38 +1,40 @@
+@file:Suppress("DEPRECATION")
+
 package com.codebyzebru.myapplication.fragments
 
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.*
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.codebyzebru.myapplication.R
 import com.codebyzebru.myapplication.activities.HomeActivity
 import com.codebyzebru.myapplication.adapters.ProductAdapter
+import com.codebyzebru.myapplication.databinding.FragmentInventoryBinding
+import com.codebyzebru.myapplication.databinding.FragmentProductUpdateBinding
+import com.codebyzebru.myapplication.databinding.PopupLayoutAdditemBinding
 import com.codebyzebru.myapplication.dataclasses.AddInventoryDataClass
 import com.codebyzebru.myapplication.dataclasses.ViewInventoryDataClass
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.fragment_inventory.*
-import kotlinx.android.synthetic.main.fragment_product_update.*
-import kotlinx.android.synthetic.main.popup_layout_additem.view.*
 import java.util.*
 
 class InventoryFragment : Fragment() {
 
-    private lateinit var popupView: View
+    lateinit var binding: FragmentInventoryBinding
+    private lateinit var addBinding: PopupLayoutAdditemBinding
+    private lateinit var updateBinding: FragmentProductUpdateBinding
+
     private var itemList = arrayListOf<ViewInventoryDataClass>()
 
     private lateinit var database: DatabaseReference
-    lateinit var userID: String
+    private lateinit var userID: String
     private var key = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,7 +43,7 @@ class InventoryFragment : Fragment() {
         database = Firebase.database.reference
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         /*
             when the fragment come in picture, respected navigation `menu item` must be highlighted
             and `title` of the activity must be sync with fragment.
@@ -50,119 +52,166 @@ class InventoryFragment : Fragment() {
         (activity as HomeActivity).title = "Inventory"
 
         //  Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_inventory, container, false)
+        binding = FragmentInventoryBinding.inflate(layoutInflater, container, false)
+        return binding.root
     }
 
     @SuppressLint("InflateParams")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.inventory_recyclerView)
-
-        val dbRef = FirebaseDatabase.getInstance().getReference("Users/$userID/Inventory Data").orderByChild("productName")
-
         //  applying `Layout` to Recyclerview
-        recyclerView.layoutManager =LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        binding.inventoryRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         //  Fetching Inventory Data
-        dbRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                itemList.clear()
-                if (snapshot.exists()) {
-                    for (item in snapshot.children) {
-                        val listedData = item.getValue(ViewInventoryDataClass::class.java)
-                        listedData!!.key = item.key.toString()
-                        itemList.add(listedData)
-                    }
+        FirebaseDatabase.getInstance().getReference("Users/$userID/Inventory Data").orderByChild("productName")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    itemList.clear()
+                    if (snapshot.exists()) {
+                        for (item in snapshot.children) {
+                            val listedData = item.getValue(ViewInventoryDataClass::class.java)
+                            listedData!!.key = item.key.toString()
+                            itemList.add(listedData)
+                        }
 
-                    recyclerView.adapter = ProductAdapter(requireContext(), itemList,
-                        object : ProductAdapter.OnItemClick {
-                            override fun onClick(listDataClass: ViewInventoryDataClass) {
-                                openUpdatePopup(listDataClass)
-                            }
-                        })
+                        binding.inventoryRecyclerView.adapter = ProductAdapter(requireContext(), itemList,
+                            object : ProductAdapter.OnItemClick {
+                                override fun onClick(listDataClass: ViewInventoryDataClass) {
+                                    openUpdatePopup(listDataClass)
+                                }
+                            })
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.d("Error", error.toString())
+                }
+            })
+
+        //  ADD NEW PRODUCT
+        binding.inventoryFragFab.setOnClickListener {
+            addBinding = PopupLayoutAdditemBinding.inflate(LayoutInflater.from(requireContext()))
+            val addDialog = Dialog(requireContext())
+            addDialog.setContentView(addBinding.root)
+            addDialog.show()
+
+            val pName = addBinding.addItemEdtxtProductName
+            val pPrice = addBinding.addItemEdtxtPurchasePrise
+            val sPrice = addBinding.addItemEdtxtSellingPrice
+            val qty = addBinding.addItemEdtxtProductQty
+
+            addBinding.btnSaveItem.setOnClickListener {
+                if (pName.text.toString().trim() == "") {
+                    addBinding.til1.helperText = "Required*"
+                }
+                else if (pPrice.text.toString().trim() == "") {
+                    addBinding.til2.helperText = "Required*"
+                }
+                else if (sPrice.text.toString().trim() == "") {
+                    addBinding.til3.helperText = "Required*"
+                }
+                else if (qty.text.toString().trim() == "") {
+                    addBinding.til4.helperText = "Required*"
+                }
+                else {
+                    itemList.clear()
+
+                    val addItem = AddInventoryDataClass(
+                        productName = pName.text.toString(),
+                        purchasingPrice = pPrice.text.toString().toInt(),
+                        sellingPrice = sPrice.text.toString().toInt(),
+                        productQty = qty.text.toString().toInt()
+                    )
+
+                    val key = database.child("Inventory Data").push().key.toString()
+                    FirebaseDatabase.getInstance().getReference("Users/$userID").child("Inventory Data").child(key).setValue(addItem)
+
+                    greenToast("Item Added!!")
+                    addDialog.dismiss()
                 }
             }
 
-            override fun onCancelled(error: DatabaseError) {
-                Log.d("Error", error.toString())
-            }
-        })
-
-        view.findViewById<FloatingActionButton>(R.id.inventoryFrag_fab).setOnClickListener {
-            //  subclass of `Dialog`
-            val builder = AlertDialog.Builder(requireContext())
-            //  Instantiates a layout XML file into its corresponding `View` objects
-            val inflater = LayoutInflater.from(context)
-            popupView = inflater.inflate(R.layout.popup_layout_additem, null)
-            builder.setView(popupView)
-
-            val alertDialog = builder.create()
-            alertDialog.show()
-
-            popupView.findViewById<Button>(R.id.btnSaveItem).setOnClickListener {
-                itemList.clear()
-
-                val addItem = AddInventoryDataClass(
-                    productName = popupView.addItem_edtxt_productName.text.toString(),
-                    purchasingPrice = popupView.addItem_edtxt_purchasePrise.text.toString().toInt(),
-                    sellingPrice = popupView.addItem_edtxt_sellingPrice.text.toString().toInt(),
-                    productQty = popupView.addItem_edtxt_productQty.text.toString().toInt()
-                )
-
-                val key = database.child("Inventory Data").push().key.toString()
-                FirebaseDatabase.getInstance().getReference("Users/$userID").child("Inventory Data").child(key).setValue(addItem)
-
-                alertDialog.dismiss()
-            }
-
-            popupView.findViewById<Button>(R.id.btn_additem_cancel).setOnClickListener {
-                alertDialog.dismiss()
+            addBinding.btnAdditemCancel.setOnClickListener {
+                addDialog.dismiss()
             }
         }
     }
 
     private fun openUpdatePopup(listDataClass: ViewInventoryDataClass) {
-        val updateDetailDialog = Dialog(requireContext())
-        updateDetailDialog.setContentView(R.layout.fragment_product_update)
-        updateDetailDialog.show()
+        updateBinding = FragmentProductUpdateBinding.inflate(LayoutInflater.from(requireContext()))
+
+        val updateDialog = Dialog(requireContext())
+        updateDialog.setContentView(updateBinding.root)
+        updateDialog.show()
+
+        val pName = updateBinding.updateProductName
+        val pPrice = updateBinding.updatePurchasePrise
+        val sPrice = updateBinding.updateSellingPrice
+        val qty = updateBinding.updateProductQty
 
         //  Setting data came from `PartiesFragment`
         key = listDataClass.key
-        updateDetailDialog.update_productName.setText(listDataClass.productName)
-        updateDetailDialog.update_purchasePrise.setText(listDataClass.purchasingPrice.toString())
-        updateDetailDialog.update_sellingPrice.setText(listDataClass.sellingPrice.toString())
-        updateDetailDialog.update_productQty.setText(listDataClass.productQty.toString())
+        pName.setText(listDataClass.productName)
+        pPrice.setText(listDataClass.purchasingPrice.toString())
+        sPrice.setText(listDataClass.sellingPrice.toString())
+        qty.setText(listDataClass.productQty.toString())
 
         //  UPDATE BUTTON
-        updateDetailDialog.btnUpdateItem.setOnClickListener {
-            val addItem = AddInventoryDataClass(
-                productName = updateDetailDialog.update_productName.text.toString(),
-                purchasingPrice = updateDetailDialog.update_purchasePrise.text.toString().toInt(),
-                sellingPrice = updateDetailDialog.update_sellingPrice.text.toString().toInt(),
-                productQty = updateDetailDialog.update_productQty.text.toString().toInt()
-            )
+        updateBinding.btnUpdateItem.setOnClickListener {
+            if (pName.text.toString().trim() == "") {
+                updateBinding.til1.helperText = "Required*"
+            }
+            else if (pPrice.text.toString().trim() == "") {
+                updateBinding.til2.helperText = "Required*"
+            }
+            else if (sPrice.text.toString().trim() == "") {
+                updateBinding.til3.helperText = "Required*"
+            }
+            else if (qty.text.toString().trim() == "") {
+                updateBinding.til4.helperText = "Required*"
+            }
+            else {
+                val addItem = AddInventoryDataClass(
+                    productName = pName.text.toString(),
+                    purchasingPrice = pPrice.text.toString().toInt(),
+                    sellingPrice = sPrice.text.toString().toInt(),
+                    productQty = qty.text.toString().toInt()
+                )
 
-            val userID = FirebaseAuth.getInstance().currentUser!!.uid
-            val thisKey = database.child("Inventory Data").push().key.toString()
-            FirebaseDatabase.getInstance().getReference("Users/$userID").child("Inventory Data").child(thisKey).setValue(addItem)
+                val thisKey = database.child("Inventory Data").push().key.toString()
+                FirebaseDatabase.getInstance().getReference("Users/$userID").child("Inventory Data").child(thisKey).setValue(addItem)
 
-            FirebaseDatabase.getInstance().getReference("Users/$userID/Inventory Data").child(key).removeValue()
-                .addOnSuccessListener {
-                    updateDetailDialog.dismiss()
-                    Toast.makeText(context, "Item Updated!!", Toast.LENGTH_SHORT).show()
-                }
+                FirebaseDatabase.getInstance().getReference("Users/$userID/Inventory Data").child(key).removeValue()
+                    .addOnSuccessListener {
+                        updateDialog.dismiss()
+                        greenToast("Item Updated!!")
+                    }
+            }
         }
 
         //  DELETE BUTTON
-        updateDetailDialog.btnDeleteItem.setOnClickListener {
-            val userID = FirebaseAuth.getInstance().currentUser!!.uid
+        updateBinding.btnDeleteItem.setOnClickListener {
             FirebaseDatabase.getInstance().getReference("Users/$userID/Inventory Data").child(key).removeValue()
                 .addOnSuccessListener {
-                    updateDetailDialog.dismiss()
-                    Toast.makeText(context, "Item Deleted!!", Toast.LENGTH_SHORT).show()
+                    updateDialog.dismiss()
+                    greenToast("Item Deleted!!")
                 }
         }
+    }
+
+    private fun greenToast(message: String) {
+        val toast: Toast = Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT)
+        val view = toast.view
+
+        //Gets the actual oval background of the Toast then sets the colour filter
+        view!!.background.setColorFilter(resources.getColor(R.color.color5), PorterDuff.Mode.SRC_IN)
+
+        //Gets the TextView from the Toast so it can be edited
+        val text = view.findViewById<TextView>(android.R.id.message)
+        text.setTextColor(resources.getColor(R.color.white))
+
+        toast.show()
     }
 
     override fun onResume() {

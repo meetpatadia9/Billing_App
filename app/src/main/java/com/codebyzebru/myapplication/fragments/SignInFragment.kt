@@ -1,9 +1,10 @@
-@file:Suppress("PrivatePropertyName")
+@file:Suppress("PrivatePropertyName", "DEPRECATION")
 
 package com.codebyzebru.myapplication.fragments
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,6 +13,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import com.codebyzebru.myapplication.R
@@ -118,8 +120,7 @@ class SignInFragment : Fragment() {
             if (binding.loginEdtxtEmail.text.toString().trim().isNotEmpty()) {
                 binding.til1.helperText = ""
             }
-            else
-            {
+            else {
                 binding.til1.helperText = "Required*"
             }
 
@@ -130,7 +131,6 @@ class SignInFragment : Fragment() {
                 binding.til1.helperText = ""
             }
         }
-
     }
 
     //  PASSWORD TEXT-WATCHER
@@ -147,12 +147,10 @@ class SignInFragment : Fragment() {
             if (binding.loginEdtxtPassword.text.toString().trim().isNotEmpty()) {
                 binding.til2.helperText = ""
             }
-            else
-            {
+            else {
                 binding.til2.helperText = "Required*"
             }
         }
-
     }
 
     //  CHECKING ENTERED EMAIL VALIDITY
@@ -168,6 +166,25 @@ class SignInFragment : Fragment() {
                     updateUI()
                 }
             }
+            .addOnFailureListener {
+                stopProgressbar()
+                redToast(it.message.toString())
+            }
+    }
+
+    private fun redToast(message: String) {
+        val toast: Toast = Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT)
+        val view = toast.view
+
+        //  Gets the actual oval background of the Toast then sets the colour filter
+        view!!.background.setColorFilter(resources.getColor(R.color.color4), PorterDuff.Mode.SRC_IN)
+
+        //  Gets the TextView from the Toast so it can be edited
+        val text = view.findViewById<TextView>(android.R.id.message)
+        text.setTextColor(resources.getColor(R.color.white))
+
+        toast.show()
+        stopProgressbar()
     }
 
     private fun startProgressbar() {
@@ -196,8 +213,7 @@ class SignInFragment : Fragment() {
         launcher.launch(signInIntent)
     }
 
-    private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            result ->
+    private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
             handleResult(task)

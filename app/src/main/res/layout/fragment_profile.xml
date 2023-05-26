@@ -41,6 +41,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/profile_img"
                 app:startIconDrawable="@drawable/baseline_person_24"
+                app:helperTextTextColor="@color/color4"
                 app:placeholderText="ex: Meet Patadia"
                 app:placeholderTextColor="@color/blur_color2"
                 app:startIconTint="@color/color1">
@@ -70,6 +71,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/profile_TIL1"
                 app:startIconDrawable="@drawable/baseline_business_24"
+                app:helperTextTextColor="@color/color4"
                 app:placeholderText="ex: Meet Pvt. Ltd."
                 app:placeholderTextColor="@color/blur_color2"
                 app:startIconTint="@color/color1">
@@ -99,6 +101,7 @@
                 app:layout_constraintTop_toBottomOf="@id/profile_TIL2"
                 app:startIconDrawable="@drawable/baseline_location_on_24"
                 app:placeholderText="ex: Gandhinagar"
+                app:helperTextTextColor="@color/color4"
                 app:placeholderTextColor="@color/blur_color2"
                 app:startIconTint="@color/color1">
 
@@ -125,6 +128,7 @@
                 app:boxCornerRadiusTopStart="15dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                app:helperTextTextColor="@color/color4"
                 app:layout_constraintTop_toBottomOf="@id/profile_TIL3"
                 app:startIconDrawable="@drawable/baseline_mail_outline_24"
                 app:placeholderText="ex: abc@gmail.com"
@@ -154,7 +158,8 @@
                 app:boxCornerRadiusTopStart="15dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/profile_TIL4"
+                app:helperTextTextColor="@color/color4"
+                    app:layout_constraintTop_toBottomOf="@id/profile_TIL4"
                 app:startIconDrawable="@drawable/baseline_phone_24"
                 app:placeholderText="ex: +91 01234 56789"
                 app:placeholderTextColor="@color/blur_color2"

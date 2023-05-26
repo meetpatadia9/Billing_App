@@ -48,7 +48,7 @@ class ProfileActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRe
     private var isConnected: Boolean = true
     private var snackBar : Snackbar? = null
 
-    lateinit var userID: String
+    private lateinit var userID: String
     private lateinit var email: String
     private lateinit var phoneNum: String
     private var gender: RadioButton? = null
@@ -202,25 +202,29 @@ class ProfileActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRe
         }
 
     private fun addNewUser() {
-        binding.newProfileBtnSave.visibility = View.GONE
-        binding.newProfileProgressbar.visibility = View.VISIBLE
+        startProgressbar()
 
         val radioGroup = binding.newProfileRgGender.checkedRadioButtonId
         gender = findViewById(radioGroup)
 
         if (binding.newProfileEdtxtName.text.toString().trim() == "") {
+            stopProgressbar()
             binding.til1.helperText = "Required*"
         }
         else if (binding.newProfileEdtxtEmail.text.toString().trim() == "") {
+            stopProgressbar()
             binding.til2.helperText = "Required*"
         }
         else if(!isValidString(binding.newProfileEdtxtEmail.text.toString())) {
+            stopProgressbar()
             binding.til2.helperText = "Enter valid Email"
         }
         else if (binding.newProfileEdtxtOrg.text.toString().trim() == "") {
+            stopProgressbar()
             binding.til3.helperText = "Required*"
         }
         else if (binding.newProfileEdtxtPhone.text.toString().trim() == "") {
+            stopProgressbar()
             binding.til4.helperText = "Required*"
         }
 
@@ -231,13 +235,14 @@ class ProfileActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRe
                 //  uploading image on firebase-storage
                 FirebaseStorage.getInstance().getReference("Profile Images/$userID").putBytes(byteArray)
                     .addOnSuccessListener {
-                        Toast.makeText(this, "Image uploaded", Toast.LENGTH_SHORT).show()
                         startProgressbar()
+                        uploadProfileData()
                         updateUI()
+                        greenToast()
                     }
                     .addOnFailureListener {
+                        redToast(it.message.toString())
                         stopProgressbar()
-                        Toast.makeText(this, "Failed to upload image", Toast.LENGTH_SHORT).show()
                     }
             }
             else if (imgURI.toString().isNotEmpty()) {
@@ -245,23 +250,20 @@ class ProfileActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRe
                 //  uploading image on firebase-storage
                 FirebaseStorage.getInstance().getReference("Profile Images/$userID").putFile(imgURI)
                     .addOnSuccessListener {
-                        uploadProfileData()
-                        Toast.makeText(this, "Image uploaded", Toast.LENGTH_SHORT).show()
                         startProgressbar()
+                        uploadProfileData()
                         updateUI()
+                        greenToast()
                     }
                     .addOnFailureListener {
-                        Toast.makeText(this, "Failed to upload image", Toast.LENGTH_SHORT).show()
+                        redToast(it.message.toString())
                         stopProgressbar()
                     }
             }
             else {
-                stopProgressbar()
                 redToast("Please select your profile image!!")
+                stopProgressbar()
             }
-        }
-        else {
-            redToast("Fill the mandatory fields!!")
         }
     }
 
@@ -274,15 +276,28 @@ class ProfileActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRe
         val toast: Toast = Toast.makeText(this, message, Toast.LENGTH_SHORT)
         val view = toast.view
 
-        //Gets the actual oval background of the Toast then sets the colour filter
-        view!!.background.setColorFilter(resources.getColor(R.color.color4), PorterDuff.Mode.SRC_IN)
+        //  Gets the actual oval background of the Toast then sets the colour filter
+        view!!.background.setColorFilter(resources.getColor(R.color.color5), PorterDuff.Mode.SRC_IN)
 
-        //Gets the TextView from the Toast so it can be edited
+        //  Gets the TextView from the Toast so it can be edited
         val text = view.findViewById<TextView>(android.R.id.message)
         text.setTextColor(resources.getColor(R.color.white))
 
         toast.show()
-        stopProgressbar()
+    }
+
+    private fun greenToast() {
+        val toast: Toast = Toast.makeText(this, "Profile created successfully!!", Toast.LENGTH_SHORT)
+        val view = toast.view
+
+        //  Gets the actual oval background of the Toast then sets the colour filter
+        view!!.background.setColorFilter(resources.getColor(R.color.color5), PorterDuff.Mode.SRC_IN)
+
+        //  Gets the TextView from the Toast so it can be edited
+        val text = view.findViewById<TextView>(android.R.id.message)
+        text.setTextColor(resources.getColor(R.color.white))
+
+        toast.show()
     }
 
     private fun startProgressbar() {
@@ -301,7 +316,7 @@ class ProfileActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRe
         databaseReference.child("email").setValue(binding.newProfileEdtxtEmail.text.toString().trim())
         databaseReference.child("contact").setValue(binding.newProfileEdtxtPhone.text.toString().trim())
         databaseReference.child("address").setValue(binding.newProfileEdtxtAddress.text.toString().trim())
-        databaseReference.child("gender").setValue(gender!!.text.toString())
+        databaseReference.child("gender").setValue(gender?.text.toString())
         databaseReference.child("password").setValue(password.trim())
     }
 

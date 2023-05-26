@@ -1,13 +1,16 @@
+@file:Suppress("DEPRECATION")
+
 package com.codebyzebru.myapplication.adapters
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 
-class TabLayoutAdapter(supportFragmentManager: FragmentManager): FragmentPagerAdapter(supportFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+class TabLayoutAdapter(supportFragmentManager: FragmentManager)
+    : FragmentPagerAdapter(supportFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
-    private val fragmentList = ArrayList<Fragment>();
-    private val fragmentTitleList = ArrayList<String>();
+    private val fragmentList = ArrayList<Fragment>()
+    private val fragmentTitleList = ArrayList<String>()
 
     override fun getCount(): Int {
         return fragmentList.size
@@ -17,7 +20,7 @@ class TabLayoutAdapter(supportFragmentManager: FragmentManager): FragmentPagerAd
         return fragmentList[position]
     }
 
-    override fun getPageTitle(position: Int): CharSequence? {
+    override fun getPageTitle(position: Int): CharSequence {
         return fragmentTitleList[position]
     }
 

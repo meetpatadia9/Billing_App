@@ -7,9 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.codebyzebru.myapplication.R
 import com.codebyzebru.myapplication.adapters.HistoryAdapter
+import com.codebyzebru.myapplication.databinding.FragmentHistoryBinding
 import com.codebyzebru.myapplication.dataclasses.HistoryDataClass
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -18,10 +17,12 @@ import com.google.firebase.ktx.Firebase
 
 class HistoryFragment : Fragment() {
 
+    lateinit var binding: FragmentHistoryBinding
+
     val billList = arrayListOf<HistoryDataClass>()
 
-    lateinit var database: DatabaseReference
-    lateinit var userID: String
+    private lateinit var database: DatabaseReference
+    private lateinit var userID: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +30,7 @@ class HistoryFragment : Fragment() {
         database = Firebase.database.reference
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         /*
                 when the fragment come in picture, respected navigation `menu item` must be highlighted
                 and `title` of the activity must be sync with fragment.
@@ -38,36 +39,34 @@ class HistoryFragment : Fragment() {
         */
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_history, container, false)
+        binding = FragmentHistoryBinding.inflate(layoutInflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.historyFrag_recyclerView)
-
-        val dbRef = FirebaseDatabase.getInstance().getReference("Users/$userID/Bills")
-
         //  applying `Layout` to Recyclerview
-        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        binding.historyFragRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         //  Fetching Bill Data
-        dbRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()) {
-                    for (item in snapshot.children) {
-                        val listedData = item.getValue(HistoryDataClass::class.java)
-                        listedData!!.key = item.key.toString()
-                        billList.add(listedData)
+        FirebaseDatabase.getInstance().getReference("Users/$userID/Bills")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        for (item in snapshot.children) {
+                            val listedData = item.getValue(HistoryDataClass::class.java)
+                            listedData!!.key = item.key.toString()
+                            billList.add(listedData)
+                        }
+                        binding.historyFragRecyclerView.adapter = HistoryAdapter(context!!, billList)
                     }
-                    recyclerView.adapter = HistoryAdapter(context!!, billList)
                 }
-            }
 
-            override fun onCancelled(error: DatabaseError) {
-                Log.d("Error", error.toString())
-            }
-        })
+                override fun onCancelled(error: DatabaseError) {
+                    Log.d("Error", error.toString())
+                }
+            })
     }
 
 }

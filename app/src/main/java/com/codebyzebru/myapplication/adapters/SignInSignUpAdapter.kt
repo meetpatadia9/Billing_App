@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.codebyzebru.myapplication.adapters
 
 import androidx.fragment.app.Fragment
@@ -7,8 +9,8 @@ import androidx.fragment.app.FragmentPagerAdapter
 class SignInSignUpAdapter(supportFragmentManager: FragmentManager) :
     FragmentPagerAdapter(supportFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
-    private val fragmentList = ArrayList<Fragment>();
-    private val fragmentTitleList = ArrayList<String>();
+    private val fragmentList = ArrayList<Fragment>()
+    private val fragmentTitleList = ArrayList<String>()
 
     override fun getCount(): Int {
         return fragmentList.size

@@ -1,5 +1,8 @@
+@file:Suppress("DEPRECATION")
+
 package com.codebyzebru.myapplication.broadcastreceiver
 
+import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -7,6 +10,7 @@ import android.net.ConnectivityManager
 
 class ConnectivityReceiver : BroadcastReceiver() {
 
+    @SuppressLint("UnsafeProtectedBroadcastReceiver")
     override fun onReceive(context: Context?, intent: Intent?) {
         if (connectivityReceiverListener != null) {
             connectivityReceiverListener!!.onNetworkConnectionChange(isConnectedOrConnecting(context!!))
@@ -24,8 +28,8 @@ class ConnectivityReceiver : BroadcastReceiver() {
     }
 
     /*
-            `companion objects` are singleton objects whose properties and functions are tied to a class
-            but not to the instance of that class, basically like the “static” keyword in Java
+        `companion objects` are singleton objects whose properties and functions are tied to a class
+        but not to the instance of that class, basically like the “static” keyword in Java
     */
     companion object {
         var connectivityReceiverListener: ConnectivityReceiverListener? = null

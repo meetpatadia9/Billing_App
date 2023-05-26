@@ -1,40 +1,38 @@
+@file:Suppress("DEPRECATION")
+
 package com.codebyzebru.myapplication.fragments
 
-import android.annotation.SuppressLint
 import android.app.Dialog
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.*
 import androidx.fragment.app.Fragment
-import android.widget.Button
-import android.widget.RadioButton
-import android.widget.RadioGroup
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.codebyzebru.myapplication.R
 import com.codebyzebru.myapplication.activities.HomeActivity
 import com.codebyzebru.myapplication.adapters.PartyAdapter
+import com.codebyzebru.myapplication.databinding.FragmentPartiesBinding
+import com.codebyzebru.myapplication.databinding.FragmentPartyUpdateBinding
+import com.codebyzebru.myapplication.databinding.PopupLayoutAddpartyBinding
 import com.codebyzebru.myapplication.dataclasses.AddPartyDataClass
 import com.codebyzebru.myapplication.dataclasses.ViewPartyDataClass
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.fragment_parties.*
-import kotlinx.android.synthetic.main.fragment_party_update.*
-import kotlinx.android.synthetic.main.popup_layout_addparty.*
-import kotlinx.android.synthetic.main.popup_layout_addparty.view.*
 
 class PartiesFragment : Fragment() {
 
-    private lateinit var popupView: View
+    lateinit var binding: FragmentPartiesBinding
+    private lateinit var addBinding: PopupLayoutAddpartyBinding
+    private lateinit var updateBinding: FragmentPartyUpdateBinding
+
     private var partyList = arrayListOf<ViewPartyDataClass>()
 
     private lateinit var database: DatabaseReference
-    lateinit var userID: String
+    private lateinit var userID: String
     private var key = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,7 +41,7 @@ class PartiesFragment : Fragment() {
         database = Firebase.database.reference
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         /*
                 when the fragment come in picture, respected navigation `menu item` must be highlighted
                 and `title` of the activity must be sync with fragment.
@@ -52,142 +50,216 @@ class PartiesFragment : Fragment() {
         (activity as HomeActivity).title = "Parties"
 
         //  Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_parties, container, false)
+        binding = FragmentPartiesBinding.inflate(layoutInflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.parties_recyclerView)
-
-        val dbRef = FirebaseDatabase.getInstance().getReference("Users/$userID/Party Data").orderByChild("partyName")
-
         //  applying `Layout` to Recyclerview
-        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        binding.partiesRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         //  Fetching Party Data
-        dbRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                partyList.clear()
-                if (snapshot.exists()) {
-                    for (item in snapshot.children) {
-                        val listedData = item.getValue(ViewPartyDataClass::class.java)
-                        listedData!!.key = item.key.toString()
-                        partyList.add(listedData)
-                    }
+        FirebaseDatabase.getInstance().getReference("Users/$userID/Party Data").orderByChild("partyName")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    partyList.clear()
+                    if (snapshot.exists()) {
+                        for (item in snapshot.children) {
+                            val listedData = item.getValue(ViewPartyDataClass::class.java)
+                            listedData!!.key = item.key.toString()
+                            partyList.add(listedData)
+                        }
 
-                    recyclerView.adapter = PartyAdapter(requireContext(), partyList,
-                        object : PartyAdapter.OnItemClick {
-                            override fun onClick(listDataClass: ViewPartyDataClass) {
-                                openUpdatePopup(listDataClass)
-                            }
-                        })
+                        binding.partiesRecyclerView.adapter = PartyAdapter(requireContext(), partyList,
+                            object : PartyAdapter.OnItemClick {
+                                override fun onClick(listDataClass: ViewPartyDataClass) {
+                                    openUpdatePopup(listDataClass)
+                                }
+                            })
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.d("Error", error.toString())
+                }
+            })
+
+        //  ADD NEW PARTY
+        binding.partyFragFab.setOnClickListener {
+            addBinding = PopupLayoutAddpartyBinding.inflate(LayoutInflater.from(requireContext()))
+            val addDialog = Dialog(requireContext())
+            addDialog.setContentView(addBinding.root)
+            addDialog.show()
+
+            val name = addBinding.addPartyEdtxtPartyName
+            val org = addBinding.addPartyEdtxtCompanyName
+            val address = addBinding.addPartyEdtxtAddress
+            val email = addBinding.addPartyEdtxtEmail
+            val contact = addBinding.addPartyEdtxtContact
+            var radioButton: RadioButton?
+
+            addBinding.btnSaveParty.setOnClickListener {
+                if (name.text.toString().trim() == "") {
+                    addBinding.til1.helperText = "Required*"
+                }
+                else if (org.text.toString().trim() == "") {
+                    addBinding.til2.helperText = "Required*"
+                }
+                else if (address.text.toString().trim() == "") {
+                    addBinding.til3.helperText = "Required*"
+                }
+                else if (email.text.toString().trim() == "") {
+                    addBinding.til4.helperText = "Required*"
+                }
+                else if (contact.text.toString().trim() == "") {
+                    addBinding.til5.helperText = "Required*"
+                }
+                else {
+                    partyList.clear()
+
+                    val selectedID = addBinding.addPartyRgType.checkedRadioButtonId
+                    radioButton = addDialog.findViewById(selectedID)
+
+                    val addParty = AddPartyDataClass(
+                        partyName = name.text.toString(),
+                        companyName = org.text.toString(),
+                        address = address.text.toString(),
+                        email = email.text.toString(),
+                        contact = contact.text.toString(),
+                        type = radioButton?.text.toString()
+                    )
+
+                    val key = database.child("Party Data").push().key.toString()
+                    FirebaseDatabase.getInstance().getReference("Users/$userID").child("Party Data").child(key).setValue(addParty)
+                        .addOnSuccessListener {
+                            addDialog.dismiss()
+                            greenToast("Party Added!!")
+                        }
+                        .addOnFailureListener {
+                            redToast(it.message.toString())
+                        }
                 }
             }
 
-            override fun onCancelled(error: DatabaseError) {
-                Log.d("Error", error.toString())
-            }
-        })
-
-        view.findViewById<FloatingActionButton>(R.id.partyFrag_fab).setOnClickListener {
-            //  subclass of `Dialog`
-            val builder = AlertDialog.Builder(requireContext())
-            //  Instantiates a layout XML file into its corresponding `View` objects
-            val inflater = LayoutInflater.from(context)
-            popupView = inflater.inflate(R.layout.popup_layout_addparty, null)
-            builder.setView(popupView)
-
-            val alertDialog = builder.create()
-            alertDialog.show()
-
-            val radioGroup: RadioGroup = popupView.findViewById(R.id.addParty_rg_type)
-            var radioButton: RadioButton?
-
-            popupView.findViewById<Button>(R.id.btnSaveParty).setOnClickListener {
-                partyList.clear()
-
-                val selectedID = radioGroup.checkedRadioButtonId
-                radioButton = popupView.findViewById(selectedID)
-
-                val addParty = AddPartyDataClass(
-                    partyName = popupView.addParty_edtxt_partyName.text.toString(),
-                    companyName = popupView.addParty_edtxt_company_name.text.toString(),
-                    address = popupView.addParty_edtxt_address.text.toString(),
-                    email = popupView.addParty_edtxt_email.text.toString(),
-                    contact = popupView.addParty_edtxt_contact.text.toString(),
-                    type = radioButton?.text.toString()
-                )
-
-                val userID = FirebaseAuth.getInstance().currentUser!!.uid
-                val key = database.child("Party Data").push().key.toString()
-                FirebaseDatabase.getInstance().getReference("Users/$userID").child("Party Data").child(key).setValue(addParty)
-
-                alertDialog.dismiss()
-            }
-
-            popupView.findViewById<Button>(R.id.btn_addparty_cancel).setOnClickListener {
-                alertDialog.dismiss()
+            addBinding.btnAddpartyCancel.setOnClickListener {
+                addDialog.dismiss()
             }
         }
     }
 
     private fun openUpdatePopup(listDataClass: ViewPartyDataClass) {
-        val updateDetailDialog = Dialog(requireContext())
-        updateDetailDialog.setContentView(R.layout.fragment_party_update)
-        updateDetailDialog.show()
+        updateBinding = FragmentPartyUpdateBinding.inflate(LayoutInflater.from(requireContext()))
+        val updateDialog = Dialog(requireContext())
+        updateDialog.setContentView(updateBinding.root)
+        updateDialog.show()
+
+        val name = updateBinding.updatePartyName
+        val org = updateBinding.updateCompanyName
+        val address = updateBinding.updateCompanyName
+        val email = updateBinding.updateEmail
+        val contact = updateBinding.updateContact
+        var radioButton: RadioButton?
 
         //  Setting data came from `PartiesFragment`
         key = listDataClass.key
-        updateDetailDialog.update_partyName.setText(listDataClass.partyName)
-        updateDetailDialog.update_company_name.setText(listDataClass.companyName)
-        updateDetailDialog.update_address.setText(listDataClass.address)
-        updateDetailDialog.update_email.setText(listDataClass.email)
-        updateDetailDialog.update_contact.setText(listDataClass.contact)
+        name.setText(listDataClass.partyName)
+        org.setText(listDataClass.companyName)
+        address.setText(listDataClass.address)
+        email.setText(listDataClass.email)
+        contact.setText(listDataClass.contact)
 
         if (listDataClass.type == "B2B") {
-            updateDetailDialog.update_rBtn_B2B.isChecked = true
+            updateBinding.updateRBtnB2B.isChecked = true
         } else if (listDataClass.type == "B2C") {
-            updateDetailDialog.update_rBtn_B2C.isChecked = true
+            updateBinding.updateRBtnB2C.isChecked = true
         }
 
-        val radioGroup: RadioGroup = updateDetailDialog.findViewById(R.id.update_rg_type)
-        var radioButton: RadioButton?
-
         //  UPDATE BUTTON
-        updateDetailDialog.btnUpdateParty.setOnClickListener {
-            val selectedID = radioGroup.checkedRadioButtonId
-            radioButton = updateDetailDialog.findViewById(selectedID)
+        updateBinding.btnUpdateParty.setOnClickListener {
+            if (name.text.toString().trim() == "") {
+                updateBinding.til1.helperText = "Required*"
+            }
+            else if (org.text.toString().trim() == "") {
+                updateBinding.til2.helperText = "Required*"
+            }
+            else if (address.text.toString().trim() == "") {
+                updateBinding.til3.helperText = "Required*"
+            }
+            else if (email.text.toString().trim() == "") {
+                updateBinding.til4.helperText = "Required*"
+            }
+            else if (contact.text.toString().trim() == "") {
+                updateBinding.til5.helperText = "Required*"
+            }
+            else {
+                val selectedID = updateBinding.updateRgType.checkedRadioButtonId
+                radioButton = updateDialog.findViewById(selectedID)
 
-            val addParty = AddPartyDataClass(
-                partyName = updateDetailDialog.update_partyName.text.toString(),
-                companyName = updateDetailDialog.update_company_name.text.toString(),
-                address = updateDetailDialog.update_address.text.toString(),
-                email = updateDetailDialog.update_email.text.toString(),
-                contact = updateDetailDialog.update_contact.text.toString(),
-                type = radioButton?.text.toString()
-            )
+                val addParty = AddPartyDataClass(
+                    partyName = name.text.toString(),
+                    companyName = org.text.toString(),
+                    address = address.text.toString(),
+                    email = email.text.toString(),
+                    contact = contact.text.toString(),
+                    type = radioButton?.text.toString()
+                )
 
-            val userID = FirebaseAuth.getInstance().currentUser!!.uid
-            val thisKey = database.child("Party Data").push().key.toString()
-            FirebaseDatabase.getInstance().getReference("Users/$userID").child("Party Data").child(thisKey).setValue(addParty)
+                val thisKey = database.child("Party Data").push().key.toString()
+                FirebaseDatabase.getInstance().getReference("Users/$userID").child("Party Data").child(thisKey).setValue(addParty)
 
-            FirebaseDatabase.getInstance().getReference("Users/$userID/Party Data").child(key).removeValue()
-                .addOnSuccessListener {
-                    updateDetailDialog.dismiss()
-                    Toast.makeText(context, "Party Updated!!", Toast.LENGTH_SHORT).show()
-                }
+                FirebaseDatabase.getInstance().getReference("Users/$userID/Party Data").child(key).removeValue()
+                    .addOnSuccessListener {
+                        updateDialog.dismiss()
+                        greenToast("Party Updated!!")
+                    }
+                    .addOnFailureListener {
+                        redToast(it.message.toString())
+                    }
+            }
         }
 
         //  DELETE BUTTON
-        updateDetailDialog.btnDeleteParty.setOnClickListener {
+        updateBinding.btnDeleteParty.setOnClickListener {
             val userID = FirebaseAuth.getInstance().currentUser!!.uid
             FirebaseDatabase.getInstance().getReference("Users/$userID/Party Data").child(key).removeValue()
                 .addOnSuccessListener {
-                    updateDetailDialog.dismiss()
-                    Toast.makeText(context, "Party Deleted!!", Toast.LENGTH_SHORT).show()
+                    updateDialog.dismiss()
+                    greenToast("Party Deleted!!")
+                }
+                .addOnFailureListener {
+                    redToast(it.message.toString())
                 }
         }
+    }
+
+    private fun redToast(message: String) {
+        val toast: Toast = Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT)
+        val view = toast.view
+
+        //  Gets the actual oval background of the Toast then sets the colour filter
+        view!!.background.setColorFilter(resources.getColor(R.color.color5), PorterDuff.Mode.SRC_IN)
+
+        //  Gets the TextView from the Toast so it can be edited
+        val text = view.findViewById<TextView>(android.R.id.message)
+        text.setTextColor(resources.getColor(R.color.white))
+
+        toast.show()
+    }
+
+    private fun greenToast(message: String) {
+        val toast: Toast = Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT)
+        val view = toast.view
+
+        //  Gets the actual oval background of the Toast then sets the colour filter
+        view!!.background.setColorFilter(resources.getColor(R.color.color5), PorterDuff.Mode.SRC_IN)
+
+        //  Gets the TextView from the Toast so it can be edited
+        val text = view.findViewById<TextView>(android.R.id.message)
+        text.setTextColor(resources.getColor(R.color.white))
+
+        toast.show()
     }
 
     override fun onResume() {

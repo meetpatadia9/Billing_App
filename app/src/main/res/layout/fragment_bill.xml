@@ -67,6 +67,7 @@
                     app:boxBackgroundMode="outline"
                     app:boxCornerRadiusBottomEnd="@dimen/_3sdp"
                     app:boxCornerRadiusBottomStart="@dimen/_3sdp"
+                    app:helperTextTextColor="@color/color4"
                     app:boxCornerRadiusTopEnd="@dimen/_3sdp"
                     app:boxCornerRadiusTopStart="@dimen/_3sdp"
                     app:boxStrokeColor="@color/color2"

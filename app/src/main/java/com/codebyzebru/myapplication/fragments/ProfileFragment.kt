@@ -1,8 +1,11 @@
+@file:Suppress("DEPRECATION")
+
 package com.codebyzebru.myapplication.fragments
 
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.PorterDuff
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
@@ -13,6 +16,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -36,7 +40,7 @@ class ProfileFragment : Fragment() {
 
     private lateinit var binding: FragmentProfileBinding
 
-    lateinit var userID: String
+    private lateinit var userID: String
     private lateinit var databaseReference: DatabaseReference
 
     private lateinit var byteArray: ByteArray
@@ -50,8 +54,9 @@ class ProfileFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         (activity as HomeActivity).title = "User Profile"
-        binding = FragmentProfileBinding.inflate(layoutInflater, container, false)
+
         // Inflate the layout for this fragment
+        binding = FragmentProfileBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
@@ -133,7 +138,25 @@ class ProfileFragment : Fragment() {
         }
 
         binding.btnSaveProfile.setOnClickListener {
-            saveProfile()
+            if (binding.profileEdtxtName.text.toString().trim() == "") {
+                stopProgressbar()
+                binding.profileTIL1.helperText = "Required*"
+            }
+            else if (binding.profileEdtxtCompanyName.text.toString().trim() == "") {
+                stopProgressbar()
+                binding.profileTIL2.helperText = "Required*"
+            }
+            else if (binding.profileEdtxtEmail.text.toString().trim() == "") {
+                stopProgressbar()
+                binding.profileTIL4.helperText = "Required*"
+            }
+            else if (binding.profileEdtxtContact.text.toString().trim() == "") {
+                stopProgressbar()
+                binding.profileTIL5.helperText = "Required*"
+            }
+            else {
+                saveProfile()
+            }
         }
     }
 
@@ -171,8 +194,7 @@ class ProfileFragment : Fragment() {
         }
 
     private fun saveProfile() {
-        binding.btnSaveProfile.visibility = View.GONE
-        binding.profileProgressbar.visibility = View.VISIBLE
+        startProgressbar()
 
         val radioGroup = binding.profileGenderRg.checkedRadioButtonId
         val gender = requireView().findViewById<RadioButton>(radioGroup).text.toString()
@@ -199,23 +221,64 @@ class ProfileFragment : Fragment() {
         if (byteArray.isNotEmpty()) {
             FirebaseStorage.getInstance().getReference("Profile Images/$userID").putBytes(byteArray)
                 .addOnSuccessListener {
-                    Toast.makeText(requireContext(), "Image uploaded", Toast.LENGTH_SHORT).show()
+                    requireActivity().supportFragmentManager.popBackStack()
+                    stopProgressbar()
+                    greenToast()
                 }
                 .addOnFailureListener {
-                    Toast.makeText(requireContext(), "Failed to upload image", Toast.LENGTH_SHORT).show()
+                    stopProgressbar()
+                    redToast()
                 }
         }
         else {
             FirebaseStorage.getInstance().getReference("Profile Images/$userID").putFile(imgURI)
                 .addOnSuccessListener {
                     requireActivity().supportFragmentManager.popBackStack()
-                    binding.btnSaveProfile.visibility = View.VISIBLE
-                    binding.profileProgressbar.visibility = View.GONE
+                    stopProgressbar()
+                    greenToast()
                 }
                 .addOnFailureListener {
-                    Toast.makeText(requireContext(), "Failed to upload image", Toast.LENGTH_SHORT).show()
+                    stopProgressbar()
+                    redToast()
                 }
         }
     }
 
+    private fun redToast() {
+        val toast: Toast = Toast.makeText(requireContext(), "Ops! Something went wrong!!", Toast.LENGTH_SHORT)
+        val view = toast.view
+
+        //  Gets the actual oval background of the Toast then sets the colour filter
+        view!!.background.setColorFilter(resources.getColor(R.color.color5), PorterDuff.Mode.SRC_IN)
+
+        //  Gets the TextView from the Toast so it can be edited
+        val text = view.findViewById<TextView>(android.R.id.message)
+        text.setTextColor(resources.getColor(R.color.white))
+
+        toast.show()
+    }
+
+    private fun greenToast() {
+        val toast: Toast = Toast.makeText(requireContext(), "Profile updated successfully!!", Toast.LENGTH_SHORT)
+        val view = toast.view
+
+        //  Gets the actual oval background of the Toast then sets the colour filter
+        view!!.background.setColorFilter(resources.getColor(R.color.color5), PorterDuff.Mode.SRC_IN)
+
+        //  Gets the TextView from the Toast so it can be edited
+        val text = view.findViewById<TextView>(android.R.id.message)
+        text.setTextColor(resources.getColor(R.color.white))
+
+        toast.show()
+    }
+
+    private fun startProgressbar() {
+        binding.btnSaveProfile.visibility = View.GONE
+        binding.profileProgressbar.visibility = View.VISIBLE
+    }
+
+    private fun stopProgressbar() {
+        binding.btnSaveProfile.visibility = View.VISIBLE
+        binding.profileProgressbar.visibility = View.GONE
+    }
 }

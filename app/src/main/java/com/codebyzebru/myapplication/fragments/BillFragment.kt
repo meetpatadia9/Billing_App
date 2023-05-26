@@ -1,7 +1,10 @@
+@file:Suppress("DEPRECATION")
+
 package com.codebyzebru.myapplication.fragments
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.Dialog
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
@@ -16,7 +19,6 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.codebyzebru.myapplication.R
@@ -32,31 +34,25 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.fragment_bill.*
-import kotlinx.android.synthetic.main.fragment_bill.view.*
-import kotlinx.android.synthetic.main.popup_layout_additem.*
-import kotlinx.android.synthetic.main.popup_layout_billfrag_additem.*
-import kotlinx.android.synthetic.main.popup_layout_billfrag_additem.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
 class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
 
     lateinit var binding: FragmentBillBinding
-    lateinit var addItemBinding: PopupLayoutBillfragAdditemBinding
+    private lateinit var addItemBinding: PopupLayoutBillfragAdditemBinding
 
     private var billNo = 0
-    private lateinit var popupView: View
 
     private lateinit var database: DatabaseReference
     lateinit var userID: String
 
-    lateinit var editor: SharedPreferences.Editor
+    private lateinit var editor: SharedPreferences.Editor
     private var dataList = arrayListOf<String>()
     private var itemList = arrayListOf<String>()
     private var purchasedItemList = arrayListOf<PurchasedItemDataClass>()
 
-    lateinit var keyboardListener: ViewTreeObserver.OnGlobalLayoutListener
+    private lateinit var keyboardListener: ViewTreeObserver.OnGlobalLayoutListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,7 +94,7 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
         binding.billFragTxtBillNo.setText(billNo.toString())
         Log.d("billNo", billNo.toString())
 
-        view.billFrag_txt_date?.text = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date()).toString()
+        binding.billFragTxtDate.text = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date()).toString()
         /**
         OR YOU CAN USE THIS METHOD ALSO TO GET LOCAL DATE, BY GETTING INSTANCE OF CALENDAR
 
@@ -108,8 +104,8 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
         val month = calendar.get(Calendar.MONTH)        //  month start from 0. (ex. Jan-0, Feb-1,...,Dec-11)
         val year = calendar.get(Calendar.YEAR)
 
-        view.billFrag_txt_date.text = day.toString() + "-" + (month+1).toString() + "-" + year.toString()
-         */
+        binding.billFragTxtDate.text = day.toString() + "-" + (month+1).toString() + "-" + year.toString()
+        */
 
         //  Fetching Party Data
         FirebaseDatabase.getInstance().getReference("Users/$userID/Party Data")
@@ -163,22 +159,18 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
         })
 
         //  ADD-ITEM BUTTON
-        view.findViewById<Button>(R.id.billFrag_btn_addItem).setOnClickListener {
+        binding.billFragBtnAddItem.setOnClickListener {
             itemList.clear()
 
             addItemBinding = PopupLayoutBillfragAdditemBinding.inflate(LayoutInflater.from(requireContext()))
 
-            val builder = AlertDialog.Builder(requireContext())
-            val inflater = LayoutInflater.from(context)
-            popupView = inflater.inflate(R.layout.popup_layout_billfrag_additem, null)
-            builder.setView(popupView)
+            val dialog = Dialog(requireContext())
+            dialog.setContentView(addItemBinding.root)
+            dialog.show()
 
-            val alertDialog = builder.create()
-            alertDialog.show()
-
-            val pName = popupView.findViewById<AutoCompleteTextView>(R.id.additem_billFrag_autotxt_productName)
-            val pQty = popupView.findViewById<EditText>(R.id.additem_billFrag_edittxt_qty)
-            val pPrice = popupView.findViewById<EditText>(R.id.additem_billFrag_edittxt_price)
+            val pName = addItemBinding.additemBillFragAutotxtProductName
+            val pQty = addItemBinding.additemBillFragEdittxtQty
+            val pPrice = addItemBinding.additemBillFragEdittxtPrice
 
             //  Applying padding between Floating Label and EditText
             pName.setPadding(0, 25, 0, 0)
@@ -231,28 +223,39 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
             })
 
             //  POPUP ADD-ITEM BUTTON
-            popupView.findViewById<Button>(R.id.billFrag_addItem_btnAdd).setOnClickListener {
-                purchasedItemList.add(
-                    PurchasedItemDataClass(
-                        pName.text.toString(),
-                        pQty.text.toString().toInt(),
-                        pPrice.text.toString().toInt()
+            addItemBinding.billFragAddItemBtnAdd.setOnClickListener {
+                if (pName.text.toString().trim() == "") {
+                    addItemBinding.til1.helperText = "Required*"
+                }
+                else if (pQty.text.toString().trim() == "") {
+                    addItemBinding.til2.helperText = "Required*"
+                }
+                else if (pPrice.text.toString().trim() == "") {
+                    addItemBinding.til3.helperText = "Required*"
+                }
+                else {
+                    purchasedItemList.add(
+                        PurchasedItemDataClass(
+                            pName.text.toString(),
+                            pQty.text.toString().toInt(),
+                            pPrice.text.toString().toInt()
+                        )
                     )
-                )
-                Log.d("purchasedItemList", purchaseRecyclerView.toString())
+                    Log.d("purchasedItemList", purchaseRecyclerView.toString())
 
-                purchaseRecyclerView.adapter = PurchasedItemAdapter(requireContext(), purchasedItemList, this)
-                alertDialog.dismiss()
+                    purchaseRecyclerView.adapter = PurchasedItemAdapter(requireContext(), purchasedItemList, this)
+                    dialog.dismiss()
+                }
             }
         }
 
         //  GENERATE BILL BUTTON
-        view.btnGenerateBill.setOnClickListener {
+        binding.btnGenerateBill.setOnClickListener {
             if (autoCompleteTextView.text.toString().trim() == "") {
                 binding.til1.helperText = "Required*"
             }
             else if (billTotal.text.toString().trim() == "") {
-                redToast("You cannot proceed without total of bill!")
+                redToast()
             }
             else {
                 generateBill()
@@ -294,8 +297,7 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
         )
 
         val billKey = database.child("Bills").push().key.toString()
-        FirebaseDatabase.getInstance().getReference("Users/$userID").child("Bills")
-            .child(billKey).setValue(bill)
+        FirebaseDatabase.getInstance().getReference("Users/$userID").child("Bills").child(billKey).setValue(bill)
             .addOnCompleteListener {
                 if (it.isSuccessful) {
                     requireActivity().supportFragmentManager.beginTransaction()
@@ -306,14 +308,14 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
             }
     }
 
-    private fun redToast(message: String) {
-        val toast: Toast = Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT)
+    private fun redToast() {
+        val toast: Toast = Toast.makeText(requireContext(), "You cannot proceed without total of bill!", Toast.LENGTH_SHORT)
         val view = toast.view
 
-        //Gets the actual oval background of the Toast then sets the colour filter
+        //  Gets the actual oval background of the Toast then sets the colour filter
         view!!.background.setColorFilter(resources.getColor(R.color.color4), PorterDuff.Mode.SRC_IN)
 
-        //Gets the TextView from the Toast so it can be edited
+        //  Gets the TextView from the Toast so it can be edited
         val text = view.findViewById<TextView>(android.R.id.message)
         text.setTextColor(resources.getColor(R.color.white))
 
@@ -332,12 +334,12 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
     }
 
     override fun onSubTotalUpdate(total: Int) {
-        view?.billFrag_edtxt_total?.setText(total.toString())
+        binding.billFragEdtxtTotal.setText(total.toString())
     }
 
     /*
        TO GET STATE OF KEYBOARD
-   */
+    */
     //  get root view of activity
     private fun Activity.getRootView(): View {
         return findViewById(android.R.id.content)

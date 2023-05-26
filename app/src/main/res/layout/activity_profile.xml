@@ -10,7 +10,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
+333
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -33,6 +33,7 @@
                 app:boxCornerRadiusTopStart="15dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                app:helperTextTextColor="@color/color4"
                 app:layout_constraintTop_toBottomOf="@id/newProfile_img"
                 app:startIconDrawable="@drawable/baseline_person_4_24"
                 app:startIconTint="@color/color1"
@@ -60,6 +61,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/til1"
+                app:helperTextTextColor="@color/color4"
                 app:startIconDrawable="@drawable/baseline_mail_outline_24"
                 app:startIconTint="@color/color1"
                 android:layout_width="@dimen/_250sdp"
@@ -84,6 +86,7 @@
                 app:boxCornerRadiusTopEnd="15dp"
                 app:boxCornerRadiusTopStart="15dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:helperTextTextColor="@color/color4"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/til2"
                 app:startIconDrawable="@drawable/baseline_business_24"
@@ -110,6 +113,7 @@
                 app:boxCornerRadiusTopEnd="15dp"
                 app:boxCornerRadiusTopStart="15dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:helperTextTextColor="@color/color4"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/til3"
                 app:startIconDrawable="@drawable/baseline_phone_24"
@@ -137,6 +141,7 @@
                 app:boxCornerRadiusTopEnd="15dp"
                 app:boxCornerRadiusTopStart="15dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:helperTextTextColor="@color/color4"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/til4"
                 app:startIconDrawable="@drawable/baseline_location_on_24"
