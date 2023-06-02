@@ -54,12 +54,16 @@ class HistoryFragment : Fragment() {
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
+                        binding.historyFragNoDataFrameLayout.visibility = View.GONE
                         for (item in snapshot.children) {
                             val listedData = item.getValue(HistoryDataClass::class.java)
                             listedData!!.key = item.key.toString()
                             billList.add(listedData)
                         }
-                        binding.historyFragRecyclerView.adapter = HistoryAdapter(context!!, billList)
+                        binding.historyFragRecyclerView.adapter = HistoryAdapter(requireActivity(), billList)
+                    }
+                    else {
+                        binding.historyFragNoDataFrameLayout.visibility = View.VISIBLE
                     }
                 }
 

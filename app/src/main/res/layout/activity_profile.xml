@@ -10,7 +10,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-333
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -45,7 +45,7 @@
                     android:id="@+id/newProfile_edtxt_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Full name"
+                    android:hint="Full name*"
                     android:inputType="textEmailAddress"
                     android:singleLine="true"
                     android:autofillHints="name"/>
@@ -72,7 +72,7 @@
                     android:id="@+id/newProfile_edtxt_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Email"
+                    android:hint="Email*"
                     android:inputType="textEmailAddress"
                     android:singleLine="true"
                     android:autofillHints="emailAddress" />
@@ -114,6 +114,7 @@
                 app:boxCornerRadiusTopStart="15dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:helperTextTextColor="@color/color4"
+                app:boxStrokeErrorColor="@color/color4"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/til3"
                 app:startIconDrawable="@drawable/baseline_phone_24"
@@ -126,7 +127,7 @@
                     android:id="@+id/newProfile_edtxt_phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Contact number"
+                    android:hint="Contact number*"
                     android:inputType="phone"
                     android:singleLine="true"
                     android:maxLength="13"

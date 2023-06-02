@@ -32,4 +32,32 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <FrameLayout
+        android:id="@+id/partyFrag_noData_frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="@dimen/_270sdp"
+            android:layout_height="@dimen/_500sdp"
+            android:src="@drawable/add_user_cuate"
+            android:layout_gravity="center|top"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No data available. \nPlease add customers to display."
+            android:textSize="@dimen/_15ssp"
+            android:textStyle=""
+            android:textAlignment="center"
+            android:textColor="@color/blur_color2"
+            android:layout_gravity="center|bottom"
+            android:layout_marginBottom="@dimen/_130sdp"/>
+
+    </FrameLayout>
+
 </FrameLayout>

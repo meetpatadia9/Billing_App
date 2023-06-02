@@ -28,7 +28,7 @@
             android:id="@+id/addParty_edtxt_partyName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Party Name"
+            android:hint="Party Name*"
             android:padding="@dimen/_9sdp"
             android:singleLine="true" />
 
@@ -146,7 +146,7 @@
             android:id="@+id/addParty_edtxt_contact"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Contact"
+            android:hint="Contact*"
             android:inputType="phone"
             android:padding="@dimen/_9sdp"
             android:singleLine="true" />

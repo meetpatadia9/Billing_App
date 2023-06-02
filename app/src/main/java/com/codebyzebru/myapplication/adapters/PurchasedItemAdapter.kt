@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.codebyzebru.myapplication.databinding.SingleViewPurchaseItemBinding
 import com.codebyzebru.myapplication.dataclasses.PurchasedItemDataClass
 
-class PurchasedItemAdapter(val context: Context, private val itemList: List<PurchasedItemDataClass>, private val totalListener: SubTotalListener)
+class PurchasedItemAdapter(val context: Context, private val itemList: List<PurchasedItemDataClass>, private val totalListener: SubTotalListener, val listener: OnClick)
     : RecyclerView.Adapter<PurchasedItemAdapter.PurchasedItemViewHolder>() {
 
     private var myTotal = arrayListOf<Int>()
@@ -73,11 +73,22 @@ class PurchasedItemAdapter(val context: Context, private val itemList: List<Purc
                 val sum = myTotal.sum()
                 Log.d("sum", sum.toString())
                 totalListener.onSubTotalUpdate(sum)
+
+                itemBinding.btnRemovePurchasedItem.setOnClickListener {
+                    myTotal.clear()
+                    totalListener.onSubTotalUpdate(sum)
+                    listener.removeItem(this)
+                    notifyDataSetChanged()
+                }
             }
         }
     }
 
     interface SubTotalListener {
         fun onSubTotalUpdate(total: Int)
+    }
+
+    interface OnClick {
+        fun removeItem(purchasedItemDataClass: PurchasedItemDataClass)
     }
 }

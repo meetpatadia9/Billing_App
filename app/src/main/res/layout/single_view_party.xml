@@ -33,7 +33,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/singleView_party_name"
-            tools:text="C1 Pvt. Ltd." />
+            tools:text="C1 Pvt. Ltd."
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/singleView_party_totalPurchase"

@@ -2,6 +2,7 @@ package com.codebyzebru.myapplication.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
@@ -28,12 +29,19 @@ class PartyAdapter(val context: Context, private val partyList: ArrayList<ViewPa
         holder.apply {
             with(partyList[position]) {
                 itemBinding.singleViewPartyName.text = this.partyName
-                itemBinding.singleViewPartyCompany.text = this.companyName
+                if (this.companyName == "") {
+                    itemBinding.singleViewPartyCompany.visibility = View.GONE
+                }
+                else {
+                    itemBinding.singleViewPartyCompany.visibility = View.VISIBLE
+                    itemBinding.singleViewPartyCompany.text = this.companyName
+                }
                 itemBinding.singleViewPartyTotalPurchase.text = this.totalPurchase.toString()
             }
 
             itemView.setOnClickListener {
                 onItemClick.onClick(partyList[position])
+                notifyDataSetChanged()
             }
 
             //  Animation on Recyclerview, when it loads new ItemView

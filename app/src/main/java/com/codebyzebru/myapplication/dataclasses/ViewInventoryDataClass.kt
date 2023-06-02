@@ -3,7 +3,7 @@ package com.codebyzebru.myapplication.dataclasses
 data class ViewInventoryDataClass(
     var key: String = "",
     val productName: String = "",
-    val purchasingPrice: Int = 0,
+    val purchasingPrice: String? = "",
     val sellingPrice: Int = 0,
-    val productQty: Int = 0
+    var productQty: Int = 0
 )

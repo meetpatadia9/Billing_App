@@ -24,4 +24,8 @@
     <color name="color3">#dadada</color>
     <color name="color4">#cb3f3f</color>
     <color name="color5">#61b937</color>
+    <color name="color_success">#b6f8c4</color>
+    <color name="color_info">#b2e7f5</color>
+    <color name="color_warning">#fae7c7</color>
+    <color name="color_error">#ffb7b7</color>
 </resources>

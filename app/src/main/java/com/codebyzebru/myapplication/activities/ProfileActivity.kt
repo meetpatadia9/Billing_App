@@ -5,18 +5,19 @@ package com.codebyzebru.myapplication.activities
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.PorterDuff
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.RadioButton
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -39,6 +40,8 @@ import com.google.firebase.storage.FirebaseStorage
 import java.io.ByteArrayOutputStream
 import java.io.File
 import com.codebyzebru.myapplication.R
+import com.codebyzebru.myapplication.databinding.ToastErrorBinding
+import com.codebyzebru.myapplication.databinding.ToastSuccessBinding
 import java.util.regex.Pattern
 
 class ProfileActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityReceiverListener {
@@ -162,6 +165,10 @@ class ProfileActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRe
                 }
         }
 
+        binding.newProfileEdtxtName.addTextChangedListener(textWatcher)
+        binding.newProfileEdtxtEmail.addTextChangedListener(textWatcher)
+        binding.newProfileEdtxtPhone.addTextChangedListener(textWatcher)
+
         binding.newProfileBtnSave.setOnClickListener {
             addNewUser()
         }
@@ -219,17 +226,14 @@ class ProfileActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRe
             stopProgressbar()
             binding.til2.helperText = "Enter valid Email"
         }
-        else if (binding.newProfileEdtxtOrg.text.toString().trim() == "") {
-            stopProgressbar()
-            binding.til3.helperText = "Required*"
-        }
         else if (binding.newProfileEdtxtPhone.text.toString().trim() == "") {
             stopProgressbar()
             binding.til4.helperText = "Required*"
         }
 
-        if (binding.newProfileEdtxtName.text.toString().trim() != "" && binding.newProfileEdtxtOrg.text.toString().trim() != "" &&
-            binding.newProfileEdtxtEmail.text.toString().trim() != "" && binding.newProfileEdtxtPhone.text.toString().trim() != "") {
+        if (binding.newProfileEdtxtName.text.toString().trim() != "" &&
+            binding.newProfileEdtxtEmail.text.toString().trim() != "" &&
+            binding.newProfileEdtxtPhone.text.toString().trim() != "") {
             if (byteArray.isNotEmpty()) {
                 uploadProfileData()
                 //  uploading image on firebase-storage
@@ -237,8 +241,8 @@ class ProfileActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRe
                     .addOnSuccessListener {
                         startProgressbar()
                         uploadProfileData()
-                        updateUI()
                         greenToast()
+                        updateUI()
                     }
                     .addOnFailureListener {
                         redToast(it.message.toString())
@@ -252,17 +256,20 @@ class ProfileActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRe
                     .addOnSuccessListener {
                         startProgressbar()
                         uploadProfileData()
-                        updateUI()
                         greenToast()
+                        updateUI()
                     }
                     .addOnFailureListener {
                         redToast(it.message.toString())
                         stopProgressbar()
                     }
             }
-            else {
-                redToast("Please select your profile image!!")
-                stopProgressbar()
+            else if (byteArray.isEmpty() && imgURI.toString().isEmpty()) {
+                uploadProfileData()
+                startProgressbar()
+                uploadProfileData()
+                greenToast()
+                updateUI()
             }
         }
     }
@@ -272,31 +279,81 @@ class ProfileActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRe
         return EMAIL_ADDRESS_PATTERN.matcher(str).matches()
     }
 
-    private fun redToast(message: String) {
-        val toast: Toast = Toast.makeText(this, message, Toast.LENGTH_SHORT)
-        val view = toast.view
+    //  TEXT-WATCHER
+    private val textWatcher: TextWatcher = object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            binding.til1.helperText = ""
+            binding.til2.helperText = ""
+            binding.til4.helperText = ""
 
-        //  Gets the actual oval background of the Toast then sets the colour filter
-        view!!.background.setColorFilter(resources.getColor(R.color.color5), PorterDuff.Mode.SRC_IN)
+        }
 
-        //  Gets the TextView from the Toast so it can be edited
-        val text = view.findViewById<TextView>(android.R.id.message)
-        text.setTextColor(resources.getColor(R.color.white))
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            when (s.hashCode()) {
+                binding.newProfileEdtxtName.text.hashCode() -> {
+                    if (binding.newProfileEdtxtName.text.toString().trim() == "") {
+                        binding.til1.helperText = "Required*"
+                    }
+                }
+                binding.newProfileEdtxtEmail.text.hashCode() -> {
+                    if (binding.newProfileEdtxtEmail.text.toString().trim() == "") {
+                        binding.til2.helperText = "Required*"
+                    }
+                }
+                binding.newProfileEdtxtEmail.text.hashCode() -> {
+                    if (!isValidString(binding.newProfileEdtxtEmail.text.toString())) {
+                        binding.til2.helperText = "Enter valid email*"
+                    }
+                }
+                binding.newProfileEdtxtPhone.text.hashCode() -> {
+                    if (binding.newProfileEdtxtPhone.text.toString().trim() == "") {
+                        binding.til4.helperText = "Required*"
+                    }
+                }
+            }
+        }
 
-        toast.show()
+        override fun afterTextChanged(s: Editable?) {
+            when (s.hashCode()) {
+                binding.newProfileEdtxtName.text.hashCode() -> {
+                    if (binding.newProfileEdtxtName.text.toString().trim() == "") {
+                        binding.til1.helperText = "Required*"
+                    }
+                }
+                binding.newProfileEdtxtEmail.text.hashCode() -> {
+                    if (binding.newProfileEdtxtEmail.text.toString().trim() == "") {
+                        binding.til2.helperText = "Required*"
+                    }
+                }
+                binding.newProfileEdtxtEmail.text.hashCode() -> {
+                    if (!isValidString(binding.newProfileEdtxtEmail.text.toString())) {
+                        binding.til2.helperText = "Enter valid email*"
+                    }
+                }
+                binding.newProfileEdtxtPhone.text.hashCode() -> {
+                    if (binding.newProfileEdtxtPhone.text.toString().trim() == "") {
+                        binding.til4.helperText = "Required*"
+                    }
+                }
+            }
+        }
     }
 
     private fun greenToast() {
-        val toast: Toast = Toast.makeText(this, "Profile created successfully!!", Toast.LENGTH_SHORT)
-        val view = toast.view
+        val toastBinding = ToastSuccessBinding.inflate(LayoutInflater.from(this))
+        val toast = Toast(this)
+        toastBinding.txtToastMessage.text = "Profile created successfully!!"
+        toast.setView(toastBinding.root)
+        toast.setDuration(Toast.LENGTH_LONG)
+        toast.show()
+    }
 
-        //  Gets the actual oval background of the Toast then sets the colour filter
-        view!!.background.setColorFilter(resources.getColor(R.color.color5), PorterDuff.Mode.SRC_IN)
-
-        //  Gets the TextView from the Toast so it can be edited
-        val text = view.findViewById<TextView>(android.R.id.message)
-        text.setTextColor(resources.getColor(R.color.white))
-
+    private fun redToast(message: String) {
+        val toastBinding = ToastErrorBinding.inflate(LayoutInflater.from(this))
+        val toast = Toast(this)
+        toastBinding.txtToastMessage.text = message
+        toast.setView(toastBinding.root)
+        toast.setDuration(Toast.LENGTH_LONG)
         toast.show()
     }
 
@@ -312,10 +369,10 @@ class ProfileActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRe
 
     private fun uploadProfileData() {
         databaseReference.child("fullName").setValue(binding.newProfileEdtxtName.text.toString().trim())
-        databaseReference.child("companyName").setValue(binding.newProfileEdtxtOrg.text.toString().trim())
+        databaseReference.child("companyName").setValue(binding.newProfileEdtxtOrg.text?.toString()?.trim())
         databaseReference.child("email").setValue(binding.newProfileEdtxtEmail.text.toString().trim())
         databaseReference.child("contact").setValue(binding.newProfileEdtxtPhone.text.toString().trim())
-        databaseReference.child("address").setValue(binding.newProfileEdtxtAddress.text.toString().trim())
+        databaseReference.child("address").setValue(binding.newProfileEdtxtAddress.text?.toString()?.trim())
         databaseReference.child("gender").setValue(gender?.text.toString())
         databaseReference.child("password").setValue(password.trim())
     }
@@ -331,7 +388,7 @@ class ProfileActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRe
 
     /*
            CHECKING FOR ACTIVE INTERNET CONNECTION
-   */
+    */
     private fun noInternet() {
         isConnected = false
     }

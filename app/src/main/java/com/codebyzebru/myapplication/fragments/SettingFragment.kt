@@ -58,7 +58,7 @@ class SettingFragment : Fragment() {
         FirebaseStorage.getInstance().getReference("Profile Images/$userID").getFile(localFile)
             .addOnSuccessListener {
                 val bitmapFactory = BitmapFactory.decodeFile(localFile.absolutePath)
-                Glide.with(requireContext()).load(bitmapFactory).into(binding.profileImage)
+                Glide.with(requireActivity()).load(bitmapFactory).into(binding.profileImage)
             }
             .addOnFailureListener {
                 Log.d("Failed to load profile image", it.message.toString())

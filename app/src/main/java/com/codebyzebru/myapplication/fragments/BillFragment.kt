@@ -8,9 +8,10 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
-import android.graphics.PorterDuff
 import android.graphics.Rect
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
@@ -26,6 +27,7 @@ import com.codebyzebru.myapplication.activities.HomeActivity
 import com.codebyzebru.myapplication.adapters.PurchasedItemAdapter
 import com.codebyzebru.myapplication.databinding.FragmentBillBinding
 import com.codebyzebru.myapplication.databinding.PopupLayoutBillfragAdditemBinding
+import com.codebyzebru.myapplication.databinding.ToastErrorBinding
 import com.codebyzebru.myapplication.dataclasses.BillDataClass
 import com.codebyzebru.myapplication.dataclasses.PurchasedItemDataClass
 import com.codebyzebru.myapplication.dataclasses.ViewInventoryDataClass
@@ -44,13 +46,20 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
 
     private var billNo = 0
 
+    private lateinit var userID: String
     private lateinit var database: DatabaseReference
-    lateinit var userID: String
+    private lateinit var partyDB: DatabaseReference
+    private lateinit var invDB: DatabaseReference
 
     private lateinit var editor: SharedPreferences.Editor
     private var dataList = arrayListOf<String>()
     private var itemList = arrayListOf<String>()
     private var purchasedItemList = arrayListOf<PurchasedItemDataClass>()
+    private var invItemList = arrayListOf<ViewInventoryDataClass>()
+
+    private lateinit var partyID: String
+    private var totalPurchasedAmt = 0
+    private var productQty = 0
 
     private lateinit var keyboardListener: ViewTreeObserver.OnGlobalLayoutListener
 
@@ -58,6 +67,9 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
         super.onCreate(savedInstanceState)
         userID = FirebaseAuth.getInstance().currentUser!!.uid
         database = Firebase.database.reference
+
+        partyDB = FirebaseDatabase.getInstance().getReference("Users/$userID/Party Data")
+        invDB = FirebaseDatabase.getInstance().getReference("Users/$userID/Inventory Data")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -105,18 +117,32 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
         val year = calendar.get(Calendar.YEAR)
 
         binding.billFragTxtDate.text = day.toString() + "-" + (month+1).toString() + "-" + year.toString()
-        */
+         */
+
+        invDB.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    for (inv in snapshot.children) {
+                        val invData = inv.getValue(ViewInventoryDataClass::class.java)
+                        invData!!.key = inv.key.toString()
+                        invItemList.add(invData)
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("Failed to fetch Inventory data", error.message)
+            }
+        })
 
         //  Fetching Party Data
-        FirebaseDatabase.getInstance().getReference("Users/$userID/Party Data")
-            .addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    if (snapshot.exists()) {
-                        for (item in snapshot.children) {
-                            val listedData = item.getValue(ViewPartyDataClass::class.java)
-                            listedData!!.key = item.key.toString()
-                            dataList.add(listedData.partyName)      //  storing `partyName` into separate arraylist
-                            Log.d("dataList", dataList.toString())
+        partyDB.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    for (item in snapshot.children) {
+                        val listedData = item.getValue(ViewPartyDataClass::class.java)
+                        listedData!!.key = item.key.toString()
+                        dataList.add(listedData.partyName)      //  storing `partyName` into separate arraylist
 
                         //  Setting adapter to `AutoCompleteTextView`
                         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, dataList)
@@ -126,23 +152,21 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
                         autoCompleteTextView.setOnItemClickListener(object : AdapterView.OnItemClickListener {
                             override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                                 val selected = parent!!.getItemAtPosition(position) as String       //  getting text of selected item
-                                Log.d("Selected Position", dataList.indexOf(autoCompleteTextView.text.toString()).toString())
-                                Log.d("Selected Name", selected)
 
                                 autoCompleteTextView.clearFocus()
 
                                 //  Loop to set data as per Data-Class
                                 for (party in snapshot.children) {
-                                    val partyNameData =
-                                        party.getValue(ViewPartyDataClass::class.java)
+                                    val partyNameData = party.getValue(ViewPartyDataClass::class.java)
                                     //  Checking, Is selected item exist in `snapshot.children`
                                     if (partyNameData?.partyName.equals(selected)) {
-                                        Log.d("partyNameData", partyNameData.toString())
-
+                                        partyID = party?.key.toString()
                                         email.setText(partyNameData?.email)
                                         organization.setText(partyNameData?.companyName)
                                         address.setText(partyNameData?.address)
                                         contact.setText(partyNameData?.contact)
+                                        totalPurchasedAmt = partyNameData?.totalPurchase.toString().toInt()
+
                                         // hide keyboard after filling these details
                                         hideKeyboard()
                                     }
@@ -154,7 +178,7 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Log.d("Error", error.toString())
+                Log.e("Error", error.toString())
             }
         })
 
@@ -168,38 +192,35 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
             dialog.setContentView(addItemBinding.root)
             dialog.show()
 
+            var itemKey = ""
             val pName = addItemBinding.additemBillFragAutotxtProductName
             val pQty = addItemBinding.additemBillFragEdittxtQty
             val pPrice = addItemBinding.additemBillFragEdittxtPrice
 
             //  Applying padding between Floating Label and EditText
-            pName.setPadding(0, 25, 0, 0)
+//            pName.setPadding(25, 25, 25, 25)
 
             //  Fetching Inventory Data
-            FirebaseDatabase.getInstance().getReference("Users/$userID/Inventory Data")
-                .addValueEventListener(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        if (snapshot.exists()) {
-                            for (item in snapshot.children) {
-                                val listedItem = item.getValue(ViewInventoryDataClass::class.java)
-                                listedItem!!.key = item.key.toString()
-                                itemList.add(listedItem.productName)
-                                Log.d("dataList", itemList.toString())
+            invDB.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        for (item in snapshot.children) {
+                            val listedItem = item.getValue(ViewInventoryDataClass::class.java)
+                            listedItem!!.key = item.key.toString()
+                            itemList.add(listedItem.productName)
 
-                                //  Setting adapter to `AutoCompleteTextView`
-                                val adapter = ArrayAdapter(
-                                    requireContext(),
-                                    android.R.layout.simple_list_item_1,
-                                    itemList
-                                )
+                            //  Setting adapter to `AutoCompleteTextView`
+                            val adapter = ArrayAdapter(
+                                requireContext(),
+                                android.R.layout.simple_list_item_1,
+                                itemList
+                            )
                             pName.setAdapter(adapter)
 
                             //  `AutoCompleteTextView` item-click-listener
                             pName.setOnItemClickListener(object : AdapterView.OnItemClickListener {
                                 override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                                     val selected = parent!!.getItemAtPosition(position) as String
-                                    Log.d("Selected Position", itemList.indexOf(pName.text.toString()).toString())
-                                    Log.d("Selected Product", selected)
                                     hideKeyboard()
 
                                     //  Loop to set data as per Data-Class
@@ -207,10 +228,13 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
                                         val pNameData = product.getValue(ViewInventoryDataClass::class.java)
                                         //  Checking, Is selected item exist in `snapshot.children`
                                         if (pNameData?.productName.equals(selected)) {
-                                            Log.d("partyNameData", pNameData.toString())
-                                            pPrice.setText(pNameData?.purchasingPrice.toString())
+                                            pPrice.setText(pNameData?.sellingPrice.toString())
+                                            itemKey = pNameData!!.key
+
+                                            productQty = pNameData.productQty.toString().toInt()
                                         }
                                     }
+                                    pQty.addTextChangedListener(qtyWatcher)
                                 }
                             })
                         }
@@ -225,25 +249,33 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
             //  POPUP ADD-ITEM BUTTON
             addItemBinding.billFragAddItemBtnAdd.setOnClickListener {
                 if (pName.text.toString().trim() == "") {
-                    addItemBinding.til1.helperText = "Required*"
+                    addItemBinding.til1.helperText = "Product name is require"
                 }
                 else if (pQty.text.toString().trim() == "") {
-                    addItemBinding.til2.helperText = "Required*"
+                    addItemBinding.til2.helperText = "Quantity is require"
                 }
                 else if (pPrice.text.toString().trim() == "") {
-                    addItemBinding.til3.helperText = "Required*"
+                    addItemBinding.til3.helperText = "Selling price is require"
                 }
                 else {
                     purchasedItemList.add(
                         PurchasedItemDataClass(
+                            itemKey,
                             pName.text.toString(),
                             pQty.text.toString().toInt(),
                             pPrice.text.toString().toInt()
                         )
                     )
-                    Log.d("purchasedItemList", purchaseRecyclerView.toString())
 
-                    purchaseRecyclerView.adapter = PurchasedItemAdapter(requireContext(), purchasedItemList, this)
+                    purchaseRecyclerView.adapter = PurchasedItemAdapter(requireContext(), purchasedItemList, this,
+                        object : PurchasedItemAdapter.OnClick {
+                            override fun removeItem(purchasedItemDataClass: PurchasedItemDataClass) {
+                                purchasedItemList.remove(purchasedItemDataClass)
+                                if (purchasedItemList.isEmpty()) {
+                                    binding.billFragEdtxtTotal.text.clear()
+                                }
+                            }
+                        })
                     dialog.dismiss()
                 }
             }
@@ -252,12 +284,18 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
         //  GENERATE BILL BUTTON
         binding.btnGenerateBill.setOnClickListener {
             if (autoCompleteTextView.text.toString().trim() == "") {
-                binding.til1.helperText = "Required*"
+                binding.til1.helperText = "Required"
+            }
+            /*else if (contact.text.toString().trim() == "") {
+                binding.til4.helperText = "Required"
+            }*/
+            else if (binding.billFragTxtBillNo.text.toString().trim() == "") {
+                redToast("You cannot proceed without bill number!")
             }
             else if (billTotal.text.toString().trim() == "") {
-                redToast()
+                redToast("You cannot proceed without total of bill!")
             }
-            else {
+            else {      //  accepting condition
                 generateBill()
             }
         }
@@ -265,6 +303,36 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
         keyboardListener = ViewTreeObserver.OnGlobalLayoutListener {
             if (requireActivity().isKeyboardOpen()) {
                 scrollUpToMyWantedPosition()
+            }
+        }
+    }
+
+    private val qtyWatcher: TextWatcher = object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            addItemBinding.til2.helperText = ""
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            if (addItemBinding.additemBillFragEdittxtQty.text.toString().trim().isNotEmpty()) {
+                if (addItemBinding.additemBillFragEdittxtQty.text.toString().toInt() > productQty) {
+                    addItemBinding.til2.helperText = "Not enough in stoke"
+                    addItemBinding.billFragAddItemBtnAdd.isEnabled = false
+                } else {
+                    addItemBinding.til2.helperText = ""
+                    addItemBinding.billFragAddItemBtnAdd.isEnabled = true
+                }
+            }
+        }
+
+        override fun afterTextChanged(s: Editable?) {
+            if (addItemBinding.additemBillFragEdittxtQty.text.toString().trim().isNotEmpty()) {
+                if (addItemBinding.additemBillFragEdittxtQty.text.toString().toInt() > productQty) {
+                    addItemBinding.til2.helperText = "Not enough in stoke"
+                    addItemBinding.billFragAddItemBtnAdd.isEnabled = false
+                } else {
+                    addItemBinding.til2.helperText = ""
+                    addItemBinding.billFragAddItemBtnAdd.isEnabled = true
+                }
             }
         }
     }
@@ -279,6 +347,8 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
         val contact = binding.billFragEdtxtContact
         val billTotal = binding.billFragEdtxtTotal
 
+        totalPurchasedAmt += billTotal.text.toString().toInt()
+
         billNo += 1     //  incrementing Bill-Number by 1
         Log.d("billNo", billNo.toString())
         editor.putInt("billNo", billNo)     //  saving new value in editor
@@ -288,37 +358,63 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
             date = txtDate.text.toString(),
             billNo = edtxtBillNo.text.toString(),
             buyer = autoCompleteTextView.text.toString(),
-            email = email.text.toString(),
-            organization = organization.text.toString(),
-            address = address.text.toString(),
+            email = email.text?.toString(),
+            organization = organization.text?.toString(),
+            address = address.text?.toString(),
             contact = contact.text.toString(),
             purchasedItems = purchasedItemList,
             billTotal = billTotal.text.toString().toInt()
         )
 
         val billKey = database.child("Bills").push().key.toString()
+
         FirebaseDatabase.getInstance().getReference("Users/$userID").child("Bills").child(billKey).setValue(bill)
             .addOnCompleteListener {
-                if (it.isSuccessful) {
-                    requireActivity().supportFragmentManager.beginTransaction()
-                        .replace(R.id.layout_home, HomeFragment())
-                        .addToBackStack(null)
-                        .commit()
-                }
+                FirebaseDatabase.getInstance().getReference("Users/$userID/Party Data/$partyID")
+                    .child("totalPurchase").setValue(totalPurchasedAmt)
+                    .addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            if (purchasedItemList.isNotEmpty()) {
+                                for (purchasedItemList in purchasedItemList) {
+                                    invItemList.find { inv ->
+                                        inv.key == purchasedItemList.key
+                                    }
+                                        .let { inv ->
+                                            inv!!.productQty -= purchasedItemList.pQty
+
+                                            FirebaseDatabase.getInstance().getReference("Users/$userID")
+                                                .child("Inventory Data").child(purchasedItemList.key).child("productQty")
+                                                .setValue(inv?.productQty)
+                                        }
+                                }
+                            }
+
+                            requireActivity().supportFragmentManager.beginTransaction()
+                                .replace(R.id.layout_home, HomeFragment())
+                                .addToBackStack(null)
+                                .commit()
+                        }
+                    }
             }
     }
 
-    private fun redToast() {
-        val toast: Toast = Toast.makeText(requireContext(), "You cannot proceed without total of bill!", Toast.LENGTH_SHORT)
-        val view = toast.view
+    /*
+    private fun greenToast() {
+        val toastBinding = ToastSuccessBinding.inflate(LayoutInflater.from(requireContext()))
+        val toast = Toast(requireContext())
+        toastBinding.txtToastMessage.text = "Bill created"
+        toast.setView(toastBinding.root)
+        toast.setDuration(Toast.LENGTH_LONG)
+        toast.show()
+    }
+    */
 
-        //  Gets the actual oval background of the Toast then sets the colour filter
-        view!!.background.setColorFilter(resources.getColor(R.color.color4), PorterDuff.Mode.SRC_IN)
-
-        //  Gets the TextView from the Toast so it can be edited
-        val text = view.findViewById<TextView>(android.R.id.message)
-        text.setTextColor(resources.getColor(R.color.white))
-
+    private fun redToast(message: String) {
+        val toastBinding = ToastErrorBinding.inflate(LayoutInflater.from(requireContext()))
+        val toast = Toast(requireContext())
+        toastBinding.txtToastMessage.text = message
+        toast.setView(toastBinding.root)
+        toast.setDuration(Toast.LENGTH_LONG)
         toast.show()
     }
 

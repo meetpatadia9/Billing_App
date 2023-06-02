@@ -4,8 +4,9 @@ package com.codebyzebru.myapplication.fragments
 
 import android.annotation.SuppressLint
 import android.app.Dialog
-import android.graphics.PorterDuff
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.*
 import android.widget.*
@@ -17,6 +18,8 @@ import com.codebyzebru.myapplication.adapters.ProductAdapter
 import com.codebyzebru.myapplication.databinding.FragmentInventoryBinding
 import com.codebyzebru.myapplication.databinding.FragmentProductUpdateBinding
 import com.codebyzebru.myapplication.databinding.PopupLayoutAdditemBinding
+import com.codebyzebru.myapplication.databinding.ToastErrorBinding
+import com.codebyzebru.myapplication.databinding.ToastSuccessBinding
 import com.codebyzebru.myapplication.dataclasses.AddInventoryDataClass
 import com.codebyzebru.myapplication.dataclasses.ViewInventoryDataClass
 import com.google.firebase.auth.FirebaseAuth
@@ -69,23 +72,28 @@ class InventoryFragment : Fragment() {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     itemList.clear()
                     if (snapshot.exists()) {
+                        binding.inventoryFragNoDataFrameLayout.visibility = View.GONE
                         for (item in snapshot.children) {
                             val listedData = item.getValue(ViewInventoryDataClass::class.java)
                             listedData!!.key = item.key.toString()
                             itemList.add(listedData)
                         }
 
-                        binding.inventoryRecyclerView.adapter = ProductAdapter(requireContext(), itemList,
+                        binding.inventoryRecyclerView.adapter = ProductAdapter(requireActivity(), itemList,
                             object : ProductAdapter.OnItemClick {
                                 override fun onClick(listDataClass: ViewInventoryDataClass) {
                                     openUpdatePopup(listDataClass)
                                 }
                             })
                     }
+                    else
+                    {
+                        binding.inventoryFragNoDataFrameLayout.visibility = View.VISIBLE
+                    }
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    Log.d("Error", error.toString())
+                    Log.e("Error", error.toString())
                 }
             })
 
@@ -101,43 +109,56 @@ class InventoryFragment : Fragment() {
             val sPrice = addBinding.addItemEdtxtSellingPrice
             val qty = addBinding.addItemEdtxtProductQty
 
+            //  `TextWatcher` on editTexts
+            pName.addTextChangedListener(addTextWatcher)
+            pPrice.addTextChangedListener(addTextWatcher)
+            sPrice.addTextChangedListener(addTextWatcher)
+            qty.addTextChangedListener(addTextWatcher)
+
+            //  ADD BUTTON
             addBinding.btnSaveItem.setOnClickListener {
                 if (pName.text.toString().trim() == "") {
-                    addBinding.til1.helperText = "Required*"
-                }
-                else if (pPrice.text.toString().trim() == "") {
-                    addBinding.til2.helperText = "Required*"
+                    addBinding.til1.helperText = "Product name is require"
                 }
                 else if (sPrice.text.toString().trim() == "") {
-                    addBinding.til3.helperText = "Required*"
+                    addBinding.til3.helperText = "Selling Price is require"
                 }
                 else if (qty.text.toString().trim() == "") {
-                    addBinding.til4.helperText = "Required*"
+                    addBinding.til4.helperText = "Quantity is require"
                 }
-                else {
+                else {      //  accepting condition
                     itemList.clear()
+                    //  generating new `push()` key first so can be used later if required, so push ID does no get changed
+                    val newKey = database.child("Inventory Data").push().key.toString()
 
                     val addItem = AddInventoryDataClass(
+                        key= newKey,
                         productName = pName.text.toString(),
-                        purchasingPrice = pPrice.text.toString().toInt(),
+                        purchasingPrice = pPrice.text?.toString(),
                         sellingPrice = sPrice.text.toString().toInt(),
                         productQty = qty.text.toString().toInt()
                     )
 
-                    val key = database.child("Inventory Data").push().key.toString()
-                    FirebaseDatabase.getInstance().getReference("Users/$userID").child("Inventory Data").child(key).setValue(addItem)
+                    FirebaseDatabase.getInstance().getReference("Users/$userID").child("Inventory Data").child(newKey).setValue(addItem)
+                        .addOnSuccessListener {
+                            addDialog.dismiss()
+                            greenToast("Item added to inventory.")
+                        }
+                        .addOnFailureListener {
+                            redToast(it.message.toString())
+                        }
 
-                    greenToast("Item Added!!")
-                    addDialog.dismiss()
                 }
             }
 
+            //  CANCEL BUTTON
             addBinding.btnAdditemCancel.setOnClickListener {
                 addDialog.dismiss()
             }
         }
     }
 
+    //  UPDATE DATA DIALOG
     private fun openUpdatePopup(listDataClass: ViewInventoryDataClass) {
         updateBinding = FragmentProductUpdateBinding.inflate(LayoutInflater.from(requireContext()))
 
@@ -150,7 +171,13 @@ class InventoryFragment : Fragment() {
         val sPrice = updateBinding.updateSellingPrice
         val qty = updateBinding.updateProductQty
 
-        //  Setting data came from `PartiesFragment`
+        //  `TextWatcher` on editTexts
+        pName.addTextChangedListener(updateTextWatcher)
+        pPrice.addTextChangedListener(updateTextWatcher)
+        sPrice.addTextChangedListener(updateTextWatcher)
+        qty.addTextChangedListener(updateTextWatcher)
+
+        //  Setting data came from database
         key = listDataClass.key
         pName.setText(listDataClass.productName)
         pPrice.setText(listDataClass.purchasingPrice.toString())
@@ -160,21 +187,19 @@ class InventoryFragment : Fragment() {
         //  UPDATE BUTTON
         updateBinding.btnUpdateItem.setOnClickListener {
             if (pName.text.toString().trim() == "") {
-                updateBinding.til1.helperText = "Required*"
-            }
-            else if (pPrice.text.toString().trim() == "") {
-                updateBinding.til2.helperText = "Required*"
+                updateBinding.til1.helperText = "Product name is required"
             }
             else if (sPrice.text.toString().trim() == "") {
-                updateBinding.til3.helperText = "Required*"
+                updateBinding.til3.helperText = "Selling price is required"
             }
             else if (qty.text.toString().trim() == "") {
-                updateBinding.til4.helperText = "Required*"
+                updateBinding.til4.helperText = "Quantity is required"
             }
-            else {
+            else {      //  accepting condition
                 val addItem = AddInventoryDataClass(
+                    key = key,
                     productName = pName.text.toString(),
-                    purchasingPrice = pPrice.text.toString().toInt(),
+                    purchasingPrice = pPrice.text?.toString(),
                     sellingPrice = sPrice.text.toString().toInt(),
                     productQty = qty.text.toString().toInt()
                 )
@@ -185,7 +210,10 @@ class InventoryFragment : Fragment() {
                 FirebaseDatabase.getInstance().getReference("Users/$userID/Inventory Data").child(key).removeValue()
                     .addOnSuccessListener {
                         updateDialog.dismiss()
-                        greenToast("Item Updated!!")
+                        greenToast("Item data updated.")
+                    }
+                    .addOnFailureListener {
+                        redToast(it.message.toString())
                     }
             }
         }
@@ -195,22 +223,129 @@ class InventoryFragment : Fragment() {
             FirebaseDatabase.getInstance().getReference("Users/$userID/Inventory Data").child(key).removeValue()
                 .addOnSuccessListener {
                     updateDialog.dismiss()
-                    greenToast("Item Deleted!!")
+                    greenToast("Item removed from inventory.")
+                }
+                .addOnFailureListener {
+                    redToast(it.message.toString())
                 }
         }
     }
 
+    //  `TextWatcher` for Add-Item-Dialog fields
+    private val addTextWatcher: TextWatcher = object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            addBinding.til1.helperText = ""
+            addBinding.til3.helperText = ""
+            addBinding.til4.helperText = ""
+
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            when (s.hashCode()) {
+                addBinding.addItemEdtxtProductName.text.hashCode() -> {
+                    if (addBinding.addItemEdtxtProductName.text.toString().trim() == "") {
+                        addBinding.til1.helperText = "Product name is required"
+                    }
+                }
+                addBinding.addItemEdtxtSellingPrice.text.hashCode() -> {
+                    if (addBinding.addItemEdtxtSellingPrice.text.toString().trim() == "") {
+                        addBinding.til3.helperText = "Selling price is required"
+                    }
+                }
+                addBinding.addItemEdtxtProductQty.text.hashCode() -> {
+                    if (addBinding.addItemEdtxtProductName.text.toString().trim() == "") {
+                        addBinding.til4.helperText = "Quantity is required"
+                    }
+                }
+            }
+        }
+
+        override fun afterTextChanged(s: Editable?) {
+            when (s.hashCode()) {
+                addBinding.addItemEdtxtProductName.text.hashCode() -> {
+                    if (addBinding.addItemEdtxtProductName.text.toString().trim() == "") {
+                        addBinding.til1.helperText = "Product name is require"
+                    }
+                }
+                addBinding.addItemEdtxtSellingPrice.text.hashCode() -> {
+                    if (addBinding.addItemEdtxtSellingPrice.text.toString().trim() == "") {
+                        addBinding.til3.helperText = "Selling price is require"
+                    }
+                }
+                addBinding.addItemEdtxtProductQty.text.hashCode() -> {
+                    if (addBinding.addItemEdtxtProductName.text.toString().trim() == "") {
+                        addBinding.til4.helperText = "Quantity is require"
+                    }
+                }
+            }
+        }
+    }
+
+    //  `TextWatcher` for Update-Item-Dialog fields
+    private val updateTextWatcher: TextWatcher = object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            updateBinding.til1.helperText = ""
+            updateBinding.til3.helperText = ""
+            updateBinding.til4.helperText = ""
+
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            when (s.hashCode()) {
+                updateBinding.updateProductName.text.hashCode() -> {
+                    if (updateBinding.updateProductName.text.toString().trim() == "") {
+                        updateBinding.til1.helperText = "Product name is require"
+                    }
+                }
+                updateBinding.updateSellingPrice.text.hashCode() -> {
+                    if (updateBinding.updateSellingPrice.text.toString().trim() == "") {
+                        updateBinding.til3.helperText = "Selling price is require"
+                    }
+                }
+                updateBinding.updateProductQty.text.hashCode() -> {
+                    if (updateBinding.updateProductQty.text.toString().trim() == "") {
+                        updateBinding.til4.helperText = "Quantity is require"
+                    }
+                }
+            }
+        }
+
+        override fun afterTextChanged(s: Editable?) {
+            when (s.hashCode()) {
+                updateBinding.updateProductName.text.hashCode() -> {
+                    if (updateBinding.updateProductName.text.toString().trim() == "") {
+                        updateBinding.til1.helperText = "Product name is require"
+                    }
+                }
+                updateBinding.updateSellingPrice.text.hashCode() -> {
+                    if (updateBinding.updateSellingPrice.text.toString().trim() == "") {
+                        updateBinding.til3.helperText = "Selling price is require"
+                    }
+                }
+                updateBinding.updateProductQty.text.hashCode() -> {
+                    if (updateBinding.updateProductQty.text.toString().trim() == "") {
+                        updateBinding.til4.helperText = "Quantity is require"
+                    }
+                }
+            }
+        }
+    }
+
     private fun greenToast(message: String) {
-        val toast: Toast = Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT)
-        val view = toast.view
+        val toastBinding = ToastSuccessBinding.inflate(LayoutInflater.from(requireContext()))
+        val toast = Toast(requireContext())
+        toastBinding.txtToastMessage.text = message
+        toast.setView(toastBinding.root)
+        toast.setDuration(Toast.LENGTH_LONG)
+        toast.show()
+    }
 
-        //Gets the actual oval background of the Toast then sets the colour filter
-        view!!.background.setColorFilter(resources.getColor(R.color.color5), PorterDuff.Mode.SRC_IN)
-
-        //Gets the TextView from the Toast so it can be edited
-        val text = view.findViewById<TextView>(android.R.id.message)
-        text.setTextColor(resources.getColor(R.color.white))
-
+    private fun redToast(message: String) {
+        val toastBinding = ToastErrorBinding.inflate(LayoutInflater.from(requireContext()))
+        val toast = Toast(requireContext())
+        toastBinding.txtToastMessage.text = message
+        toast.setView(toastBinding.root)
+        toast.setDuration(Toast.LENGTH_LONG)
         toast.show()
     }
 

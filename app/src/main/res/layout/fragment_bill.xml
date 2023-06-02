@@ -82,7 +82,7 @@
                         android:layout_width="@dimen/_250sdp"
                         android:layout_height="wrap_content"
                         android:completionThreshold="1"
-                        android:hint="Customer"
+                        android:hint="Customer*"
                         android:padding="@dimen/_9sdp"
                         android:textColorHint="@color/blur_color2" />
 
@@ -208,7 +208,7 @@
                         android:layout_width="@dimen/_250sdp"
                         android:layout_height="wrap_content"
                         android:editable="false"
-                        android:hint="Contact"
+                        android:hint="Contact*"
                         android:inputType="phone"
                         android:padding="12dp"
                         android:textColorHint="@color/blur_color2"

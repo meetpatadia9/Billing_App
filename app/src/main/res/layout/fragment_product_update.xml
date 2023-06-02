@@ -30,7 +30,7 @@
                 android:id="@+id/update_productName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Product Name"
+                android:hint="Product name*"
                 android:padding="@dimen/_9sdp"
                 android:singleLine="true" />
 
@@ -59,7 +59,7 @@
                 android:id="@+id/update_purchasePrise"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Purchasing Price"
+                android:hint="Purchasing price"
                 android:padding="@dimen/_9sdp"
                 android:singleLine="true" />
 
@@ -88,7 +88,7 @@
                 android:id="@+id/update_sellingPrice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Selling Price"
+                android:hint="Selling price*"
                 android:padding="@dimen/_9sdp"
                 android:singleLine="true" />
 
@@ -117,7 +117,7 @@
                 android:id="@+id/update_productQty"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Product Quantity"
+                android:hint="Product quantity*"
                 android:padding="@dimen/_9sdp"
                 android:singleLine="true" />
 

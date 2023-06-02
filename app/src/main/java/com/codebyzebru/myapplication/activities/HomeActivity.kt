@@ -2,10 +2,12 @@
 
 package com.codebyzebru.myapplication.activities
 
+import android.app.Dialog
 import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.MenuItem
 import android.widget.FrameLayout
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -15,6 +17,7 @@ import androidx.fragment.app.Fragment
 import com.codebyzebru.myapplication.R
 import com.codebyzebru.myapplication.broadcastreceiver.ConnectivityReceiver
 import com.codebyzebru.myapplication.databinding.ActivityHomeBinding
+import com.codebyzebru.myapplication.databinding.NoInternetBinding
 import com.codebyzebru.myapplication.fragments.*
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.BaseTransientBottomBar
