@@ -19,7 +19,7 @@ class FirstFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        // Inflate the layout for this fragment
+        //  Inflate the layout for this fragment
         binding = FragmentFirstBinding.inflate(layoutInflater, container, false)
         return binding.root
     }

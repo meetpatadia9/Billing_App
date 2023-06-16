@@ -4,7 +4,6 @@ package com.codebyzebru.myapplication.fragments
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.PorterDuff
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -13,12 +12,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import com.codebyzebru.myapplication.R
 import com.codebyzebru.myapplication.activities.HomeActivity
 import com.codebyzebru.myapplication.databinding.FragmentSignInBinding
+import com.codebyzebru.myapplication.databinding.ToastErrorBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -113,10 +112,7 @@ class SignInFragment : Fragment() {
         }
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-        }
-
-        override fun afterTextChanged(s: Editable?) {
+            //  isEmpty
             if (binding.loginEdtxtEmail.text.toString().trim().isNotEmpty()) {
                 binding.til1.helperText = ""
             }
@@ -124,6 +120,25 @@ class SignInFragment : Fragment() {
                 binding.til1.helperText = "Required*"
             }
 
+            //  isValid
+            if(!isValidString(binding.loginEdtxtEmail.text.toString())) {
+                binding.til1.helperText = "Enter valid Email"
+            }
+            else {
+                binding.til1.helperText = ""
+            }
+        }
+
+        override fun afterTextChanged(s: Editable?) {
+            //  isEmpty
+            if (binding.loginEdtxtEmail.text.toString().trim().isNotEmpty()) {
+                binding.til1.helperText = ""
+            }
+            else {
+                binding.til1.helperText = "Required*"
+            }
+
+            //  isValid
             if(!isValidString(binding.loginEdtxtEmail.text.toString())) {
                 binding.til1.helperText = "Enter valid Email"
             }
@@ -140,7 +155,12 @@ class SignInFragment : Fragment() {
         }
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
+            if (binding.loginEdtxtPassword.text.toString().trim().isNotEmpty()) {
+                binding.til2.helperText = ""
+            }
+            else {
+                binding.til2.helperText = "Required*"
+            }
         }
 
         override fun afterTextChanged(s: Editable?) {
@@ -173,18 +193,12 @@ class SignInFragment : Fragment() {
     }
 
     private fun redToast(message: String) {
-        val toast: Toast = Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT)
-        val view = toast.view
-
-        //  Gets the actual oval background of the Toast then sets the colour filter
-        view!!.background.setColorFilter(resources.getColor(R.color.color4), PorterDuff.Mode.SRC_IN)
-
-        //  Gets the TextView from the Toast so it can be edited
-        val text = view.findViewById<TextView>(android.R.id.message)
-        text.setTextColor(resources.getColor(R.color.white))
-
+        val toastBinding = ToastErrorBinding.inflate(LayoutInflater.from(requireContext()))
+        val toast = Toast(requireContext())
+        toastBinding.txtToastMessage.text = message
+        toast.view = toastBinding.root
+        toast.duration = Toast.LENGTH_LONG
         toast.show()
-        stopProgressbar()
     }
 
     private fun startProgressbar() {
@@ -232,14 +246,14 @@ class SignInFragment : Fragment() {
                         updateUI()
                     }
                     else {
-                        Log.d("ACCOUNT FAIL", it.exception.toString())
+                        Log.e("ACCOUNT FAIL", it.exception.toString())
                         Toast.makeText(requireContext(), it.exception.toString(), Toast.LENGTH_SHORT).show()
                     }
                 }
             }
         }
         else {
-            Log.d("TASK FAIL", task.exception.toString())
+            Log.e("TASK FAIL", task.exception.toString())
             Toast.makeText(requireContext(), task.exception.toString(), Toast.LENGTH_SHORT).show()
         }
     }

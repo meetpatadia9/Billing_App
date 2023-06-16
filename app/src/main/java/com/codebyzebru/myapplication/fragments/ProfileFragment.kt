@@ -1,11 +1,8 @@
-@file:Suppress("DEPRECATION")
-
 package com.codebyzebru.myapplication.fragments
 
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.PorterDuff
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
@@ -16,13 +13,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.codebyzebru.myapplication.activities.HomeActivity
@@ -31,6 +29,8 @@ import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.codebyzebru.myapplication.R
+import com.codebyzebru.myapplication.databinding.ToastErrorBinding
+import com.codebyzebru.myapplication.databinding.ToastSuccessBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.storage.FirebaseStorage
 import java.io.ByteArrayOutputStream
@@ -46,10 +46,10 @@ class ProfileFragment : Fragment() {
     private lateinit var byteArray: ByteArray
     private lateinit var imgURI: Uri
     private lateinit var imgURL: String
+    private var gender: RadioButton? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -63,6 +63,8 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        (activity as HomeActivity).supportActionBar?.hide()
+
         imgURI = Uri.EMPTY
         byteArray = ByteArrayOutputStream().toByteArray()
         userID = this.arguments?.getString("userID").toString()
@@ -72,7 +74,10 @@ class ProfileFragment : Fragment() {
         FirebaseStorage.getInstance().getReference("Profile Images/$userID").getFile(localFile)
             .addOnSuccessListener {
                 val bitmapFactory =BitmapFactory.decodeFile(localFile.absolutePath)
-                Glide.with(requireContext()).load(bitmapFactory).into(binding.profileImg)
+                Glide.with(requireContext().applicationContext)
+                    .load(bitmapFactory)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(binding.profileImg)
             }
             .addOnFailureListener {
                 Log.e("____________________", "ProfileFragment")
@@ -84,14 +89,16 @@ class ProfileFragment : Fragment() {
                 Log.d("imgURI", it.toString())
                 imgURL = it.toString()
 
-                Glide.with(requireContext()).asFile().load(imgURL).into(object : CustomTarget<File>() {
+                Glide.with(requireContext().applicationContext).asFile().load(imgURL).into(object : CustomTarget<File>() {
                     override fun onResourceReady(resource: File, transition: Transition<in File>?) {
                         // Image downloaded successfully
                         // Continue with the upload process
                         imgURI = Uri.fromFile(resource)
                     }
 
-                    override fun onLoadCleared(placeholder: Drawable?) {}
+                    override fun onLoadCleared(placeholder: Drawable?) {
+
+                    }
                 })
             }
 
@@ -137,18 +144,14 @@ class ProfileFragment : Fragment() {
                 }
         }
 
+        binding.imgVBack.setOnClickListener {
+            requireActivity().supportFragmentManager.popBackStack()
+        }
+
         binding.btnSaveProfile.setOnClickListener {
             if (binding.profileEdtxtName.text.toString().trim() == "") {
                 stopProgressbar()
                 binding.profileTIL1.helperText = "Required*"
-            }
-            else if (binding.profileEdtxtCompanyName.text.toString().trim() == "") {
-                stopProgressbar()
-                binding.profileTIL2.helperText = "Required*"
-            }
-            else if (binding.profileEdtxtEmail.text.toString().trim() == "") {
-                stopProgressbar()
-                binding.profileTIL4.helperText = "Required*"
             }
             else if (binding.profileEdtxtContact.text.toString().trim() == "") {
                 stopProgressbar()
@@ -168,15 +171,17 @@ class ProfileFragment : Fragment() {
 
     private val imgFromCam: ActivityResultLauncher<Intent> =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            //  get image and load it into `imageview`
-            val image = it.data!!.extras!!["data"] as Bitmap
-            binding.profileImg.setImageBitmap(image)
+            if (it.resultCode != AppCompatActivity.RESULT_CANCELED) {
+                //  get image and load it into `imageview`
+                val image = it.data!!.extras!!["data"] as Bitmap
+                binding.profileImg.setImageBitmap(image)
 
-            //  we have image in form of `bitmap`, to upload it on firebase-storage we need to convert `Bitmap` in `ByteArray`
-            val bitmap =(binding.profileImg.drawable as BitmapDrawable).bitmap
-            val baos = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-            byteArray = baos.toByteArray()
+                //  we have image in form of `bitmap`, to upload it on firebase-storage we need to convert `Bitmap` in `ByteArray`
+                val bitmap =(binding.profileImg.drawable as BitmapDrawable).bitmap
+                val baos = ByteArrayOutputStream()
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+                byteArray = baos.toByteArray()
+            }
         }
 
     private fun openGalleryForImage() {
@@ -188,33 +193,41 @@ class ProfileFragment : Fragment() {
 
     private val imgFromGallery: ActivityResultLauncher<Intent> =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            //  get image and load it into `imageview`
-            imgURI = it.data!!.data!!
-            binding.profileImg.setImageURI(imgURI)
+            if (it.resultCode != AppCompatActivity.RESULT_CANCELED) {
+                //  get image and load it into `imageview`
+                imgURI = it.data!!.data!!
+                binding.profileImg.setImageURI(imgURI)
+            }
         }
 
     private fun saveProfile() {
         startProgressbar()
 
+        /*val radioGroup = binding.profileGenderRg.checkedRadioButtonId
+        val gender = requireView().findViewById<RadioButton>(radioGroup).text.toString()*/
+
         val radioGroup = binding.profileGenderRg.checkedRadioButtonId
-        val gender = requireView().findViewById<RadioButton>(radioGroup).text.toString()
+        gender = requireView().findViewById(radioGroup)
         
         if (binding.profileEdtxtName.text.toString().trim().isNotEmpty()) {
             databaseReference.child("fullName").setValue(binding.profileEdtxtName.text.toString().trim())
         }
-        if (binding.profileEdtxtCompanyName.text.toString().trim().isNotEmpty()) {
+        if (binding.profileEdtxtCompanyName.text?.toString()?.trim()?.isNotEmpty() == true) {
             databaseReference.child("companyName").setValue(binding.profileEdtxtCompanyName.text.toString().trim())
         }
-        if (binding.profileEdtxtEmail.text.toString().trim().isNotEmpty()) {
+        if (binding.profileEdtxtEmail.text?.toString()?.trim()?.isNotEmpty() == true) {
             databaseReference.child("email").setValue(binding.profileEdtxtEmail.text.toString().trim())
         }
         if (binding.profileEdtxtContact.text.toString().trim().isNotEmpty()) {
             databaseReference.child("contact").setValue(binding.profileEdtxtContact.text.toString().trim())
         }
-        if (gender.isNotEmpty()) {
+        if (gender?.text.toString().isNotEmpty()) {
             databaseReference.child("gender").setValue(gender)
         }
-        if (binding.profileEdtxtAddress.text.toString().trim().isNotEmpty()) {
+        else {
+            databaseReference.child("gender").setValue("")
+        }
+        if (binding.profileEdtxtAddress.text?.toString()?.trim()?.isNotEmpty() == true) {
             databaseReference.child("address").setValue(binding.profileEdtxtAddress.text.toString().trim())
         }
 
@@ -230,7 +243,7 @@ class ProfileFragment : Fragment() {
                     redToast()
                 }
         }
-        else {
+        else if (imgURI.toString().isNotEmpty()) {
             FirebaseStorage.getInstance().getReference("Profile Images/$userID").putFile(imgURI)
                 .addOnSuccessListener {
                     requireActivity().supportFragmentManager.popBackStack()
@@ -242,33 +255,28 @@ class ProfileFragment : Fragment() {
                     redToast()
                 }
         }
-    }
-
-    private fun redToast() {
-        val toast: Toast = Toast.makeText(requireContext(), "Ops! Something went wrong!!", Toast.LENGTH_SHORT)
-        val view = toast.view
-
-        //  Gets the actual oval background of the Toast then sets the colour filter
-        view!!.background.setColorFilter(resources.getColor(R.color.color5), PorterDuff.Mode.SRC_IN)
-
-        //  Gets the TextView from the Toast so it can be edited
-        val text = view.findViewById<TextView>(android.R.id.message)
-        text.setTextColor(resources.getColor(R.color.white))
-
-        toast.show()
+        else {
+            requireActivity().supportFragmentManager.popBackStack()
+            stopProgressbar()
+            greenToast()
+        }
     }
 
     private fun greenToast() {
-        val toast: Toast = Toast.makeText(requireContext(), "Profile updated successfully!!", Toast.LENGTH_SHORT)
-        val view = toast.view
+        val toastBinding = ToastSuccessBinding.inflate(LayoutInflater.from(requireContext()))
+        val toast = Toast(requireContext())
+        toastBinding.txtToastMessage.text = "Profile updated successfully!!"
+        toast.view = toastBinding.root
+        toast.duration = Toast.LENGTH_LONG
+        toast.show()
+    }
 
-        //  Gets the actual oval background of the Toast then sets the colour filter
-        view!!.background.setColorFilter(resources.getColor(R.color.color5), PorterDuff.Mode.SRC_IN)
-
-        //  Gets the TextView from the Toast so it can be edited
-        val text = view.findViewById<TextView>(android.R.id.message)
-        text.setTextColor(resources.getColor(R.color.white))
-
+    private fun redToast() {
+        val toastBinding = ToastErrorBinding.inflate(LayoutInflater.from(requireContext()))
+        val toast = Toast(requireContext())
+        toastBinding.txtToastMessage.text = "Ops! Something went wrong!!"
+        toast.view = toastBinding.root
+        toast.duration = Toast.LENGTH_LONG
         toast.show()
     }
 

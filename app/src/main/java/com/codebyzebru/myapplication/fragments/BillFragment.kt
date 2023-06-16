@@ -1,5 +1,3 @@
-@file:Suppress("DEPRECATION")
-
 package com.codebyzebru.myapplication.fragments
 
 import android.annotation.SuppressLint
@@ -51,6 +49,7 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
     private lateinit var partyDB: DatabaseReference
     private lateinit var invDB: DatabaseReference
 
+    private lateinit var sharedPreferences: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
     private var dataList = arrayListOf<String>()
     private var itemList = arrayListOf<String>()
@@ -58,7 +57,10 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
     private var invItemList = arrayListOf<ViewInventoryDataClass>()
 
     private lateinit var partyID: String
-    private var totalPurchasedAmt = 0
+    var partyEmail: String? = ""
+    var partyOrg: String? = ""
+    var partyAddrs: String? = ""
+    private var totalPurchasedAmt = 0F
     private var productQty = 0
 
     private lateinit var keyboardListener: ViewTreeObserver.OnGlobalLayoutListener
@@ -90,9 +92,6 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
         super.onViewCreated(view, savedInstanceState)
 
         val autoCompleteTextView = binding.billFragAutoTxtName
-        val email = binding.billFragEdtxtEmail
-        val organization = binding.billFragEdtxtCompanyName
-        val address = binding.billFragEdtxtCompanyAddr
         val contact = binding.billFragEdtxtContact
         val billTotal = binding.billFragEdtxtTotal
         val purchaseRecyclerView = binding.purchaseRecyclerView
@@ -100,7 +99,7 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
         purchaseRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
         //  SharedPreferences for Bill-Number
-        val sharedPreferences = requireActivity().getSharedPreferences("MySharedPref", MODE_PRIVATE)
+        sharedPreferences = requireActivity().getSharedPreferences("MySharedPref", MODE_PRIVATE)
         editor = sharedPreferences.edit()
         billNo = sharedPreferences.getInt("billNo", 1)      //  setting default as 1
         binding.billFragTxtBillNo.setText(billNo.toString())
@@ -161,11 +160,12 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
                                     //  Checking, Is selected item exist in `snapshot.children`
                                     if (partyNameData?.partyName.equals(selected)) {
                                         partyID = party?.key.toString()
-                                        email.setText(partyNameData?.email)
-                                        organization.setText(partyNameData?.companyName)
-                                        address.setText(partyNameData?.address)
+                                        partyEmail = partyNameData?.email
+                                        partyOrg = partyNameData?.companyName
+                                        partyAddrs = partyNameData?.address
                                         contact.setText(partyNameData?.contact)
-                                        totalPurchasedAmt = partyNameData?.totalPurchase.toString().toInt()
+                                        totalPurchasedAmt = partyNameData?.totalPurchase.toString().toFloat()
+                                        Log.i( "partyID", partyID)
 
                                         // hide keyboard after filling these details
                                         hideKeyboard()
@@ -196,9 +196,6 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
             val pName = addItemBinding.additemBillFragAutotxtProductName
             val pQty = addItemBinding.additemBillFragEdittxtQty
             val pPrice = addItemBinding.additemBillFragEdittxtPrice
-
-            //  Applying padding between Floating Label and EditText
-//            pName.setPadding(25, 25, 25, 25)
 
             //  Fetching Inventory Data
             invDB.addValueEventListener(object : ValueEventListener {
@@ -242,7 +239,7 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    Log.d("Error", error.toString())
+                    Log.e("Error", error.toString())
                 }
             })
 
@@ -261,9 +258,9 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
                     purchasedItemList.add(
                         PurchasedItemDataClass(
                             itemKey,
-                            pName.text.toString(),
-                            pQty.text.toString().toInt(),
-                            pPrice.text.toString().toInt()
+                            pName = pName.text.toString(),
+                            pQty = pQty.text.toString().toInt(),
+                            pPrice = pPrice.text.toString().toFloat()
                         )
                     )
 
@@ -273,6 +270,7 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
                                 purchasedItemList.remove(purchasedItemDataClass)
                                 if (purchasedItemList.isEmpty()) {
                                     binding.billFragEdtxtTotal.text.clear()
+                                    binding.txtAmount.text = getString(R.string.default_amt)
                                 }
                             }
                         })
@@ -286,9 +284,6 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
             if (autoCompleteTextView.text.toString().trim() == "") {
                 binding.til1.helperText = "Required"
             }
-            /*else if (contact.text.toString().trim() == "") {
-                binding.til4.helperText = "Required"
-            }*/
             else if (binding.billFragTxtBillNo.text.toString().trim() == "") {
                 redToast("You cannot proceed without bill number!")
             }
@@ -337,17 +332,23 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
         }
     }
 
+    override fun onSubTotalUpdate(total: Float) {
+        binding.txtAmount.text = total.toString()
+        val totalAmt = total + binding.txtTaxAmount.text.toString().toFloat()
+        binding.billFragEdtxtTotal.setText(totalAmt.toString())
+    }
+
     private fun generateBill() {
         val txtDate = binding.billFragTxtDate
         val edtxtBillNo = binding.billFragTxtBillNo
         val autoCompleteTextView = binding.billFragAutoTxtName
-        val email = binding.billFragEdtxtEmail
-        val organization = binding.billFragEdtxtCompanyName
-        val address = binding.billFragEdtxtCompanyAddr
+        val email = partyEmail
+        val organization = partyOrg
+        val address = partyAddrs
         val contact = binding.billFragEdtxtContact
         val billTotal = binding.billFragEdtxtTotal
 
-        totalPurchasedAmt += billTotal.text.toString().toInt()
+        totalPurchasedAmt += billTotal.text.toString().toFloat()
 
         billNo += 1     //  incrementing Bill-Number by 1
         Log.d("billNo", billNo.toString())
@@ -357,13 +358,16 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
         val bill = BillDataClass(
             date = txtDate.text.toString(),
             billNo = edtxtBillNo.text.toString(),
+            buyerUID = partyID,
             buyer = autoCompleteTextView.text.toString(),
-            email = email.text?.toString(),
-            organization = organization.text?.toString(),
-            address = address.text?.toString(),
-            contact = contact.text.toString(),
+            /*email = email,
+            organization = organization,
+            address = address,
+            contact = contact.text.toString(),*/
             purchasedItems = purchasedItemList,
-            billTotal = billTotal.text.toString().toInt()
+            subTotal = binding.txtAmount.text.toString().toFloat(),
+            tax = binding.txtTaxAmount.text.toString().toFloat(),
+            billTotal = billTotal.text.toString().toFloat()
         )
 
         val billKey = database.child("Bills").push().key.toString()
@@ -398,13 +402,13 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
             }
     }
 
-    /*
+    /**
     private fun greenToast() {
         val toastBinding = ToastSuccessBinding.inflate(LayoutInflater.from(requireContext()))
         val toast = Toast(requireContext())
         toastBinding.txtToastMessage.text = "Bill created"
-        toast.setView(toastBinding.root)
-        toast.setDuration(Toast.LENGTH_LONG)
+        toast.view = toastBinding.root
+        toast.duration = Toast.LENGTH_LONG
         toast.show()
     }
     */
@@ -413,8 +417,8 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
         val toastBinding = ToastErrorBinding.inflate(LayoutInflater.from(requireContext()))
         val toast = Toast(requireContext())
         toastBinding.txtToastMessage.text = message
-        toast.setView(toastBinding.root)
-        toast.setDuration(Toast.LENGTH_LONG)
+        toast.view = toastBinding.root
+        toast.duration = Toast.LENGTH_LONG
         toast.show()
     }
 
@@ -427,10 +431,6 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
     fun Fragment.hideKeyboard() {
         val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(requireView().windowToken, 0)
-    }
-
-    override fun onSubTotalUpdate(total: Int) {
-        binding.billFragEdtxtTotal.setText(total.toString())
     }
 
     /*

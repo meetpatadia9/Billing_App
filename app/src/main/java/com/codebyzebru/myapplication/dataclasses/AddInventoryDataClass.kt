@@ -4,6 +4,6 @@ class AddInventoryDataClass(
     val key: String,
     val productName: String,
     val purchasingPrice: String?,
-    val sellingPrice: Int,
-    val productQty: Int
+    val sellingPrice: Float,
+    val productQty: Float
 )

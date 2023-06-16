@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragments.BillFragment"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".fragments.BillFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -16,8 +16,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:padding="@dimen/_3sdp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/billFrag_subFrameLayout">
+            app:layout_constraintBottom_toTopOf="@id/billFrag_subFrameLayout"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -29,6 +29,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/blur_color2"
+                    android:textSize="@dimen/_11ssp"
                     app:layout_constraintBottom_toBottomOf="@id/billFrag_txt_billNo"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/billFrag_txt_billNo"
@@ -39,23 +40,26 @@
                     android:id="@+id/txtBillNo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@string/txtBillNo"
+                    android:textSize="@dimen/_11ssp"
                     android:textColor="@color/blur_color2"
                     app:layout_constraintBottom_toBottomOf="@id/billFrag_txt_billNo"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/billFrag_txt_billNo"
-                    android:text="Bill no.:" />
+                    android:labelFor="@id/billFrag_txt_billNo"
+                    app:layout_constraintTop_toTopOf="@id/billFrag_txt_billNo" />
 
                 <EditText
                     android:id="@+id/billFrag_txt_billNo"
                     android:layout_width="@dimen/_40sdp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_2sdp"
                     android:inputType="number"
                     android:textAlignment="viewEnd"
                     android:textSize="@dimen/_11ssp"
-                    android:layout_marginStart="@dimen/_2sdp"
                     app:layout_constraintStart_toEndOf="@id/txtBillNo"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="1" />
+                    tools:text="1"
+                    android:autofillHints="name" />
 
                 <!--    NAME    -->
                 <com.google.android.material.textfield.TextInputLayout
@@ -67,11 +71,11 @@
                     app:boxBackgroundMode="outline"
                     app:boxCornerRadiusBottomEnd="@dimen/_3sdp"
                     app:boxCornerRadiusBottomStart="@dimen/_3sdp"
-                    app:helperTextTextColor="@color/color4"
                     app:boxCornerRadiusTopEnd="@dimen/_3sdp"
                     app:boxCornerRadiusTopStart="@dimen/_3sdp"
                     app:boxStrokeColor="@color/color2"
                     app:boxStrokeWidth="@dimen/_1sdp"
+                    app:helperTextTextColor="@color/color4"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/billFrag_txt_billNo"
@@ -82,105 +86,9 @@
                         android:layout_width="@dimen/_250sdp"
                         android:layout_height="wrap_content"
                         android:completionThreshold="1"
-                        android:hint="Customer*"
+                        android:hint="@string/txt_customer"
                         android:padding="@dimen/_9sdp"
                         android:textColorHint="@color/blur_color2" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!--    EMAIL    -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/til2"
-                    android:layout_width="@dimen/_250sdp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_2sdp"
-                    app:boxBackgroundColor="@color/light_color1"
-                    app:boxBackgroundMode="outline"
-                    app:boxCornerRadiusBottomEnd="@dimen/_3sdp"
-                    app:boxCornerRadiusBottomStart="@dimen/_3sdp"
-                    app:boxCornerRadiusTopEnd="@dimen/_3sdp"
-                    app:boxCornerRadiusTopStart="@dimen/_3sdp"
-                    app:boxStrokeColor="@color/color2"
-                    app:boxStrokeWidth="@dimen/_1sdp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/til1"
-                    app:startIconTint="@color/color1">
-
-                    <EditText
-                        android:id="@+id/billFrag_edtxt_email"
-                        android:layout_width="@dimen/_250sdp"
-                        android:layout_height="wrap_content"
-                        android:autofillHints="emailAddress"
-                        android:editable="false"
-                        android:hint="Email"
-                        android:inputType="textEmailAddress"
-                        android:padding="@dimen/_9sdp"
-                        android:textColorHint="@color/blur_color2"
-                        tools:ignore="Deprecated" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!--    COMPANY NAME / ORGANIZATION    -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/til3"
-                    android:layout_width="@dimen/_250sdp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_2sdp"
-                    app:boxBackgroundColor="@color/light_color1"
-                    app:boxBackgroundMode="outline"
-                    app:boxCornerRadiusBottomEnd="@dimen/_3sdp"
-                    app:boxCornerRadiusBottomStart="@dimen/_3sdp"
-                    app:boxCornerRadiusTopEnd="@dimen/_3sdp"
-                    app:boxCornerRadiusTopStart="@dimen/_3sdp"
-                    app:boxStrokeColor="@color/color2"
-                    app:boxStrokeWidth="@dimen/_1sdp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/til2"
-                    app:startIconTint="@color/color1">
-
-                    <EditText
-                        android:id="@+id/billFrag_edtxt_companyName"
-                        android:layout_width="@dimen/_250sdp"
-                        android:layout_height="wrap_content"
-                        android:editable="false"
-                        android:hint="Company Name"
-                        android:padding="@dimen/_9sdp"
-                        android:textColorHint="@color/blur_color2"
-                        tools:ignore="Deprecated" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!--    COMPANY NAME / ORGANIZATION    -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/til4"
-                    android:layout_width="@dimen/_250sdp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_2sdp"
-                    app:boxBackgroundColor="@color/light_color1"
-                    app:boxBackgroundMode="outline"
-                    app:boxCornerRadiusBottomEnd="@dimen/_3sdp"
-                    app:boxCornerRadiusBottomStart="@dimen/_3sdp"
-                    app:boxCornerRadiusTopEnd="@dimen/_3sdp"
-                    app:boxCornerRadiusTopStart="@dimen/_3sdp"
-                    app:boxStrokeColor="@color/color2"
-                    app:boxStrokeWidth="@dimen/_1sdp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/til3"
-                    app:startIconTint="@color/color1">
-
-                    <EditText
-                        android:id="@+id/billFrag_edtxt_companyAddr"
-                        android:layout_width="@dimen/_250sdp"
-                        android:layout_height="wrap_content"
-                        android:autofillHints="postalAddress"
-                        android:editable="false"
-                        android:hint="Address"
-                        android:padding="@dimen/_9sdp"
-                        android:textColorHint="@color/blur_color2"
-                        tools:ignore="Deprecated" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -200,19 +108,19 @@
                     app:boxStrokeWidth="@dimen/_1sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/til4"
+                    app:layout_constraintTop_toBottomOf="@id/til1"
                     app:startIconTint="@color/color1">
 
                     <EditText
                         android:id="@+id/billFrag_edtxt_contact"
                         android:layout_width="@dimen/_250sdp"
                         android:layout_height="wrap_content"
-                        android:editable="false"
-                        android:hint="Contact*"
+                        android:hint="@string/txt_contact"
                         android:inputType="phone"
                         android:padding="12dp"
                         android:textColorHint="@color/blur_color2"
-                        tools:ignore="Deprecated" />
+                        tools:ignore="Deprecated"
+                        android:autofillHints="none" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -222,7 +130,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="#00FFFFFF"
-                    android:text="Add item"
+                    android:text="@string/btn_add_item"
                     android:textColor="@color/blur_color2"
                     android:textSize="@dimen/_10ssp"
                     app:layout_constraintEnd_toEndOf="@id/til5"
@@ -231,21 +139,78 @@
                 <!--    ADD-ITEM RECYCLERVIEW    -->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/purchase_recyclerView"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_9sdp"
                     android:overScrollMode="never"
                     android:textColor="@color/app_background"
-                    app:layout_constraintBottom_toTopOf="@id/billFrag_subLayout_total"
+                    app:layout_constraintBottom_toTopOf="@id/txtSubTotal"
+                    app:layout_constraintEnd_toEndOf="@id/til5"
+                    app:layout_constraintStart_toStartOf="@id/til5"
                     app:layout_constraintTop_toBottomOf="@id/billFrag_btn_addItem" />
+
+                <!-- SUBTOTAL -->
+                <TextView
+                    android:id="@+id/txtSubTotal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginEnd="@dimen/_72sdp"
+                    android:text="@string/txtSubtotal"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/purchase_recyclerView" />
+
+                <EditText
+                    android:id="@+id/txt_amount"
+                    android:layout_width="@dimen/_40sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_2sdp"
+                    android:inputType="number"
+                    android:textAlignment="viewEnd"
+                    android:textSize="@dimen/_11ssp"
+                    app:layout_constraintStart_toEndOf="@id/txtSubTotal"
+                    app:layout_constraintTop_toTopOf="@id/txtSubTotal"
+                    app:layout_constraintBottom_toBottomOf="@id/txtSubTotal"
+                    tools:text="1"
+                    android:autofillHints="name" />
+
+                <!-- TAX -->
+                <TextView
+                    android:id="@+id/txtTax"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginEnd="@dimen/_72sdp"
+                    android:text="@string/txtTax"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txtSubTotal" />
+
+                <EditText
+                    android:id="@+id/txt_taxAmount"
+                    android:layout_width="@dimen/_40sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_2sdp"
+                    android:inputType="number"
+                    android:textAlignment="viewEnd"
+                    android:textSize="@dimen/_11ssp"
+                    app:layout_constraintStart_toEndOf="@id/txtTax"
+                    app:layout_constraintTop_toTopOf="@id/txtTax"
+                    app:layout_constraintBottom_toBottomOf="@id/txtTax"
+                    tools:text="1"
+                    android:autofillHints="name" />
 
                 <!--    BILL TOTAL    -->
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/billFrag_subLayout_total"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:layout_marginBottom="@dimen/_15sdp"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent">
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txtTax">
 
                     <TextView
                         android:id="@+id/txtTotal"
@@ -255,7 +220,7 @@
                         android:paddingStart="@dimen/_3sdp"
                         android:paddingEnd="@dimen/_3sdp"
                         android:rotation="-90"
-                        android:text="Total"
+                        android:text="@string/txtTotal"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_12ssp"
                         android:textStyle="bold"
@@ -267,24 +232,24 @@
                         android:id="@+id/txtTotalAmt"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:text="Total Amount"
-                        android:textSize="@dimen/_14ssp"
+                        android:text="@string/txtTotalAmount"
                         android:textColor="@color/blur_color2"
+                        android:textSize="@dimen/_14ssp"
                         android:textStyle="bold"
-                        app:layout_constraintTop_toTopOf="@id/txtTotal"
                         app:layout_constraintBottom_toBottomOf="@id/txtTotal"
-                        app:layout_constraintStart_toEndOf="@id/txtTotal"/>
+                        app:layout_constraintStart_toEndOf="@id/txtTotal"
+                        app:layout_constraintTop_toTopOf="@id/txtTotal" />
 
                     <EditText
                         android:id="@+id/billFrag_edtxt_total"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_45sdp"
+                        android:layout_marginEnd="@dimen/_4sdp"
                         android:autofillHints="phone"
                         android:inputType="number"
-                        android:layout_marginStart="@dimen/_45sdp"
                         android:padding="@dimen/_9sdp"
                         android:singleLine="true"
-                        android:layout_marginEnd="@dimen/_4sdp"
                         android:textAlignment="viewEnd"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/txtTotalAmt"
@@ -298,29 +263,29 @@
 
         <FrameLayout
             android:id="@+id/billFrag_subFrameLayout"
-            android:background="#F4F4F4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
+            android:background="#F4F4F4"
             android:padding="@dimen/_3sdp"
+
             app:layout_constraintBottom_toBottomOf="parent">
 
             <!--    GENERATE BILL    -->
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnGenerateBill"
-                android:layout_gravity="center_horizontal"
                 android:layout_width="@dimen/_150sdp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/shape_btn_green"
                 android:text="Save"
                 android:textAllCaps="false"
                 android:textColor="@color/color5"
-                android:layout_height="wrap_content"
-                android:background="@drawable/shape_btn_green"
                 android:textSize="@dimen/_12ssp"
                 android:typeface="normal" />
 
         </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </FrameLayout>

@@ -1,5 +1,3 @@
-@file:Suppress("DEPRECATION")
-
 package com.codebyzebru.myapplication.fragments
 
 import android.app.Dialog
@@ -33,15 +31,17 @@ class PartiesFragment : Fragment() {
     private lateinit var updateBinding: FragmentPartyUpdateBinding
 
     private var partyList = arrayListOf<ViewPartyDataClass>()
+    lateinit var partyAdapter: PartyAdapter
 
     private lateinit var database: DatabaseReference
+    lateinit var partyDatabase: DatabaseReference
     private lateinit var userID: String
     private var key = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         userID = FirebaseAuth.getInstance().currentUser!!.uid
-        database = Firebase.database.reference
+        database = FirebaseDatabase.getInstance().getReference("Users/$userID/Party Data")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -63,37 +63,37 @@ class PartiesFragment : Fragment() {
         //  applying `Layout` to Recyclerview
         binding.partiesRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-        //  Fetching Party Data
-        FirebaseDatabase.getInstance().getReference("Users/$userID/Party Data").orderByChild("partyName")
-            .addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    partyList.clear()
-                    if (snapshot.exists()) {
-                        binding.partyFragNoDataFrameLayout.visibility = View.GONE
-                        for (item in snapshot.children) {
-                            val listedData = item.getValue(ViewPartyDataClass::class.java)
-                            listedData!!.key = item.key.toString()
-                            partyList.add(listedData)
-                        }
-
-                        binding.partiesRecyclerView.adapter = PartyAdapter(requireActivity(), partyList,
-                            object : PartyAdapter.OnItemClick {
-                                override fun onClick(listDataClass: ViewPartyDataClass) {
-                                    openUpdatePopup(listDataClass)
-                                }
-                            })
-                    }
-                    else
-                    {
-                        binding.partiesRecyclerView.adapter!!.notifyDataSetChanged()
-                        binding.partyFragNoDataFrameLayout.visibility = View.VISIBLE
-                    }
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    Log.e("Error", error.toString())
+        partyAdapter = PartyAdapter(requireContext(), partyList,
+            object : PartyAdapter.OnItemClick {
+                override fun onClick(listDataClass: ViewPartyDataClass) {
+                    openUpdatePopup(listDataClass)
                 }
             })
+
+        //  Fetching Party Data
+        database.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                partyList.clear()
+                if (snapshot.exists()) {
+                    binding.partyFragNoDataFrameLayout.visibility = View.GONE
+                    for (item in snapshot.children) {
+                        val listedData = item.getValue(ViewPartyDataClass::class.java)
+                        listedData!!.key = item.key.toString()
+                        partyList.add(listedData)
+                    }
+                    binding.partiesRecyclerView.adapter = partyAdapter
+                }
+                else {
+                    partyAdapter.notifyDataSetChanged()
+                    binding.partyFragNoDataFrameLayout.visibility = View.VISIBLE
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("Error", error.toString())
+            }
+        })
+
 
         //  ADD NEW PARTY
         binding.partyFragFab.setOnClickListener {
@@ -120,20 +120,9 @@ class PartiesFragment : Fragment() {
             addBinding.btnSaveParty.setOnClickListener {
                 if (name.text.toString().trim() == "") {
                     addBinding.til1.helperText = "Name is require"
-                }
-                /*else if (org.text.toString().trim() == "") {
-                    addBinding.til2.helperText = "Required*"
-                }
-                else if (address.text.toString().trim() == "") {
-                    addBinding.til3.helperText = "Required*"
-                }
-                else if (email.text.toString().trim() == "") {
-                    addBinding.til4.helperText = "Required*"
-                }*/
-                else if (contact.text.toString().trim() == "") {
+                } else if (contact.text.toString().trim() == "") {
                     addBinding.til5.helperText = "Phone number is require"
-                }
-                else {      //  accepting condition
+                } else {      //  accepting condition
                     partyList.clear()
 
                     val selectedID = addBinding.addPartyRgType.checkedRadioButtonId
@@ -149,7 +138,8 @@ class PartiesFragment : Fragment() {
                     )
 
                     val key = database.child("Party Data").push().key.toString()
-                    FirebaseDatabase.getInstance().getReference("Users/$userID").child("Party Data").child(key).setValue(addParty)
+                    FirebaseDatabase.getInstance().getReference("Users/$userID").child("Party Data")
+                        .child(key).setValue(addParty)
                         .addOnSuccessListener {
                             addDialog.dismiss()
                             greenToast("Party added to list.")
@@ -206,20 +196,39 @@ class PartiesFragment : Fragment() {
             if (name.text.toString().trim() == "") {
                 updateBinding.til1.helperText = "Name is require"
             }
-            /*else if (org.text.toString().trim() == "") {
-                updateBinding.til2.helperText = "Required*"
-            }
-            else if (address.text.toString().trim() == "") {
-                updateBinding.til3.helperText = "Required*"
-            }
-            else if (email.text.toString().trim() == "") {
-                updateBinding.til4.helperText = "Email is require"
-            }*/
             else if (contact.text.toString().trim() == "") {
                 updateBinding.til5.helperText = "Phone number is require"
             }
             else {
                 val selectedID = updateBinding.updateRgType.checkedRadioButtonId
+                radioButton = updateDialog.findViewById(selectedID)
+                //  NAME
+                database.child("$key/partyName").setValue(updateBinding.updatePartyName.text.toString())
+                //  COMPANY NAME
+                if (org.text?.toString()?.trim()?.isNotEmpty() == true) {
+                    database.child("$key/companyName").setValue(updateBinding.updateCompanyName.text.toString())
+                } else {
+                    database.child("$key/companyName").setValue("")
+                }
+                //  ADDRESS
+                if (address.text?.toString()?.trim()?.isNotEmpty() == true) {
+                    database.child("$key/address").setValue(updateBinding.updateAddress.text.toString())
+                } else {
+                    database.child("$key/address").setValue("")
+                }
+                //  EMAIL
+                database.child("$key/email").setValue(updateBinding.updateEmail.text.toString().trim())
+                //  EMAIL
+                database.child("$key/contact").setValue(updateBinding.updateContact.text.toString().trim())
+                //  GENDER
+                if (radioButton?.text.toString().isNotEmpty()) {
+                    database.child("$key/type").setValue(radioButton)
+                } else {
+                    database.child("$key/type").setValue("")
+                }
+                updateDialog.dismiss()
+                greenToast("Party data updated.")
+                /*val selectedID = updateBinding.updateRgType.checkedRadioButtonId
                 radioButton = updateDialog.findViewById(selectedID)
 
                 val addParty = AddPartyDataClass(
@@ -232,16 +241,18 @@ class PartiesFragment : Fragment() {
                 )
 
                 val thisKey = database.child("Party Data").push().key.toString()
-                FirebaseDatabase.getInstance().getReference("Users/$userID").child("Party Data").child(thisKey).setValue(addParty)
+                FirebaseDatabase.getInstance().getReference("Users/$userID").child("Party Data")
+                    .child(thisKey).setValue(addParty)
 
-                FirebaseDatabase.getInstance().getReference("Users/$userID/Party Data").child(key).removeValue()
+                FirebaseDatabase.getInstance().getReference("Users/$userID/Party Data").child(key)
+                    .removeValue()
                     .addOnSuccessListener {
                         updateDialog.dismiss()
                         greenToast("Party data updated.")
                     }
                     .addOnFailureListener {
                         redToast(it.message.toString())
-                    }
+                    }*/
             }
         }
 
@@ -263,11 +274,7 @@ class PartiesFragment : Fragment() {
     private val addTextWatcher: TextWatcher = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             addBinding.til1.helperText = ""
-            /*addBinding.til2.helperText = ""
-            addBinding.til3.helperText = ""
-            addBinding.til4.helperText = ""*/
             addBinding.til5.helperText = ""
-
         }
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -277,21 +284,6 @@ class PartiesFragment : Fragment() {
                         addBinding.til1.helperText = "Name is require"
                     }
                 }
-                /*addBinding.addPartyEdtxtCompanyName.text.hashCode() -> {
-                    if (addBinding.addPartyEdtxtCompanyName.text.toString().trim() == "") {
-                        addBinding.til2.helperText = "Required*"
-                    }
-                }
-                addBinding.addPartyEdtxtAddress.text.hashCode() -> {
-                    if (addBinding.addPartyEdtxtAddress.text.toString().trim() == "") {
-                        addBinding.til3.helperText = "Required*"
-                    }
-                }
-                addBinding.addPartyEdtxtEmail.text.hashCode() -> {
-                    if (addBinding.addPartyEdtxtEmail.text.toString().trim() == "") {
-                        addBinding.til4.helperText = "Email is require"
-                    }
-                }*/
                 addBinding.addPartyEdtxtContact.text.hashCode() -> {
                     if (addBinding.addPartyEdtxtContact.text.toString().trim() == "") {
                         addBinding.til5.helperText = "Phone number is require"
@@ -307,21 +299,6 @@ class PartiesFragment : Fragment() {
                         addBinding.til1.helperText = "Name is require"
                     }
                 }
-                /*addBinding.addPartyEdtxtCompanyName.text.hashCode() -> {
-                    if (addBinding.addPartyEdtxtCompanyName.text.toString().trim() == "") {
-                        addBinding.til2.helperText = "Required*"
-                    }
-                }
-                addBinding.addPartyEdtxtAddress.text.hashCode() -> {
-                    if (addBinding.addPartyEdtxtAddress.text.toString().trim() == "") {
-                        addBinding.til3.helperText = "Required*"
-                    }
-                }
-                addBinding.addPartyEdtxtEmail.text.hashCode() -> {
-                    if (addBinding.addPartyEdtxtEmail.text.toString().trim() == "") {
-                        addBinding.til4.helperText = "Email is require"
-                    }
-                }*/
                 addBinding.addPartyEdtxtContact.text.hashCode() -> {
                     if (addBinding.addPartyEdtxtContact.text.toString().trim() == "") {
                         addBinding.til5.helperText = "Phone number is require"
@@ -335,9 +312,6 @@ class PartiesFragment : Fragment() {
     private val updateTextWatcher: TextWatcher = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             updateBinding.til1.helperText = ""
-            /*addBinding.til2.helperText = ""
-            addBinding.til3.helperText = ""
-            updateBinding.til4.helperText = ""*/
             updateBinding.til5.helperText = ""
         }
 
@@ -348,21 +322,6 @@ class PartiesFragment : Fragment() {
                         updateBinding.til1.helperText = "Name is require"
                     }
                 }
-                /*addBinding.addPartyEdtxtCompanyName.text.hashCode() -> {
-                    if (addBinding.addPartyEdtxtCompanyName.text.toString().trim() == "") {
-                        addBinding.til2.helperText = "Required*"
-                    }
-                }
-                addBinding.addPartyEdtxtAddress.text.hashCode() -> {
-                    if (addBinding.addPartyEdtxtAddress.text.toString().trim() == "") {
-                        addBinding.til3.helperText = "Required*"
-                    }
-                }
-                updateBinding.updateEmail.text.hashCode() -> {
-                    if (updateBinding.updateEmail.text.toString().trim() == "") {
-                        updateBinding.til4.helperText = "Email is require"
-                    }
-                }*/
                 updateBinding.updateContact.text.hashCode() -> {
                     if (updateBinding.updateContact.text.toString().trim() == "") {
                         updateBinding.til5.helperText = "Phone number is require"
@@ -378,21 +337,6 @@ class PartiesFragment : Fragment() {
                         updateBinding.til1.helperText = "Name is require"
                     }
                 }
-                /*addBinding.addPartyEdtxtCompanyName.text.hashCode() -> {
-                    if (addBinding.addPartyEdtxtCompanyName.text.toString().trim() == "") {
-                        addBinding.til2.helperText = "Required*"
-                    }
-                }
-                addBinding.addPartyEdtxtAddress.text.hashCode() -> {
-                    if (addBinding.addPartyEdtxtAddress.text.toString().trim() == "") {
-                        addBinding.til3.helperText = "Required*"
-                    }
-                }
-                updateBinding.updateEmail.text.hashCode() -> {
-                    if (updateBinding.updateEmail.text.toString().trim() == "") {
-                        updateBinding.til4.helperText = "Email is require"
-                    }
-                }*/
                 updateBinding.updateContact.text.hashCode() -> {
                     if (updateBinding.updateContact.text.toString().trim() == "") {
                         updateBinding.til5.helperText = "Phone number is require"
@@ -406,8 +350,8 @@ class PartiesFragment : Fragment() {
         val toastBinding = ToastErrorBinding.inflate(LayoutInflater.from(requireContext()))
         val toast = Toast(requireContext())
         toastBinding.txtToastMessage.text = message
-        toast.setView(toastBinding.root)
-        toast.setDuration(Toast.LENGTH_LONG)
+        toast.view = toastBinding.root
+        toast.duration = Toast.LENGTH_LONG
         toast.show()
     }
 
@@ -415,8 +359,8 @@ class PartiesFragment : Fragment() {
         val toastBinding = ToastSuccessBinding.inflate(LayoutInflater.from(requireContext()))
         val toast = Toast(requireContext())
         toastBinding.txtToastMessage.text = message
-        toast.setView(toastBinding.root)
-        toast.setDuration(Toast.LENGTH_LONG)
+        toast.view = toastBinding.root
+        toast.duration = Toast.LENGTH_LONG
         toast.show()
     }
 

@@ -1,5 +1,6 @@
 package com.codebyzebru.myapplication.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -24,6 +25,7 @@ class PartyAdapter(val context: Context, private val partyList: ArrayList<ViewPa
         return partyList.size
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onBindViewHolder(holder: PartyViewHolders, position: Int) {
         //  scope functions `apply`
         holder.apply {

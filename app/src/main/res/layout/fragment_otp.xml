@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,13 +8,15 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingTop="@dimen/_20sdp"
+        android:paddingBottom="@dimen/_20sdp">
 
         <TextView
             android:id="@+id/txtEnterOTP"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Verification Code"
+            android:text="@string/txtVerificationCode"
             android:textColor="@color/color1"
             android:textSize="@dimen/_16ssp"
             android:textStyle="bold"
@@ -29,7 +31,7 @@
             android:layout_marginTop="@dimen/_15sdp"
             android:paddingStart="@dimen/_40sdp"
             android:paddingEnd="@dimen/_40sdp"
-            android:text="Please enter the verification code sent to"
+            android:text="@string/txt_enter_code"
             android:textAlignment="center"
             android:textColor="@color/color2"
             android:textSize="@dimen/_13ssp"
@@ -44,29 +46,29 @@
             android:layout_marginTop="@dimen/_2sdp"
             android:paddingStart="@dimen/_40sdp"
             android:paddingEnd="@dimen/_40sdp"
-            tools:text="+918734963629"
             android:textAlignment="center"
             android:textColor="@color/color2"
             android:textSize="@dimen/_13ssp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txtInfoOTP" />
+            app:layout_constraintTop_toBottomOf="@id/txtInfoOTP"
+            tools:text="+91 87349 63629" />
 
         <in.aabhasjindal.otptextview.OtpTextView
             android:id="@+id/otp_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
             android:textColor="@color/color1"
+            app:bar_active_color="@color/color1"
             app:bar_enabled="true"
             app:bar_height="2dp"
+            app:bar_inactive_color="@color/color3"
             app:height="40dp"
-            android:layout_marginTop="@dimen/_15sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txtPhoneNo"
             app:length="6"
-            app:bar_active_color="@color/color1"
-            app:bar_inactive_color="@color/color3"
             app:otp_text_size="24dp"
             app:width="40dp" />
 
@@ -84,17 +86,18 @@
             android:id="@+id/btnVerify"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_70sdp"
             android:background="@drawable/shape_btn"
-            android:text="Verify"
+            android:text="@string/btn_verify"
             android:textAllCaps="false"
             android:textColor="@color/color2"
             android:textSize="16sp"
             android:typeface="normal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/otp_view" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</FrameLayout>
+</androidx.core.widget.NestedScrollView>

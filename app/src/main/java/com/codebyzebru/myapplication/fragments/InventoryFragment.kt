@@ -1,5 +1,3 @@
-@file:Suppress("DEPRECATION")
-
 package com.codebyzebru.myapplication.fragments
 
 import android.annotation.SuppressLint
@@ -35,6 +33,7 @@ class InventoryFragment : Fragment() {
     private lateinit var updateBinding: FragmentProductUpdateBinding
 
     private var itemList = arrayListOf<ViewInventoryDataClass>()
+    lateinit var productAdapter: ProductAdapter
 
     private lateinit var database: DatabaseReference
     private lateinit var userID: String
@@ -66,6 +65,13 @@ class InventoryFragment : Fragment() {
         //  applying `Layout` to Recyclerview
         binding.inventoryRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
+        productAdapter = ProductAdapter(requireContext(), itemList,
+        object : ProductAdapter.OnItemClick {
+            override fun onClick(listDataClass: ViewInventoryDataClass) {
+                openUpdatePopup(listDataClass)
+            }
+        })
+
         //  Fetching Inventory Data
         FirebaseDatabase.getInstance().getReference("Users/$userID/Inventory Data").orderByChild("productName")
             .addValueEventListener(object : ValueEventListener {
@@ -79,15 +85,10 @@ class InventoryFragment : Fragment() {
                             itemList.add(listedData)
                         }
 
-                        binding.inventoryRecyclerView.adapter = ProductAdapter(requireActivity(), itemList,
-                            object : ProductAdapter.OnItemClick {
-                                override fun onClick(listDataClass: ViewInventoryDataClass) {
-                                    openUpdatePopup(listDataClass)
-                                }
-                            })
+                        binding.inventoryRecyclerView.adapter = productAdapter
                     }
-                    else
-                    {
+                    else {
+                        productAdapter.notifyDataSetChanged()
                         binding.inventoryFragNoDataFrameLayout.visibility = View.VISIBLE
                     }
                 }
@@ -135,8 +136,8 @@ class InventoryFragment : Fragment() {
                         key= newKey,
                         productName = pName.text.toString(),
                         purchasingPrice = pPrice.text?.toString(),
-                        sellingPrice = sPrice.text.toString().toInt(),
-                        productQty = qty.text.toString().toInt()
+                        sellingPrice = sPrice.text.toString().toFloat(),
+                        productQty = qty.text.toString().toFloat()
                     )
 
                     FirebaseDatabase.getInstance().getReference("Users/$userID").child("Inventory Data").child(newKey).setValue(addItem)
@@ -200,8 +201,8 @@ class InventoryFragment : Fragment() {
                     key = key,
                     productName = pName.text.toString(),
                     purchasingPrice = pPrice.text?.toString(),
-                    sellingPrice = sPrice.text.toString().toInt(),
-                    productQty = qty.text.toString().toInt()
+                    sellingPrice = sPrice.text.toString().toFloat(),
+                    productQty = qty.text.toString().toFloat()
                 )
 
                 val thisKey = database.child("Inventory Data").push().key.toString()
@@ -335,8 +336,8 @@ class InventoryFragment : Fragment() {
         val toastBinding = ToastSuccessBinding.inflate(LayoutInflater.from(requireContext()))
         val toast = Toast(requireContext())
         toastBinding.txtToastMessage.text = message
-        toast.setView(toastBinding.root)
-        toast.setDuration(Toast.LENGTH_LONG)
+        toast.view = toastBinding.root
+        toast.duration = Toast.LENGTH_LONG
         toast.show()
     }
 
@@ -344,8 +345,8 @@ class InventoryFragment : Fragment() {
         val toastBinding = ToastErrorBinding.inflate(LayoutInflater.from(requireContext()))
         val toast = Toast(requireContext())
         toastBinding.txtToastMessage.text = message
-        toast.setView(toastBinding.root)
-        toast.setDuration(Toast.LENGTH_LONG)
+        toast.view = toastBinding.root
+        toast.duration = Toast.LENGTH_LONG
         toast.show()
     }
 

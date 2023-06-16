@@ -1,5 +1,6 @@
 package com.codebyzebru.myapplication.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,10 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.codebyzebru.myapplication.databinding.SingleViewPurchaseItemBinding
 import com.codebyzebru.myapplication.dataclasses.PurchasedItemDataClass
 
-class PurchasedItemAdapter(val context: Context, private val itemList: List<PurchasedItemDataClass>, private val totalListener: SubTotalListener, val listener: OnClick)
+class PurchasedItemAdapter(val context: Context, private val itemList: List<PurchasedItemDataClass>, private val totalListener: SubTotalListener, private val listener: OnClick)
     : RecyclerView.Adapter<PurchasedItemAdapter.PurchasedItemViewHolder>() {
 
-    private var myTotal = arrayListOf<Int>()
+    private var myTotal = arrayListOf<Float>()
 
     /** WITHOUT VIEW-BINDING
     class PurchaseViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
@@ -39,6 +40,7 @@ class PurchasedItemAdapter(val context: Context, private val itemList: List<Purc
         return itemList.size
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onBindViewHolder(holder: PurchasedItemViewHolder, position: Int) {
         holder.apply {
             /** WITHOUT VIEW-BINDING
@@ -64,6 +66,7 @@ class PurchasedItemAdapter(val context: Context, private val itemList: List<Purc
                 val total = iPrice * iQty
 
                 itemBinding.purchasedPName.text = this.pName
+                itemBinding.purchasedPAmount.text = this.pPrice.toString()
                 itemBinding.purchasedPQty.text = this.pQty.toString()
                 itemBinding.purchasedPPrice.text = total.toString()
 
@@ -85,7 +88,7 @@ class PurchasedItemAdapter(val context: Context, private val itemList: List<Purc
     }
 
     interface SubTotalListener {
-        fun onSubTotalUpdate(total: Int)
+        fun onSubTotalUpdate(total: Float)
     }
 
     interface OnClick {

@@ -182,15 +182,18 @@ class ProfileActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRe
 
     private val imgFromCam: ActivityResultLauncher<Intent> =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            //  get image and load it into `imageview`
-            val image = it.data!!.extras!!["data"] as Bitmap
-            binding.newProfileImg.setImageBitmap(image)
+            if (it.resultCode != RESULT_CANCELED) {
+                //  get image and load it into `imageview`
+                val image = it.data!!.extras!!["data"] as Bitmap
+                binding.newProfileImg.setImageBitmap(image)
 
-            //  we have image in form of `bitmap`, to upload it on firebase-storage we need to convert `Bitmap` in `ByteArray`
-            val bitmap =(binding.newProfileImg.drawable as BitmapDrawable).bitmap
-            val baos = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-            byteArray = baos.toByteArray()
+                //  we have image in form of `bitmap`, to upload it on firebase-storage we need to convert `Bitmap` in `ByteArray`
+                val bitmap =(binding.newProfileImg.drawable as BitmapDrawable).bitmap
+                val baos = ByteArrayOutputStream()
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+                byteArray = baos.toByteArray()
+            }
+
         }
 
     private fun openGalleryForImage() {
@@ -202,10 +205,12 @@ class ProfileActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRe
 
     private val imgFromGallery: ActivityResultLauncher<Intent> =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            //  get image and load it into `imageview`
-            imgURI = it.data!!.data!!
-            Log.d("imgURI", imgURI.toString())
-            binding.newProfileImg.setImageURI(imgURI)
+            if (it.resultCode != RESULT_CANCELED) {
+                //  get image and load it into `imageview`
+                imgURI = it.data!!.data!!
+                Log.d("imgURI", imgURI.toString())
+                binding.newProfileImg.setImageURI(imgURI)
+            }
         }
 
     private fun addNewUser() {
@@ -342,9 +347,9 @@ class ProfileActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRe
     private fun greenToast() {
         val toastBinding = ToastSuccessBinding.inflate(LayoutInflater.from(this))
         val toast = Toast(this)
-        toastBinding.txtToastMessage.text = "Profile created successfully!!"
-        toast.setView(toastBinding.root)
-        toast.setDuration(Toast.LENGTH_LONG)
+        toastBinding.txtToastMessage.text = getString(R.string.profile_successful)
+        toast.view = toastBinding.root
+        toast.duration = Toast.LENGTH_LONG
         toast.show()
     }
 
@@ -352,8 +357,8 @@ class ProfileActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRe
         val toastBinding = ToastErrorBinding.inflate(LayoutInflater.from(this))
         val toast = Toast(this)
         toastBinding.txtToastMessage.text = message
-        toast.setView(toastBinding.root)
-        toast.setDuration(Toast.LENGTH_LONG)
+        toast.view = toastBinding.root
+        toast.duration = Toast.LENGTH_LONG
         toast.show()
     }
 

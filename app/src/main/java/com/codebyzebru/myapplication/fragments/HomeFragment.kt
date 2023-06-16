@@ -22,13 +22,13 @@ class HomeFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         /*
-                when the fragment come in picture, respected navigation `menu item` must be highlighted
-                and `title` of the activity must be sync with fragment.
+            when the fragment come in picture, respected navigation `menu item` must be highlighted
+            and `title` of the activity must be sync with fragment.
         */
         (activity as HomeActivity).naviView.menu.findItem(R.id.drawer_item_home).isChecked = true
         (activity as HomeActivity).title = "Home"
 
-        // Inflate the layout for this fragment
+        //  Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
@@ -59,6 +59,21 @@ class HomeFragment : Fragment() {
             setupWithViewPager(binding.homeViewPager)
             setSelectedTabIndicator(null)
             tabRippleColor = null
+        }
+
+        /*
+            TO ADD SPACE BETWEEN TABS OF TAB-LAYOUT
+        */
+        val tabs = binding.homeTabLayout.getChildAt(0) as ViewGroup
+
+        for (i in 0 until tabs.childCount ) {
+            val tab = tabs.getChildAt(i)
+            val layoutParams = tab.layoutParams as ViewGroup.MarginLayoutParams
+            layoutParams.marginEnd = 15
+            layoutParams.marginStart = 15
+            layoutParams.width = 13
+            tab.layoutParams = layoutParams
+            binding.homeTabLayout.requestLayout()
         }
     }
 

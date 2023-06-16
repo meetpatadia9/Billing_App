@@ -4,5 +4,5 @@ data class HistoryDataClass(
     var key: String = "",
     val billNo: String = "",
     val buyer: String = "",
-    val billTotal: Int = 0
+    val billTotal: Float = 0F
 )

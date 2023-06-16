@@ -3,6 +3,7 @@ package com.codebyzebru.myapplication.activities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Gravity
+import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.codebyzebru.myapplication.R
 import com.codebyzebru.myapplication.broadcastreceiver.ConnectivityReceiver
@@ -34,7 +35,7 @@ class SignInSignUpActivity : AppCompatActivity(), ConnectivityReceiver.Connectiv
     }
 
     /*
-            CHECKING FOR ACTIVE INTERNET CONNECTION
+        CHECKING FOR ACTIVE INTERNET CONNECTION
     */
     private fun noInternet() {
         isConnected = false

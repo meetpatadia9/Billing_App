@@ -8,10 +8,22 @@
 
     <TextView
         android:id="@+id/purchased_pName"
+        android:layout_width="@dimen/_70sdp"
+        android:layout_height="wrap_content"
+        android:text="Product name"
+        android:ellipsize="end"
+        android:singleLine="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/btn_remove_purchased_item"
+        app:layout_constraintBottom_toBottomOf="@id/btn_remove_purchased_item" />
+
+    <TextView
+        android:id="@+id/purchased_pAmount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="Product name"
-        app:layout_constraintStart_toStartOf="parent"
+        tools:text="100"
+        android:layout_marginEnd="@dimen/_20sdp"
+        app:layout_constraintEnd_toStartOf="@id/purchased_pQty"
         app:layout_constraintTop_toTopOf="@id/btn_remove_purchased_item"
         app:layout_constraintBottom_toBottomOf="@id/btn_remove_purchased_item" />
 

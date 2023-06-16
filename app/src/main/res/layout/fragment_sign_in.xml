@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,7 +9,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
         android:padding="@dimen/_5sdp">
 
         <!--  EMAIL  -->
@@ -34,7 +33,8 @@
                 android:id="@+id/login_edtxt_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Email"
+                android:autofillHints="emailAddress"
+                android:hint="@string/txt_email"
                 android:inputType="textEmailAddress"
                 android:singleLine="true"
                 android:textColorHint="@color/color1" />
@@ -63,7 +63,8 @@
                 android:id="@+id/login_edtxt_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Password"
+                android:autofillHints="password"
+                android:hint="@string/txt_password"
                 android:inputType="textPassword"
                 android:singleLine="true" />
 
@@ -75,7 +76,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_12sdp"
-            android:text="Don't have credentials?"
+            android:text="@string/txt_no_credential"
             android:textColor="@color/color1"
             app:layout_constraintStart_toStartOf="@id/til2"
             app:layout_constraintTop_toBottomOf="@id/til2" />
@@ -108,7 +109,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_20sdp"
             android:background="@drawable/shape_btn"
-            android:text="Sign In"
+            android:text="@string/btn_sign_in"
             android:textAllCaps="false"
             android:textColor="@color/color2"
             android:textSize="@dimen/_13ssp"
@@ -122,7 +123,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_12sdp"
-            android:text="⌜ OR ⌟"
+            android:text="@string/txt_or"
             android:textColor="@color/color2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -133,6 +134,7 @@
             android:layout_width="@dimen/_45sdp"
             android:layout_height="@dimen/_45sdp"
             android:layout_marginTop="@dimen/_7sdp"
+            android:contentDescription="@string/cd_google"
             android:padding="5dp"
             android:src="@drawable/icon_google"
             app:layout_constraintEnd_toEndOf="parent"
@@ -141,4 +143,4 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</FrameLayout>
+</androidx.core.widget.NestedScrollView>

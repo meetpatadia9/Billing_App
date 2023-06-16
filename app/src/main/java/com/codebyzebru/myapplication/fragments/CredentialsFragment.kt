@@ -36,7 +36,7 @@ class CredentialsFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        // Inflate the layout for this fragment
+        //  Inflate the layout for this fragment
         binding = FragmentCredentialsBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
@@ -47,22 +47,22 @@ class CredentialsFragment : Fragment() {
         val newPassword = binding.cpEdtxtPassword
         val conformPassword = binding.cpEdtxtConformPass
 
-        email.addTextChangedListener(emailFieldValidation)
-        newPassword.addTextChangedListener(passwordFieldValidation)
-        conformPassword.addTextChangedListener(conformPasswordFieldValidation)
+        email.addTextChangedListener(textWatcher)
+        newPassword.addTextChangedListener(textWatcher)
+        conformPassword.addTextChangedListener(textWatcher)
 
         binding.btnSignIn.setOnClickListener {
             if (email.text.toString() == "") {
                 stopProgressbar()
-                binding.createPassTIL1.helperText = "Required*"
+                binding.createPassTIL1.helperText = "Email is required"
             }
             else if (newPassword.text.toString() == "") {
                 stopProgressbar()
-                binding.createPassTIL2.helperText = "Required*"
+                binding.createPassTIL2.helperText = "Password is required"
             }
             else if (conformPassword.text.toString() == "") {
                 stopProgressbar()
-                binding.createPassTIL3.helperText = "Required*"
+                binding.createPassTIL3.helperText = "Conform password is required"
             }
             else if (newPassword.text.toString() != conformPassword.text.toString()) {
                 stopProgressbar()
@@ -119,74 +119,62 @@ class CredentialsFragment : Fragment() {
         )
     }
 
-    //  EMAIL TEXT-WATCHER
-    private val emailFieldValidation: TextWatcher = object : TextWatcher {
+    private val textWatcher: TextWatcher = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             binding.createPassTIL1.helperText = ""
-        }
-
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-        }
-
-        override fun afterTextChanged(s: Editable?) {
-            if (binding.cpEdtxtEmail.text.toString().trim().isNotEmpty()) {
-                binding.createPassTIL1.helperText = ""
-            }
-            else
-            {
-                binding.createPassTIL1.helperText = "Required*"
-            }
-
-            if(!isValidString(binding.cpEdtxtEmail.text.toString())) {
-                binding.createPassTIL1.helperText = "Enter valid Email"
-            }
-            else {
-                binding.createPassTIL1.helperText = ""
-            }
-        }
-    }
-
-    //  PASSWORD TEXT-WATCHER
-    private val passwordFieldValidation: TextWatcher = object : TextWatcher {
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             binding.createPassTIL2.helperText = ""
-        }
-
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-        }
-
-        override fun afterTextChanged(s: Editable?) {
-            if (binding.cpEdtxtPassword.text.toString().trim().isNotEmpty()) {
-                binding.createPassTIL2.helperText = ""
-            }
-            else
-            {
-                binding.createPassTIL2.helperText = "Required*"
-            }
-        }
-    }
-
-    //  CONFORM PASSWORD TEXT-WATCHER
-    private val conformPasswordFieldValidation: TextWatcher = object : TextWatcher {
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             binding.createPassTIL3.helperText = ""
+
         }
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
+            when (s.hashCode()) {
+                binding.cpEdtxtEmail.text.hashCode() -> {
+                    if (binding.cpEdtxtEmail.text.toString().trim() == "") {
+                        binding.createPassTIL1.helperText = "Email is required"
+                    }
+                }
+                binding.cpEdtxtEmail.text.hashCode() -> {
+                    if (!isValidString(binding.cpEdtxtEmail.text.toString())) {
+                        binding.createPassTIL1.helperText = "Enter valid email"
+                    }
+                }
+                binding.cpEdtxtPassword.text.hashCode() -> {
+                    if (binding.cpEdtxtPassword.text.toString().trim() == "") {
+                        binding.createPassTIL2.helperText = "Password is required"
+                    }
+                }
+                binding.cpEdtxtConformPass.text.hashCode() -> {
+                    if (binding.cpEdtxtConformPass.text.toString().trim() == "") {
+                        binding.createPassTIL3.helperText = "Conform password is required"
+                    }
+                }
+            }
         }
 
         override fun afterTextChanged(s: Editable?) {
-            if (binding.cpEdtxtConformPass.text.toString().trim().isNotEmpty()) {
-                binding.createPassTIL3.helperText = ""
-            }
-            else
-            {
-                binding.createPassTIL3.helperText = "Required*"
+            when (s.hashCode()) {
+                binding.cpEdtxtEmail.text.hashCode() -> {
+                    if (binding.cpEdtxtEmail.text.toString().trim() == "") {
+                        binding.createPassTIL1.helperText = "Email is required"
+                    }
+                }
+                binding.cpEdtxtEmail.text.hashCode() -> {
+                    if (!isValidString(binding.cpEdtxtEmail.text.toString())) {
+                        binding.createPassTIL1.helperText = "Enter valid email"
+                    }
+                }
+                binding.cpEdtxtPassword.text.hashCode() -> {
+                    if (binding.cpEdtxtPassword.text.toString().trim() == "") {
+                        binding.createPassTIL2.helperText = "Enter password"
+                    }
+                }
+                binding.cpEdtxtConformPass.text.hashCode() -> {
+                    if (binding.cpEdtxtConformPass.text.toString().trim() == "") {
+                        binding.createPassTIL3.helperText = "Enter conform password"
+                    }
+                }
             }
         }
     }
-
 }

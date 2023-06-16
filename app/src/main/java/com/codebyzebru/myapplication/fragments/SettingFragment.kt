@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.codebyzebru.myapplication.R
 import com.codebyzebru.myapplication.activities.HomeActivity
 import com.codebyzebru.myapplication.adapters.SettingListAdapter
@@ -40,13 +41,13 @@ class SettingFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         /*
-                when the fragment come in picture, respected navigation `menu item` must be highlighted
-                and `title` of the activity must be sync with fragment.
+            when the fragment come in picture, respected navigation `menu item` must be highlighted
+            and `title` of the activity must be sync with fragment.
         */
         (activity as HomeActivity).naviView.menu.findItem(R.id.drawer_item_setting).isChecked = true
         (activity as HomeActivity).title = "Setting"
 
-        // Inflate the layout for this fragment with view binding
+        //  Inflate the layout for this fragment with view binding
         binding = FragmentSettingBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
@@ -54,11 +55,16 @@ class SettingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        (activity as HomeActivity).supportActionBar?.show()
+
         val localFile = File.createTempFile("tempFile", "jpeg")
         FirebaseStorage.getInstance().getReference("Profile Images/$userID").getFile(localFile)
             .addOnSuccessListener {
                 val bitmapFactory = BitmapFactory.decodeFile(localFile.absolutePath)
-                Glide.with(requireActivity()).load(bitmapFactory).into(binding.profileImage)
+                Glide.with(requireContext().applicationContext)
+                    .load(bitmapFactory)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(binding.profileImage)
             }
             .addOnFailureListener {
                 Log.d("Failed to load profile image", it.message.toString())

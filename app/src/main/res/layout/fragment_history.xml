@@ -33,7 +33,7 @@
 
         <ImageView
             android:layout_width="@dimen/_270sdp"
-            android:layout_height="@dimen/_400sdp"
+            android:layout_height="@dimen/_500sdp"
             android:src="@drawable/no_data_cuate"
             android:layout_gravity="center|top"/>
 
@@ -46,7 +46,7 @@
             android:textAlignment="center"
             android:textColor="@color/blur_color2"
             android:layout_gravity="center|bottom"
-            android:layout_marginBottom="@dimen/_180sdp"/>
+            android:layout_marginBottom="@dimen/_130sdp"/>
 
     </FrameLayout>
 
