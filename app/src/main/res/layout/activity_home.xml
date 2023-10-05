@@ -11,7 +11,7 @@
         android:id="@+id/layout_home"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"/>
+        android:orientation="vertical" />
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/home_navigationView"

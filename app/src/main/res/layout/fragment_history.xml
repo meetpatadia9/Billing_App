@@ -34,19 +34,20 @@
         <ImageView
             android:layout_width="@dimen/_270sdp"
             android:layout_height="@dimen/_500sdp"
-            android:src="@drawable/no_data_cuate"
-            android:layout_gravity="center|top"/>
+            android:layout_gravity="center|top"
+            android:contentDescription="@string/cd_illustration_image"
+            android:src="@drawable/no_data_cuate" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="No data available. \nPlease create invoices to display."
-            android:textSize="@dimen/_15ssp"
-            android:textStyle=""
+            android:layout_gravity="center|bottom"
+            android:layout_marginBottom="@dimen/_130sdp"
+            android:text="@string/txt_no_history_data"
             android:textAlignment="center"
             android:textColor="@color/blur_color2"
-            android:layout_gravity="center|bottom"
-            android:layout_marginBottom="@dimen/_130sdp"/>
+            android:textSize="@dimen/_15ssp"
+            android:textStyle="" />
 
     </FrameLayout>
 

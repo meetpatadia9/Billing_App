@@ -40,12 +40,12 @@
                     android:id="@+id/txtBillNo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:labelFor="@id/billFrag_txt_billNo"
                     android:text="@string/txtBillNo"
-                    android:textSize="@dimen/_11ssp"
                     android:textColor="@color/blur_color2"
+                    android:textSize="@dimen/_11ssp"
                     app:layout_constraintBottom_toBottomOf="@id/billFrag_txt_billNo"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:labelFor="@id/billFrag_txt_billNo"
                     app:layout_constraintTop_toTopOf="@id/billFrag_txt_billNo" />
 
                 <EditText
@@ -53,13 +53,13 @@
                     android:layout_width="@dimen/_40sdp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_2sdp"
+                    android:autofillHints="name"
                     android:inputType="number"
                     android:textAlignment="viewEnd"
                     android:textSize="@dimen/_11ssp"
                     app:layout_constraintStart_toEndOf="@id/txtBillNo"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="1"
-                    android:autofillHints="name" />
+                    tools:text="1" />
 
                 <!--    NAME    -->
                 <com.google.android.material.textfield.TextInputLayout
@@ -88,6 +88,7 @@
                         android:completionThreshold="1"
                         android:hint="@string/txt_customer"
                         android:padding="@dimen/_9sdp"
+                        android:inputType="textCapSentences"
                         android:textColorHint="@color/blur_color2" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -115,12 +116,12 @@
                         android:id="@+id/billFrag_edtxt_contact"
                         android:layout_width="@dimen/_250sdp"
                         android:layout_height="wrap_content"
-                        android:hint="@string/txt_contact"
+                        android:autofillHints="none"
+                        android:hint="@string/contact"
                         android:inputType="phone"
                         android:padding="12dp"
                         android:textColorHint="@color/blur_color2"
-                        tools:ignore="Deprecated"
-                        android:autofillHints="none" />
+                        tools:ignore="Deprecated" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -165,14 +166,14 @@
                     android:layout_width="@dimen/_40sdp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_2sdp"
+                    android:autofillHints="name"
                     android:inputType="number"
+                    android:text="@string/default_amt"
                     android:textAlignment="viewEnd"
                     android:textSize="@dimen/_11ssp"
-                    app:layout_constraintStart_toEndOf="@id/txtSubTotal"
-                    app:layout_constraintTop_toTopOf="@id/txtSubTotal"
                     app:layout_constraintBottom_toBottomOf="@id/txtSubTotal"
-                    tools:text="1"
-                    android:autofillHints="name" />
+                    app:layout_constraintStart_toEndOf="@id/txtSubTotal"
+                    app:layout_constraintTop_toTopOf="@id/txtSubTotal" />
 
                 <!-- TAX -->
                 <TextView
@@ -191,14 +192,14 @@
                     android:layout_width="@dimen/_40sdp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_2sdp"
+                    android:autofillHints="name"
                     android:inputType="number"
+                    android:text="@string/default_amt"
                     android:textAlignment="viewEnd"
                     android:textSize="@dimen/_11ssp"
-                    app:layout_constraintStart_toEndOf="@id/txtTax"
-                    app:layout_constraintTop_toTopOf="@id/txtTax"
                     app:layout_constraintBottom_toBottomOf="@id/txtTax"
-                    tools:text="1"
-                    android:autofillHints="name" />
+                    app:layout_constraintStart_toEndOf="@id/txtTax"
+                    app:layout_constraintTop_toTopOf="@id/txtTax" />
 
                 <!--    BILL TOTAL    -->
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -207,9 +208,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_12sdp"
                     android:layout_marginBottom="@dimen/_15sdp"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/txtTax">
 
                     <TextView
@@ -230,8 +231,8 @@
 
                     <TextView
                         android:id="@+id/txtTotalAmt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_width="107dp"
+                        android:layout_height="22dp"
                         android:text="@string/txtTotalAmount"
                         android:textColor="@color/blur_color2"
                         android:textSize="@dimen/_14ssp"
@@ -250,6 +251,7 @@
                         android:inputType="number"
                         android:padding="@dimen/_9sdp"
                         android:singleLine="true"
+                        android:text="@string/default_amt"
                         android:textAlignment="viewEnd"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/txtTotalAmt"
@@ -278,7 +280,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/shape_btn_green"
-                android:text="Save"
+                android:text="@string/btn_save"
                 android:textAllCaps="false"
                 android:textColor="@color/color5"
                 android:textSize="@dimen/_12ssp"

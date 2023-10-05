@@ -46,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:autofillHints="name"
                 android:hint="@string/txt_full_name"
-                android:inputType="textEmailAddress"
+                android:inputType="textEmailAddress|textCapSentences"
                 android:singleLine="true" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -73,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:autofillHints="emailAddress"
                 android:hint="@string/txt_email"
-                android:inputType="textEmailAddress"
+                android:inputType="textEmailAddress|textCapSentences"
                 android:singleLine="true" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -101,7 +101,7 @@
                 android:autofillHints="name"
                 android:hint="@string/txt_company_name"
                 android:singleLine="true"
-                android:inputType="none" />
+                android:inputType="textCapSentences" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -156,7 +156,7 @@
                 android:layout_height="wrap_content"
                 android:autofillHints="postalAddress"
                 android:hint="@string/txt_address"
-                android:inputType="textPostalAddress"
+                android:inputType="textPostalAddress|textCapSentences"
                 android:singleLine="true" />
 
         </com.google.android.material.textfield.TextInputLayout>

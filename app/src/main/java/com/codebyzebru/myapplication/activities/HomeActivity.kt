@@ -93,8 +93,8 @@ class HomeActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
         return super.onOptionsItemSelected(item)
     }
 
-    /*
-            CHECKING FOR ACTIVE INTERNET CONNECTION
+    /**
+        CHECKING FOR ACTIVE INTERNET CONNECTION
     */
     private fun noInternet() {
         isConnected = false

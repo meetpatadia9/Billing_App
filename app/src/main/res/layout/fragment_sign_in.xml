@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:autofillHints="emailAddress"
                 android:hint="@string/txt_email"
-                android:inputType="textEmailAddress"
+                android:inputType="textEmailAddress|textCapSentences"
                 android:singleLine="true"
                 android:textColorHint="@color/color1" />
 

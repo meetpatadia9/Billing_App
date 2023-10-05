@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.SettingFragment">
 
     <androidx.core.widget.NestedScrollView
@@ -27,45 +27,44 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <de.hdodenhof.circleimageview.CircleImageView
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/profile_image"
                     android:layout_width="@dimen/_90sdp"
                     android:layout_height="@dimen/_90sdp"
                     android:src="@drawable/user_default_img"
-                    app:civ_border_width="1dp"
                     app:civ_border_color="@color/mid_color1"
+                    app:civ_border_width="1dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_5sdp"
                     android:orientation="vertical"
                     android:padding="@dimen/_8sdp"
-                    android:layout_marginStart="@dimen/_5sdp"
+                    app:layout_constraintBottom_toBottomOf="@id/profile_image"
                     app:layout_constraintStart_toEndOf="@id/profile_image"
-                    app:layout_constraintTop_toTopOf="@id/profile_image"
-                    app:layout_constraintBottom_toBottomOf="@id/profile_image">
+                    app:layout_constraintTop_toTopOf="@id/profile_image">
 
                     <TextView
                         android:id="@+id/settingFrag_user_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/color2"
-                        tools:text="Meet Patadia"
                         android:fontFamily="sans-serif-light"
+                        android:textColor="@color/color2"
+                        android:textSize="@dimen/_15ssp"
                         android:textStyle="bold"
-                        android:textSize="@dimen/_15ssp" />
+                        tools:text="Meet Patadia" />
 
                     <TextView
                         android:id="@+id/settingFrag_user_email"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        tools:text="patadiam09@gmail.com"
                         android:fontFamily="sans-serif-black"
                         android:textColor="@color/blur_color2"
-                        android:textSize="@dimen/_10ssp" />
+                        android:textSize="@dimen/_10ssp"
+                        tools:text="patadiam09@gmail.com" />
 
                 </LinearLayout>
 
@@ -81,7 +80,7 @@
                     android:id="@+id/settingFrag_recyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

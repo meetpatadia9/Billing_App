@@ -61,13 +61,13 @@ class PurchasedItemAdapter(val context: Context, private val itemList: List<Purc
              */
 
             with(itemList[position]) {
-                val iPrice = itemList[position].pPrice
-                val iQty = itemList[position].pQty
+                val iPrice = itemList[position].pprice
+                val iQty = itemList[position].pqty
                 val total = iPrice * iQty
 
-                itemBinding.purchasedPName.text = this.pName
-                itemBinding.purchasedPAmount.text = this.pPrice.toString()
-                itemBinding.purchasedPQty.text = this.pQty.toString()
+                itemBinding.purchasedPName.text = this.pname
+                itemBinding.purchasedPAmount.text = this.pprice.toString()
+                itemBinding.purchasedPQty.text = this.pqty.toString()
                 itemBinding.purchasedPPrice.text = total.toString()
 
                 myTotal.add(total)

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.ProfileFragment">
@@ -91,7 +91,7 @@
                     android:layout_height="wrap_content"
                     android:autofillHints="name"
                     android:hint="@string/txt_full_name"
-                    android:inputType="textPersonName"
+                    android:inputType="textPersonName|textCapSentences"
                     android:singleLine="true"
                     android:textColorHint="@color/blur_color2" />
 
@@ -121,8 +121,10 @@
                     android:layout_height="wrap_content"
                     android:autofillHints="name"
                     android:hint="@string/txt_company_name"
+                    android:inputType="textCapSentences"
                     android:singleLine="true"
-                    android:textColorHint="@color/blur_color2" />
+                    android:textColorHint="@color/blur_color2"
+                    tools:ignore="Autofill" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -150,7 +152,7 @@
                     android:layout_height="wrap_content"
                     android:autofillHints="postalAddress"
                     android:hint="@string/txt_address"
-                    android:inputType="textPostalAddress"
+                    android:inputType="textPostalAddress|textCapSentences"
                     android:singleLine="true"
                     android:textColorHint="@color/blur_color2" />
 

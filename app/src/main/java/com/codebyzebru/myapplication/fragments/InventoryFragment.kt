@@ -75,6 +75,7 @@ class InventoryFragment : Fragment() {
         //  Fetching Inventory Data
         FirebaseDatabase.getInstance().getReference("Users/$userID/Inventory Data").orderByChild("productName")
             .addValueEventListener(object : ValueEventListener {
+                @SuppressLint("NotifyDataSetChanged")
                 override fun onDataChange(snapshot: DataSnapshot) {
                     itemList.clear()
                     if (snapshot.exists()) {

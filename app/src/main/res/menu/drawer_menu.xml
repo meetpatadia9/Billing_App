@@ -1,62 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- HOME -->
-    <group
-        android:checkableBehavior="single">
+    <group android:checkableBehavior="single">
         <item
             android:id="@+id/drawer_item_home"
             android:checkable="true"
             android:icon="@drawable/baseline_home_24"
-            android:title="Home" />
+            android:title="@string/txt_home" />
     </group>
 
-
     <!--  BILL  -->
-    <item android:title="Bill"
-        android:id="@+id/itemBill">
+    <item
+        android:id="@+id/itemBill"
+        android:title="@string/txt_bill">
         <menu>
-            <group
-                android:checkableBehavior="single">
+            <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/drawer_item_bill"
                     android:checkable="true"
                     android:icon="@drawable/baseline_currency_rupee_24"
-                    android:title="Create Bill" />
+                    android:title="@string/txt_create_bill" />
 
                 <item
                     android:id="@+id/drawer_item_inventory"
                     android:checkable="true"
                     android:icon="@drawable/baseline_inventory_24"
-                    android:title="Inventory" />
+                    android:title="@string/txt_inventory" />
 
                 <item
                     android:id="@+id/drawer_item_parties"
                     android:checkable="true"
                     android:icon="@drawable/baseline_groups_3_24"
-                    android:title="Parties" />
+                    android:title="@string/txt_parties" />
 
                 <item
                     android:id="@+id/drawer_item_history"
                     android:checkable="true"
                     android:icon="@drawable/baseline_history_24"
-                    android:title="History" />
+                    android:title="@string/txt_history" />
             </group>
         </menu>
     </item>
 
-
     <!-- OTHER -->
-    <item android:title="Other">
+    <item android:title="@string/txt_other">
         <menu>
-            <group
-                android:checkableBehavior="single">
+            <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/drawer_item_setting"
                     android:checkable="true"
                     android:icon="@drawable/baseline_settings_24"
-                    android:title="Setting" />
+                    android:title="@string/txt_setting" />
             </group>
         </menu>
     </item>

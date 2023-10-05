@@ -1,10 +1,9 @@
 package com.codebyzebru.myapplication.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Gravity
-import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.appcompat.app.AppCompatActivity
 import com.codebyzebru.myapplication.R
 import com.codebyzebru.myapplication.broadcastreceiver.ConnectivityReceiver
 import com.codebyzebru.myapplication.databinding.ActivitySignInSignUpBinding
@@ -34,7 +33,7 @@ class SignInSignUpActivity : AppCompatActivity(), ConnectivityReceiver.Connectiv
         }
     }
 
-    /*
+    /**
         CHECKING FOR ACTIVE INTERNET CONNECTION
     */
     private fun noInternet() {

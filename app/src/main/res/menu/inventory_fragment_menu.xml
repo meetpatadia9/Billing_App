@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/inventoryFrag_menu_addItem"
-        android:title="Add Party"
+        android:title="@string/txt_add_party"
         android:icon="@drawable/baseline_playlist_add_24"
         app:showAsAction="always"/>
 

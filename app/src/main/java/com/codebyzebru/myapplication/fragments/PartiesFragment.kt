@@ -1,12 +1,16 @@
 package com.codebyzebru.myapplication.fragments
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.*
-import android.widget.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.RadioButton
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.codebyzebru.myapplication.R
@@ -20,9 +24,11 @@ import com.codebyzebru.myapplication.databinding.ToastSuccessBinding
 import com.codebyzebru.myapplication.dataclasses.AddPartyDataClass
 import com.codebyzebru.myapplication.dataclasses.ViewPartyDataClass
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class PartiesFragment : Fragment() {
 
@@ -34,7 +40,6 @@ class PartiesFragment : Fragment() {
     lateinit var partyAdapter: PartyAdapter
 
     private lateinit var database: DatabaseReference
-    lateinit var partyDatabase: DatabaseReference
     private lateinit var userID: String
     private var key = ""
 
@@ -71,28 +76,30 @@ class PartiesFragment : Fragment() {
             })
 
         //  Fetching Party Data
-        database.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                partyList.clear()
-                if (snapshot.exists()) {
-                    binding.partyFragNoDataFrameLayout.visibility = View.GONE
-                    for (item in snapshot.children) {
-                        val listedData = item.getValue(ViewPartyDataClass::class.java)
-                        listedData!!.key = item.key.toString()
-                        partyList.add(listedData)
+        database.orderByChild("partyName")
+            .addValueEventListener(object : ValueEventListener {
+                @SuppressLint("NotifyDataSetChanged")
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    partyList.clear()
+                    if (snapshot.exists()) {
+                        binding.partyFragNoDataFrameLayout.visibility = View.GONE
+                        for (item in snapshot.children) {
+                            val listedData = item.getValue(ViewPartyDataClass::class.java)
+                            listedData!!.key = item.key.toString()
+                            partyList.add(listedData)
+                        }
+                        binding.partiesRecyclerView.adapter = partyAdapter
                     }
-                    binding.partiesRecyclerView.adapter = partyAdapter
+                    else {
+                        partyAdapter.notifyDataSetChanged()
+                        binding.partyFragNoDataFrameLayout.visibility = View.VISIBLE
+                    }
                 }
-                else {
-                    partyAdapter.notifyDataSetChanged()
-                    binding.partyFragNoDataFrameLayout.visibility = View.VISIBLE
-                }
-            }
 
-            override fun onCancelled(error: DatabaseError) {
-                Log.e("Error", error.toString())
-            }
-        })
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e("Error", error.toString())
+                }
+            })
 
 
         //  ADD NEW PARTY

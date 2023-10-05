@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="@dimen/_300sdp"
     android:layout_height="wrap_content"
     android:padding="@dimen/_15sdp">
@@ -17,9 +18,9 @@
         app:boxCornerRadiusBottomStart="@dimen/_3sdp"
         app:boxCornerRadiusTopEnd="@dimen/_3sdp"
         app:boxCornerRadiusTopStart="@dimen/_3sdp"
-        app:helperTextTextColor="@color/color4"
         app:boxStrokeColor="@color/color2"
         app:boxStrokeWidth="@dimen/_1sdp"
+        app:helperTextTextColor="@color/color4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -28,9 +29,11 @@
             android:id="@+id/addParty_edtxt_partyName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Party Name*"
+            android:hint="@string/txt_partyName"
+            android:inputType="textCapSentences"
             android:padding="@dimen/_9sdp"
-            android:singleLine="true" />
+            android:singleLine="true"
+            tools:ignore="Autofill" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -46,9 +49,9 @@
         app:boxCornerRadiusBottomStart="@dimen/_3sdp"
         app:boxCornerRadiusTopEnd="@dimen/_3sdp"
         app:boxCornerRadiusTopStart="@dimen/_3sdp"
-        app:helperTextTextColor="@color/color4"
         app:boxStrokeColor="@color/color2"
         app:boxStrokeWidth="@dimen/_1sdp"
+        app:helperTextTextColor="@color/color4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/til1">
@@ -57,12 +60,13 @@
             android:id="@+id/addParty_edtxt_company_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Company Name"
+            android:hint="@string/txt_company_name"
+            android:inputType="textCapSentences"
             android:padding="@dimen/_9sdp"
-            android:singleLine="true" />
+            android:singleLine="true"
+            tools:ignore="Autofill" />
 
     </com.google.android.material.textfield.TextInputLayout>
-
 
     <!--    COMPANY ADDRESS    -->
     <com.google.android.material.textfield.TextInputLayout
@@ -76,9 +80,9 @@
         app:boxCornerRadiusBottomStart="@dimen/_3sdp"
         app:boxCornerRadiusTopEnd="@dimen/_3sdp"
         app:boxCornerRadiusTopStart="@dimen/_3sdp"
-        app:helperTextTextColor="@color/color4"
         app:boxStrokeColor="@color/color2"
         app:boxStrokeWidth="@dimen/_1sdp"
+        app:helperTextTextColor="@color/color4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/til2">
@@ -87,9 +91,11 @@
             android:id="@+id/addParty_edtxt_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Address"
+            android:hint="@string/txt_address"
+            android:inputType="textCapSentences"
             android:padding="@dimen/_9sdp"
-            android:singleLine="true" />
+            android:singleLine="true"
+            tools:ignore="Autofill" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -105,9 +111,9 @@
         app:boxCornerRadiusBottomStart="@dimen/_3sdp"
         app:boxCornerRadiusTopEnd="@dimen/_3sdp"
         app:boxCornerRadiusTopStart="@dimen/_3sdp"
-        app:helperTextTextColor="@color/color4"
         app:boxStrokeColor="@color/color2"
         app:boxStrokeWidth="@dimen/_1sdp"
+        app:helperTextTextColor="@color/color4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/til3">
@@ -116,10 +122,11 @@
             android:id="@+id/addParty_edtxt_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="E-mail"
-            android:inputType="textEmailAddress"
+            android:hint="@string/txt_e_mail"
+            android:inputType="textEmailAddress|textCapSentences"
             android:padding="@dimen/_9sdp"
-            android:singleLine="true" />
+            android:singleLine="true"
+            tools:ignore="Autofill" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -135,9 +142,9 @@
         app:boxCornerRadiusBottomStart="@dimen/_3sdp"
         app:boxCornerRadiusTopEnd="@dimen/_3sdp"
         app:boxCornerRadiusTopStart="@dimen/_3sdp"
-        app:helperTextTextColor="@color/color4"
         app:boxStrokeColor="@color/color2"
         app:boxStrokeWidth="@dimen/_1sdp"
+        app:helperTextTextColor="@color/color4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/til4">
@@ -146,10 +153,11 @@
             android:id="@+id/addParty_edtxt_contact"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Contact*"
-            android:inputType="phone"
+            android:hint="@string/txt_contact_"
+            android:inputType="phone|textCapSentences"
             android:padding="@dimen/_9sdp"
-            android:singleLine="true" />
+            android:singleLine="true"
+            tools:ignore="Autofill" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -169,17 +177,17 @@
             android:id="@+id/addParty_rBtn_B2B"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="B2B"
-            android:textColor="@color/color2"
-            android:buttonTint="@color/blur_color2" />
+            android:buttonTint="@color/blur_color2"
+            android:text="@string/txt_b2b"
+            android:textColor="@color/color2" />
 
         <RadioButton
             android:id="@+id/addParty_rBtn_B2C"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="B2C"
-            android:textColor="@color/color2"
-            android:buttonTint="@color/blur_color2" />
+            android:buttonTint="@color/blur_color2"
+            android:text="@string/txt_b2c"
+            android:textColor="@color/color2" />
 
     </RadioGroup>
 
@@ -190,7 +198,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_9sdp"
         android:background="@drawable/shape_btn_green"
-        android:text="Save"
+        android:text="@string/btn_save"
         android:textAllCaps="false"
         android:textColor="@color/color5"
         android:textSize="16sp"
@@ -204,7 +212,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_9sdp"
         android:background="@drawable/shape_btn_red"
-        android:text="Cancel"
+        android:text="@string/btn_cancel"
         android:textAllCaps="false"
         android:textColor="@color/color4"
         android:textSize="16sp"

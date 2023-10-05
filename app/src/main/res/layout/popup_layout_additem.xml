@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="@dimen/_300sdp"
     android:layout_height="wrap_content"
     android:padding="@dimen/_15sdp">
@@ -18,8 +19,8 @@
         app:boxCornerRadiusTopEnd="@dimen/_3sdp"
         app:boxCornerRadiusTopStart="@dimen/_3sdp"
         app:boxStrokeColor="@color/color2"
-        app:helperTextTextColor="@color/color4"
         app:boxStrokeWidth="@dimen/_1sdp"
+        app:helperTextTextColor="@color/color4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -28,9 +29,11 @@
             android:id="@+id/addItem_edtxt_productName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Product name*"
+            android:hint="@string/txt_product_name"
+            android:inputType="textCapSentences"
             android:padding="@dimen/_9sdp"
-            android:singleLine="true" />
+            android:singleLine="true"
+            tools:ignore="Autofill" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -44,10 +47,10 @@
         app:boxCornerRadiusBottomEnd="@dimen/_3sdp"
         app:boxCornerRadiusBottomStart="@dimen/_3sdp"
         app:boxCornerRadiusTopEnd="@dimen/_3sdp"
-        app:helperTextTextColor="@color/color4"
         app:boxCornerRadiusTopStart="@dimen/_3sdp"
         app:boxStrokeColor="@color/color2"
         app:boxStrokeWidth="@dimen/_1sdp"
+        app:helperTextTextColor="@color/color4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/til1">
@@ -56,10 +59,11 @@
             android:id="@+id/addItem_edtxt_purchasePrise"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Purchasing price"
-            android:inputType="number"
+            android:hint="@string/txt_purchasing_price"
+            android:inputType="number|textCapSentences"
             android:padding="@dimen/_9sdp"
-            android:singleLine="true" />
+            android:singleLine="true"
+            tools:ignore="Autofill" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -73,11 +77,11 @@
         app:boxBackgroundMode="outline"
         app:boxCornerRadiusBottomEnd="@dimen/_3sdp"
         app:boxCornerRadiusBottomStart="@dimen/_3sdp"
-        app:helperTextTextColor="@color/color4"
         app:boxCornerRadiusTopEnd="@dimen/_3sdp"
         app:boxCornerRadiusTopStart="@dimen/_3sdp"
         app:boxStrokeColor="@color/color2"
         app:boxStrokeWidth="@dimen/_1sdp"
+        app:helperTextTextColor="@color/color4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/til2">
@@ -86,10 +90,11 @@
             android:id="@+id/addItem_edtxt_sellingPrice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Selling price*"
-            android:inputType="number"
+            android:hint="@string/txt_selling_price"
+            android:inputType="number|textCapSentences"
             android:padding="@dimen/_9sdp"
-            android:singleLine="true" />
+            android:singleLine="true"
+            tools:ignore="Autofill" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -105,9 +110,9 @@
         app:boxCornerRadiusBottomStart="@dimen/_3sdp"
         app:boxCornerRadiusTopEnd="@dimen/_3sdp"
         app:boxCornerRadiusTopStart="@dimen/_3sdp"
-        app:helperTextTextColor="@color/color4"
         app:boxStrokeColor="@color/color2"
         app:boxStrokeWidth="@dimen/_1sdp"
+        app:helperTextTextColor="@color/color4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/til3">
@@ -116,10 +121,11 @@
             android:id="@+id/addItem_edtxt_productQty"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Product quantity*"
+            android:hint="@string/txt_product_quantity"
             android:inputType="number"
             android:padding="@dimen/_9sdp"
-            android:singleLine="true" />
+            android:singleLine="true"
+            tools:ignore="Autofill" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -129,7 +135,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_9sdp"
         android:background="@drawable/shape_btn_green"
-        android:text="Save"
+        android:text="@string/btn_save"
         android:textAllCaps="false"
         android:textColor="@color/color5"
         android:textSize="16sp"
@@ -143,7 +149,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_9sdp"
         android:background="@drawable/shape_btn_red"
-        android:text="Cancel"
+        android:text="@string/btn_cancel"
         android:textAllCaps="false"
         android:textColor="@color/color4"
         android:textSize="16sp"

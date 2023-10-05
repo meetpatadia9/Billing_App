@@ -22,6 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_15sdp"
             android:backgroundTint="@color/color1"
+            android:contentDescription="@string/cd_add_button"
             android:src="@drawable/baseline_add_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -40,19 +41,20 @@
             <ImageView
                 android:layout_width="@dimen/_270sdp"
                 android:layout_height="@dimen/_500sdp"
-                android:src="@drawable/empty_amico"
-                android:layout_gravity="center|top"/>
+                android:layout_gravity="center|top"
+                android:contentDescription="@string/cd_illustration_image"
+                android:src="@drawable/empty_amico" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="No data available. \nPlease add inventory to display."
-                android:textSize="@dimen/_15ssp"
-                android:textStyle=""
+                android:layout_gravity="center|bottom"
+                android:layout_marginBottom="@dimen/_130sdp"
+                android:text="@string/txt_no_inventory_data"
                 android:textAlignment="center"
                 android:textColor="@color/blur_color2"
-                android:layout_gravity="center|bottom"
-                android:layout_marginBottom="@dimen/_130sdp"/>
+                android:textSize="@dimen/_15ssp"
+                android:textStyle="" />
 
         </FrameLayout>
 

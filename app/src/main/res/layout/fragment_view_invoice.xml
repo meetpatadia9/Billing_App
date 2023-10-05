@@ -13,8 +13,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="@dimen/_5sdp"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:padding="@dimen/_5sdp">
 
             <!-- ORG/STORE NAME -->
             <TextView
@@ -33,7 +33,7 @@
                 android:id="@+id/txtSellerContact"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/blur_color2"
+                android:textColor="@color/color2"
                 android:textSize="@dimen/_13ssp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -62,78 +62,78 @@
                 android:id="@+id/txtInvNo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
                 android:text="@string/txt_invoice_no"
                 android:textSize="@dimen/_12ssp"
-                android:layout_marginTop="@dimen/_15sdp"
-                app:layout_constraintTop_toBottomOf="@id/txtInvoice"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="@id/txtInvoice"
+                app:layout_constraintTop_toBottomOf="@id/txtInvoice" />
 
             <TextView
                 android:id="@+id/txt_invoiceNo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="1"
-                android:textSize="@dimen/_12ssp"
-                android:textColor="@color/black"
                 android:layout_marginStart="@dimen/_3sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintStart_toEndOf="@id/txtInvNo"
                 app:layout_constraintTop_toTopOf="@id/txtInvNo"
-                app:layout_constraintStart_toEndOf="@id/txtInvNo"/>
+                tools:text="1" />
 
             <!-- INVOICE DATE -->
             <TextView
                 android:id="@+id/txtInvDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_3sdp"
                 android:text="@string/txt_invoice_date"
                 android:textSize="@dimen/_12ssp"
-                android:layout_marginTop="@dimen/_3sdp"
-                app:layout_constraintTop_toBottomOf="@id/txt_invoiceNo"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="@id/txtInvNo"
+                app:layout_constraintTop_toBottomOf="@id/txt_invoiceNo" />
 
             <TextView
                 android:id="@+id/txt_invoiceDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="DD/MM/YYYY"
-                android:textSize="@dimen/_12ssp"
-                android:textColor="@color/black"
                 android:layout_marginStart="@dimen/_3sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintStart_toEndOf="@id/txtInvDate"
                 app:layout_constraintTop_toTopOf="@id/txtInvDate"
-                app:layout_constraintStart_toEndOf="@id/txtInvDate"/>
+                tools:text="DD/MM/YYYY" />
 
             <!-- INVOICE TO -->
             <TextView
                 android:id="@+id/txtBillTo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
                 android:text="@string/txt_bill_to"
                 android:textSize="@dimen/_12ssp"
                 android:textStyle="bold"
-                android:layout_marginTop="@dimen/_15sdp"
-                app:layout_constraintTop_toBottomOf="@id/txtInvoice"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintEnd_toEndOf="@id/txtInvoice"
+                app:layout_constraintTop_toBottomOf="@id/txtInvoice" />
 
             <TextView
                 android:id="@+id/txt_partyName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="Meet Patadia"
-                android:textSize="@dimen/_13ssp"
-                android:textColor="@color/black"
                 android:layout_marginTop="@dimen/_3sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_13ssp"
+                app:layout_constraintEnd_toEndOf="@id/txtBillTo"
                 app:layout_constraintTop_toBottomOf="@id/txtBillTo"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                tools:text="Meet Patadia" />
 
             <TextView
                 android:id="@+id/txt_partyOrg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="Meet Pvt. Ltd."
-                android:textSize="@dimen/_13ssp"
-                android:textColor="@color/black"
                 android:layout_marginTop="@dimen/_3sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_13ssp"
+                app:layout_constraintEnd_toEndOf="@id/txt_partyName"
                 app:layout_constraintTop_toBottomOf="@id/txt_partyName"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                tools:text="Meet Pvt. Ltd." />
 
             <!-- INVOICED ITEMS -->
             <androidx.cardview.widget.CardView
@@ -156,10 +156,10 @@
                         android:padding="@dimen/_10sdp"
                         android:text="@string/txt_item"
                         android:textAlignment="center"
-                        app:layout_constraintHorizontal_weight="@integer/material_motion_duration_short_1"
+                        app:layout_constraintEnd_toStartOf="@id/txtRate"
+                        app:layout_constraintHorizontal_weight="@integer/material_motion_duration_short_2"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/txtRate"/>
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/txtRate"
@@ -169,10 +169,10 @@
                         android:padding="@dimen/_10sdp"
                         android:text="@string/txt_rate"
                         android:textAlignment="center"
+                        app:layout_constraintEnd_toStartOf="@id/txtQty"
                         app:layout_constraintHorizontal_weight="@integer/material_motion_duration_short_1"
                         app:layout_constraintStart_toEndOf="@id/txtItem"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/txtQty" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/txtQty"
@@ -182,10 +182,10 @@
                         android:padding="@dimen/_10sdp"
                         android:text="@string/txt_qty"
                         android:textAlignment="center"
+                        app:layout_constraintEnd_toStartOf="@id/txtAmount"
                         app:layout_constraintHorizontal_weight="@integer/material_motion_duration_short_1"
                         app:layout_constraintStart_toEndOf="@id/txtRate"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/txtAmount" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/txtAmount"
@@ -193,18 +193,19 @@
                         android:layout_height="wrap_content"
                         android:background="@color/light_color1"
                         android:padding="@dimen/_10sdp"
-                        android:text="@string/txt_amount"
+                        android:text="@string/txt_amt"
                         android:textAlignment="center"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_weight="@integer/material_motion_duration_short_1"
                         app:layout_constraintStart_toEndOf="@id/txtQty"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"/>
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerView_invoicedItem"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@id/txtItem"/>
+                        android:nestedScrollingEnabled="false"
+                        app:layout_constraintTop_toBottomOf="@id/txtItem" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -215,69 +216,69 @@
                 android:id="@+id/txtSubTotal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_14sdp"
                 android:text="@string/txtSubtotal"
                 android:textSize="@dimen/_12ssp"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:layout_marginEnd="@dimen/_72sdp"
-                app:layout_constraintTop_toBottomOf="@id/cardV_invoicedItems"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintEnd_toStartOf="@id/txtSubAmt"
+                app:layout_constraintTop_toBottomOf="@id/cardV_invoicedItems" />
 
             <TextView
-                android:id="@+id/txt_amount"
+                android:id="@+id/txtSubAmt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/default_amt"
-                android:textSize="@dimen/_12ssp"
-                android:textColor="@color/black"
                 android:layout_marginStart="@dimen/_15sdp"
-                app:layout_constraintTop_toTopOf="@id/txtSubTotal"
-                app:layout_constraintStart_toEndOf="@id/txtSubTotal"/>
+                android:text="@string/default_amt"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintEnd_toEndOf="@id/txtInvoice"
+                app:layout_constraintTop_toTopOf="@id/txtSubTotal" />
 
             <!-- TAX -->
             <TextView
                 android:id="@+id/txtTax"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/txtTax"
-                android:textSize="@dimen/_12ssp"
                 android:layout_marginTop="@dimen/_3sdp"
                 android:layout_marginEnd="@dimen/_72sdp"
-                app:layout_constraintTop_toBottomOf="@id/txtSubTotal"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                android:text="@string/txtTax"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintStart_toStartOf="@id/txtSubTotal"
+                app:layout_constraintTop_toBottomOf="@id/txtSubTotal" />
 
             <TextView
                 android:id="@+id/txt_taxAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/default_amt"
-                android:textSize="@dimen/_12ssp"
-                android:textColor="@color/black"
                 android:layout_marginStart="@dimen/_15sdp"
-                app:layout_constraintTop_toTopOf="@id/txtTax"
-                app:layout_constraintStart_toEndOf="@id/txtSubTotal"/>
+                android:text="@string/default_amt"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintEnd_toEndOf="@id/txtSubAmt"
+                app:layout_constraintTop_toTopOf="@id/txtTax" />
 
             <!-- TOTAL -->
             <TextView
                 android:id="@+id/txtTotal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Total  -"
-                android:textSize="@dimen/_12ssp"
                 android:layout_marginTop="@dimen/_3sdp"
                 android:layout_marginEnd="@dimen/_72sdp"
-                app:layout_constraintTop_toBottomOf="@id/txtTax"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                android:text="@string/txt_total"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintStart_toStartOf="@id/txtTax"
+                app:layout_constraintTop_toBottomOf="@id/txtTax" />
 
             <TextView
                 android:id="@+id/txt_totalAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/default_amt"
-                android:textSize="@dimen/_12ssp"
-                android:textColor="@color/black"
                 android:layout_marginStart="@dimen/_15sdp"
-                app:layout_constraintTop_toTopOf="@id/txtTotal"
-                app:layout_constraintStart_toEndOf="@id/txtSubTotal"/>
+                android:text="@string/default_amt"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintEnd_toEndOf="@id/txt_taxAmount"
+                app:layout_constraintTop_toTopOf="@id/txtTotal" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -292,11 +293,64 @@
             android:id="@+id/btnClose"
             android:layout_width="@dimen/_20sdp"
             android:layout_height="@dimen/_20sdp"
-            android:src="@drawable/outline_cancel_24"
             android:layout_gravity="end"
-            app:tint="@color/blur_color2"
             android:layout_margin="@dimen/_10sdp"
-            android:contentDescription="@string/nav_close" />
+            android:contentDescription="@string/nav_close"
+            android:src="@drawable/outline_cancel_24"
+            app:tint="@color/blur_color2" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#F4F4F4"
+        android:layout_gravity="bottom">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/_2sdp">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnPdfShare"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:background="@drawable/shape_btn_red"
+                android:text="Share as PDF"
+                android:textAllCaps="false"
+                android:textColor="@color/color4"
+                android:textSize="@dimen/_12ssp"
+                android:typeface="normal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btnImageShare"
+                app:layout_constraintHorizontal_weight="@integer/material_motion_duration_short_1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnImageShare"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:background="@drawable/shape_btn_green"
+                android:text="Share as Image"
+                android:textAllCaps="false"
+                android:textColor="@color/color5"
+                android:textSize="@dimen/_12ssp"
+                android:typeface="normal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_weight="@integer/material_motion_duration_short_1"
+                app:layout_constraintStart_toEndOf="@id/btnPdfShare"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </FrameLayout>
 

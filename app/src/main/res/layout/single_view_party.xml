@@ -18,8 +18,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/color1"
-            android:textStyle="bold"
             android:textSize="@dimen/_12ssp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/singleView_party_company"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -30,11 +30,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/blur_color2"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/singleView_party_name"
-            tools:text="C1 Pvt. Ltd."
-            android:visibility="gone"/>
+            tools:text="C1 Pvt. Ltd." />
 
         <TextView
             android:id="@+id/singleView_party_totalPurchase"

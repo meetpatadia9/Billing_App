@@ -4,42 +4,43 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="@dimen/_250sdp"
     android:layout_height="wrap_content"
-    android:padding="@dimen/_9sdp"
-    android:background="@drawable/shape_toast_error">
+    android:background="@drawable/shape_toast_error"
+    android:padding="@dimen/_9sdp">
 
     <ImageView
         android:id="@+id/imgV_successful"
         android:layout_width="@dimen/_25sdp"
         android:layout_height="@dimen/_25sdp"
+        android:contentDescription="@string/cd_cross_image"
         android:src="@drawable/outline_cancel_24"
-        app:layout_constraintTop_toTopOf="@id/txtSuccess"
         app:layout_constraintBottom_toBottomOf="@id/txtToastMessage"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/txtSuccess" />
 
     <TextView
         android:id="@+id/txtSuccess"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Failed"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        android:textSize="@dimen/_12ssp"
         android:layout_marginStart="@dimen/_11sdp"
-        app:layout_constraintTop_toTopOf="parent"
+        android:text="@string/txt_failed"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_12ssp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/txtToastMessage"
         app:layout_constraintStart_toEndOf="@id/imgV_successful"
-        app:layout_constraintBottom_toTopOf="@id/txtToastMessage"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/txtToastMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="Item added in inventory successfully."
-        android:textSize="@dimen/_9ssp"
-        android:textColor="@color/black"
         android:layout_marginStart="@dimen/_11sdp"
         android:layout_marginTop="@dimen/_3sdp"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_9ssp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/imgV_successful"
-        app:layout_constraintTop_toBottomOf="@id/txtSuccess"/>
+        app:layout_constraintTop_toBottomOf="@id/txtSuccess"
+        tools:text="Item added in inventory successfully." />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

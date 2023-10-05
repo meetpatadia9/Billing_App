@@ -9,7 +9,7 @@ import com.codebyzebru.myapplication.R
 import com.codebyzebru.myapplication.databinding.SingleViewHistoryBinding
 import com.codebyzebru.myapplication.dataclasses.HistoryDataClass
 
-class HistoryAdapter(val context: Context, private val billList: List<HistoryDataClass>, val listener: OnClick)
+class HistoryAdapter(val context: Context, private val billList: List<HistoryDataClass>, private val listener: OnClick)
     : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
 
     class HistoryViewHolder(val itemBinding: SingleViewHistoryBinding) :RecyclerView.ViewHolder(itemBinding.root)

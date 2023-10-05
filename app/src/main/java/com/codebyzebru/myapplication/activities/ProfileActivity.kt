@@ -391,8 +391,8 @@ class ProfileActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRe
         )
     }
 
-    /*
-           CHECKING FOR ACTIVE INTERNET CONNECTION
+    /**
+        CHECKING FOR ACTIVE INTERNET CONNECTION
     */
     private fun noInternet() {
         isConnected = false

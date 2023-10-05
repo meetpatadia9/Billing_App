@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/txtItem"
@@ -13,16 +13,17 @@
         android:maxLines="1"
         android:padding="@dimen/_10sdp"
         app:layout_constraintEnd_toStartOf="@id/txtRate"
-        app:layout_constraintHorizontal_weight="@integer/material_motion_duration_short_1"
+        app:layout_constraintHorizontal_weight="@integer/material_motion_duration_short_2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Product 1" />
+        tools:text="Product name" />
 
     <TextView
         android:id="@+id/txtRate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="@dimen/_10sdp"
+        android:textAlignment="center"
         app:layout_constraintEnd_toStartOf="@id/txtQty"
         app:layout_constraintHorizontal_weight="@integer/material_motion_duration_short_1"
         app:layout_constraintStart_toEndOf="@id/txtItem"
@@ -34,6 +35,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="@dimen/_10sdp"
+        android:textAlignment="center"
         app:layout_constraintEnd_toStartOf="@id/txtAmount"
         app:layout_constraintHorizontal_weight="@integer/material_motion_duration_short_1"
         app:layout_constraintStart_toEndOf="@id/txtRate"
@@ -45,6 +47,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="@dimen/_10sdp"
+        android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="@integer/material_motion_duration_short_1"
         app:layout_constraintStart_toEndOf="@id/txtQty"

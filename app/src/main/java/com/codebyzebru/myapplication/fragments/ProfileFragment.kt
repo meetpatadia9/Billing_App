@@ -265,7 +265,7 @@ class ProfileFragment : Fragment() {
     private fun greenToast() {
         val toastBinding = ToastSuccessBinding.inflate(LayoutInflater.from(requireContext()))
         val toast = Toast(requireContext())
-        toastBinding.txtToastMessage.text = "Profile updated successfully!!"
+        toastBinding.txtToastMessage.text = getText(R.string.txt_profile_updated)
         toast.view = toastBinding.root
         toast.duration = Toast.LENGTH_LONG
         toast.show()
@@ -274,7 +274,7 @@ class ProfileFragment : Fragment() {
     private fun redToast() {
         val toastBinding = ToastErrorBinding.inflate(LayoutInflater.from(requireContext()))
         val toast = Toast(requireContext())
-        toastBinding.txtToastMessage.text = "Ops! Something went wrong!!"
+        toastBinding.txtToastMessage.text = getText(R.string.txt_something_wrong)
         toast.view = toastBinding.root
         toast.duration = Toast.LENGTH_LONG
         toast.show()

@@ -6,8 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.codebyzebru.myapplication.R
 import com.codebyzebru.myapplication.activities.HomeActivity
+import com.codebyzebru.myapplication.adapters.InvoiceAdapter
 import com.codebyzebru.myapplication.databinding.FragmentViewInvoiceBinding
 import com.codebyzebru.myapplication.dataclasses.BillDataClass
 import com.codebyzebru.myapplication.dataclasses.ProfileDataClass
@@ -69,8 +71,7 @@ class ViewInvoiceFragment : Fragment() {
 
                     if (userData.companyName == "") {
                         binding.txtSellerOrg.text = getString(R.string.default_org)
-                    }
-                    else {
+                    } else {
                         binding.txtSellerOrg.text = userData.companyName
                     }
                     binding.txtSellerContact.text = userData.contact
@@ -98,14 +99,7 @@ class ViewInvoiceFragment : Fragment() {
                     binding.txtInvoiceDate.text = invoiceData.date
                     buyerUID = invoiceData.buyerUID
                     binding.txtPartyName.text = invoiceData.buyer
-                    /*if (invoiceData.organization!!.isEmpty() && invoiceData.address!!.isNotEmpty()) {
-                        binding.txtPartyOrg.text = invoiceData.address
-                    } else if (invoiceData.organization.isNotEmpty() && invoiceData.address!!.isEmpty()) {
-                        binding.txtPartyOrg.text = invoiceData.organization
-                    } else {
-                        binding.txtPartyOrg.visibility = View.GONE
-                    }*/
-                    binding.txtAmount.text = invoiceData.subTotal.toString()
+                    binding.txtSubAmt.text = invoiceData.subTotal.toString()
                     binding.txtTotalAmount.text = total.toString()
 
                     //  FETCHING PURCHASED ITEMS DETAILS
@@ -114,6 +108,18 @@ class ViewInvoiceFragment : Fragment() {
                         override fun onDataChange(snapshot: DataSnapshot) {
                             if (snapshot.exists()) {
                                 Log.d("purchasedItem.snapshot", snapshot.toString())
+                                for (item in snapshot.children) {
+                                    val a = item.getValue(PurchasedItemDataClass::class.java)
+                                    Log.d("a", a.toString())
+                                    invoicedItems.add(a!!)
+                                    Log.d("invoicedItems", invoicedItems.toString())
+                                    binding.recyclerViewInvoicedItem.apply {
+                                        layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+                                        adapter = InvoiceAdapter(requireContext(), invoicedItems)
+                                    }
+                                }
+                            } else {
+                                binding.cardVInvoicedItems.visibility = View.GONE
                             }
                         }
 

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="@dimen/_15sdp"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:padding="@dimen/_15sdp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -30,9 +31,11 @@
                 android:id="@+id/update_productName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Product name*"
+                android:hint="@string/txt_product_name"
+                android:inputType="textCapSentences"
                 android:padding="@dimen/_9sdp"
-                android:singleLine="true" />
+                android:singleLine="true"
+                tools:ignore="Autofill" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -59,9 +62,11 @@
                 android:id="@+id/update_purchasePrise"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Purchasing price"
+                android:hint="@string/txt_purchasing_price"
+                android:inputType="textCapSentences"
                 android:padding="@dimen/_9sdp"
-                android:singleLine="true" />
+                android:singleLine="true"
+                tools:ignore="Autofill" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -88,9 +93,11 @@
                 android:id="@+id/update_sellingPrice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Selling price*"
+                android:hint="@string/txt_selling_price"
+                android:inputType="textCapSentences"
                 android:padding="@dimen/_9sdp"
-                android:singleLine="true" />
+                android:singleLine="true"
+                tools:ignore="Autofill" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -106,9 +113,9 @@
             app:boxCornerRadiusBottomStart="@dimen/_3sdp"
             app:boxCornerRadiusTopEnd="@dimen/_3sdp"
             app:boxCornerRadiusTopStart="@dimen/_3sdp"
-            app:helperTextTextColor="@color/color4"
             app:boxStrokeColor="@color/color2"
             app:boxStrokeWidth="@dimen/_1sdp"
+            app:helperTextTextColor="@color/color4"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/til3">
@@ -117,9 +124,11 @@
                 android:id="@+id/update_productQty"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Product quantity*"
+                android:hint="@string/txt_product_quantity"
+                android:inputType="textCapSentences"
                 android:padding="@dimen/_9sdp"
-                android:singleLine="true" />
+                android:singleLine="true"
+                tools:ignore="Autofill" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -130,13 +139,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_12sdp"
             android:background="@drawable/shape_btn_green"
-            android:text="Update"
+            android:text="@string/txt_update"
             android:textAllCaps="false"
             android:textColor="@color/color5"
             android:textSize="16sp"
             android:typeface="normal"
             app:layout_constraintStart_toStartOf="@id/til4"
-            app:layout_constraintTop_toBottomOf="@id/til4"/>
+            app:layout_constraintTop_toBottomOf="@id/til4" />
 
         <!--    DELETE BUTTON    -->
         <androidx.appcompat.widget.AppCompatButton
@@ -145,13 +154,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_12sdp"
             android:background="@drawable/shape_btn_red"
-            android:text="Delete"
+            android:text="@string/txt_delete"
             android:textAllCaps="false"
             android:textColor="@color/color4"
             android:textSize="16sp"
             android:typeface="normal"
             app:layout_constraintEnd_toEndOf="@id/til4"
-            app:layout_constraintTop_toBottomOf="@id/til4"/>
+            app:layout_constraintTop_toBottomOf="@id/til4" />
 
         <!--    CANCEL BUTTON    -->
         <!--<androidx.appcompat.widget.AppCompatButton

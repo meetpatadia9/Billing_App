@@ -76,11 +76,11 @@
             android:id="@+id/progressbar_otp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_20sdp"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintBottom_toBottomOf="@id/btnVerify"
+            app:layout_constraintEnd_toEndOf="@id/btnVerify"
+            app:layout_constraintStart_toStartOf="@id/btnVerify"
+            app:layout_constraintTop_toTopOf="@id/btnVerify" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnVerify"

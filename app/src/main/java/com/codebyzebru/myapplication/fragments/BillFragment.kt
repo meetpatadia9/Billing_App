@@ -57,9 +57,6 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
     private var invItemList = arrayListOf<ViewInventoryDataClass>()
 
     private lateinit var partyID: String
-    var partyEmail: String? = ""
-    var partyOrg: String? = ""
-    var partyAddrs: String? = ""
     private var totalPurchasedAmt = 0F
     private var productQty = 0
 
@@ -160,9 +157,6 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
                                     //  Checking, Is selected item exist in `snapshot.children`
                                     if (partyNameData?.partyName.equals(selected)) {
                                         partyID = party?.key.toString()
-                                        partyEmail = partyNameData?.email
-                                        partyOrg = partyNameData?.companyName
-                                        partyAddrs = partyNameData?.address
                                         contact.setText(partyNameData?.contact)
                                         totalPurchasedAmt = partyNameData?.totalPurchase.toString().toFloat()
                                         Log.i( "partyID", partyID)
@@ -231,7 +225,7 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
                                             productQty = pNameData.productQty.toString().toInt()
                                         }
                                     }
-                                    pQty.addTextChangedListener(qtyWatcher)
+                                    pQty.addTextChangedListener(textWatcher)
                                 }
                             })
                         }
@@ -255,12 +249,16 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
                     addItemBinding.til3.helperText = "Selling price is require"
                 }
                 else {
+
+                    val tAmt = pQty.text.toString().toInt() * pPrice.text.toString().toFloat()
+
                     purchasedItemList.add(
                         PurchasedItemDataClass(
                             itemKey,
-                            pName = pName.text.toString(),
-                            pQty = pQty.text.toString().toInt(),
-                            pPrice = pPrice.text.toString().toFloat()
+                            pname = pName.text.toString(),
+                            pqty = pQty.text.toString().toInt(),
+                            pprice = pPrice.text.toString().toFloat(),
+                            totalAmt = tAmt
                         )
                     )
 
@@ -270,7 +268,7 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
                                 purchasedItemList.remove(purchasedItemDataClass)
                                 if (purchasedItemList.isEmpty()) {
                                     binding.billFragEdtxtTotal.text.clear()
-                                    binding.txtAmount.text = getString(R.string.default_amt)
+                                    binding.txtAmount.setText(getString(R.string.default_amt))
                                 }
                             }
                         })
@@ -291,6 +289,7 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
                 redToast("You cannot proceed without total of bill!")
             }
             else {      //  accepting condition
+                binding.btnGenerateBill.isEnabled = false
                 generateBill()
             }
         }
@@ -302,38 +301,47 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
         }
     }
 
-    private val qtyWatcher: TextWatcher = object : TextWatcher {
+    //  TEXT-WATCHER
+    private val textWatcher: TextWatcher = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             addItemBinding.til2.helperText = ""
         }
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            if (addItemBinding.additemBillFragEdittxtQty.text.toString().trim().isNotEmpty()) {
-                if (addItemBinding.additemBillFragEdittxtQty.text.toString().toInt() > productQty) {
-                    addItemBinding.til2.helperText = "Not enough in stoke"
-                    addItemBinding.billFragAddItemBtnAdd.isEnabled = false
-                } else {
-                    addItemBinding.til2.helperText = ""
-                    addItemBinding.billFragAddItemBtnAdd.isEnabled = true
+            when(s.hashCode()) {
+                addItemBinding.additemBillFragEdittxtQty.hashCode() -> {
+                    if (addItemBinding.additemBillFragEdittxtQty.text.toString().trim().isNotEmpty()) {
+                        if (addItemBinding.additemBillFragEdittxtQty.text.toString().toInt() > productQty) {
+                            addItemBinding.til2.helperText = "Not enough in stoke"
+                            addItemBinding.billFragAddItemBtnAdd.isEnabled = false
+                        } else {
+                            addItemBinding.til2.helperText = ""
+                            addItemBinding.billFragAddItemBtnAdd.isEnabled = true
+                        }
+                    }
                 }
             }
         }
 
         override fun afterTextChanged(s: Editable?) {
-            if (addItemBinding.additemBillFragEdittxtQty.text.toString().trim().isNotEmpty()) {
-                if (addItemBinding.additemBillFragEdittxtQty.text.toString().toInt() > productQty) {
-                    addItemBinding.til2.helperText = "Not enough in stoke"
-                    addItemBinding.billFragAddItemBtnAdd.isEnabled = false
-                } else {
-                    addItemBinding.til2.helperText = ""
-                    addItemBinding.billFragAddItemBtnAdd.isEnabled = true
+            when(s.hashCode()) {
+                addItemBinding.additemBillFragEdittxtQty.hashCode() -> {
+                    if (addItemBinding.additemBillFragEdittxtQty.text.toString().trim().isNotEmpty()) {
+                        if (addItemBinding.additemBillFragEdittxtQty.text.toString().toInt() > productQty) {
+                            addItemBinding.til2.helperText = "Not enough in stoke"
+                            addItemBinding.billFragAddItemBtnAdd.isEnabled = false
+                        } else {
+                            addItemBinding.til2.helperText = ""
+                            addItemBinding.billFragAddItemBtnAdd.isEnabled = true
+                        }
+                    }
                 }
             }
         }
     }
 
     override fun onSubTotalUpdate(total: Float) {
-        binding.txtAmount.text = total.toString()
+        binding.txtAmount.setText(total.toString())
         val totalAmt = total + binding.txtTaxAmount.text.toString().toFloat()
         binding.billFragEdtxtTotal.setText(totalAmt.toString())
     }
@@ -342,10 +350,8 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
         val txtDate = binding.billFragTxtDate
         val edtxtBillNo = binding.billFragTxtBillNo
         val autoCompleteTextView = binding.billFragAutoTxtName
-        val email = partyEmail
-        val organization = partyOrg
-        val address = partyAddrs
-        val contact = binding.billFragEdtxtContact
+        val subTotal = binding.txtAmount
+        val taxAmt = binding.txtTaxAmount
         val billTotal = binding.billFragEdtxtTotal
 
         totalPurchasedAmt += billTotal.text.toString().toFloat()
@@ -360,13 +366,9 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
             billNo = edtxtBillNo.text.toString(),
             buyerUID = partyID,
             buyer = autoCompleteTextView.text.toString(),
-            /*email = email,
-            organization = organization,
-            address = address,
-            contact = contact.text.toString(),*/
             purchasedItems = purchasedItemList,
-            subTotal = binding.txtAmount.text.toString().toFloat(),
-            tax = binding.txtTaxAmount.text.toString().toFloat(),
+            subTotal = subTotal.text.toString().toFloat(),
+            tax = taxAmt.text.toString().toFloat(),
             billTotal = billTotal.text.toString().toFloat()
         )
 
@@ -384,7 +386,7 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
                                         inv.key == purchasedItemList.key
                                     }
                                         .let { inv ->
-                                            inv!!.productQty -= purchasedItemList.pQty
+                                            inv!!.productQty -= purchasedItemList.pqty
 
                                             FirebaseDatabase.getInstance().getReference("Users/$userID")
                                                 .child("Inventory Data").child(purchasedItemList.key).child("productQty")
@@ -392,6 +394,8 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
                                         }
                                 }
                             }
+
+                            binding.btnGenerateBill.isEnabled = true
 
                             requireActivity().supportFragmentManager.beginTransaction()
                                 .replace(R.id.layout_home, HomeFragment())

@@ -20,13 +20,17 @@
     <string name="txt_address">Address</string>
     <string name="txt_email">E-mail*</string>
     <string name="txt_contact">Contact*</string>
+    <string name="contact">Contact</string>
     <string name="txt_gender">Gender</string>
     <string name="txt_male">Male</string>
     <string name="txt_female">Female</string>
     <string name="profile_successful"> Profile created successfully!! </string>
+    <string name="txt_profile_updated">Profile updated successfully!!</string>
+    <string name="txt_something_wrong">Ops! Something went wrong!!</string>
 
     <!-- Bill Fragment -->
     <string name="default_amt">00.0</string>
+
 
     <!-- Invoice -->
     <string name="txt_invoice_no">Invoice no.:</string>
@@ -35,7 +39,7 @@
     <string name="txt_item">ITEM</string>
     <string name="txt_rate">RATE</string>
     <string name="txt_qty">QTY</string>
-    <string name="txt_amount">AMOUNT</string>
+    <string name="txt_amt">AMT</string>
     <string name="default_org">My Company</string>
 
     <!-- Labels -->
@@ -45,8 +49,9 @@
     <string name="txtBillNo">Bill no.:</string>
     <string name="txtTotalAmount">Total Amount</string>
     <string name="txtTotal">Total</string>
-    <string name="txtSubtotal">Subtotal  -</string>
+    <string name="txtSubtotal">Sub Total  -</string>
     <string name="txtTax">Tax(0%) -</string>
+    <string name="txt_total">Total -</string>
 
     <!-- Instructions -->
     <string name="txt_sign_in"> <u>Sign In</u> </string>
@@ -58,6 +63,8 @@
     <string name="txt_credentials_for_sign_in">Create credentials for Sign-In</string>
     <string name="txt_done">Done</string>
     <string name="txt_enter_code">Please enter the verification code sent to</string>
+    <string name="txt_no_party_data">No data available. \nPlease add customers to display.</string>
+    <string name="txt_no_inventory_data">No data available. \nPlease add inventory to display.</string>
 
     <!-- Content Description -->
     <string name="cd_image_quotes">App logo with quote</string>
@@ -66,5 +73,50 @@
     <string name="btn_add_item">Add item</string>
     <string name="txt_customer">Customer*</string>
     <string name="txt_no_history">No data available. \nPlease create invoices to display.</string>
+    <string name="txt_party_name">Party Name</string>
+    <string name="txt_e_mail">E-mail</string>
+    <string name="txt_b2b">B2B</string>
+    <string name="txt_b2c">B2C</string>
+    <string name="txt_update">Update</string>
+    <string name="txt_delete">Delete</string>
+    <string name="txt_product_name">Product name*</string>
+    <string name="txt_purchasing_price">Purchasing price</string>
+    <string name="txt_selling_price">Selling price*</string>
+    <string name="txt_product_quantity">Product quantity*</string>
+    <string name="txt_phone">Phone</string>
+    <string name="txt_next">Next</string>
+    <string name="cd_add_button">Add button</string>
+    <string name="cd_illustration_image">Illustration Image</string>
+
+    <string name="cd_no_internet">No internet</string>
+    <string name="txt_no_internet">No Internet</string>
+    <string name="txt_connect_with_internet">Connect with internet.</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="txt_partyName">Party Name*</string>
+    <string name="txt_contact_">Contact*</string>
+    <string name="txt_quantity">Quantity*</string>
+    <string name="txt_add">Add</string>
+    <string name="txt_price">Price</string>
+    <string name="cd_delete_button">Delete button</string>
+    <string name="cd_setting_icon">Setting icon</string>
+    <string name="cd_cross_image">Cross image</string>
+    <string name="txt_failed">Failed</string>
+    <string name="cd_done_image">Done image</string>
+    <string name="txt_success">Success</string>
+    <string name="cd_camera_image">Camera image</string>
+    <string name="cd_camera">Camera</string>
+    <string name="cd_album_image">Album image</string>
+    <string name="txt_gallery">Gallery</string>
+    <string name="cd_decoration">Decoration</string>
+    <string name="txt_no_history_data">No data available. \nPlease create invoices to display.</string>
+    <string name="txt_home">Home</string>
+    <string name="txt_bill">Bill</string>
+    <string name="txt_create_bill">Create Bill</string>
+    <string name="txt_inventory">Inventory</string>
+    <string name="txt_parties">Parties</string>
+    <string name="txt_history">History</string>
+    <string name="txt_other">Other</string>
+    <string name="txt_setting">Setting</string>
+    <string name="txt_add_party">Add Party</string>
 
 </resources>
