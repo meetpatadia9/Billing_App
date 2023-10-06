@@ -63,7 +63,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/txt_purchasing_price"
-                android:inputType="textCapSentences"
+                android:inputType="number"
                 android:padding="@dimen/_9sdp"
                 android:singleLine="true"
                 tools:ignore="Autofill" />

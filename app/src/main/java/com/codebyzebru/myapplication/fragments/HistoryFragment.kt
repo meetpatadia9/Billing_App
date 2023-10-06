@@ -1,5 +1,6 @@
 package com.codebyzebru.myapplication.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -19,6 +20,7 @@ class HistoryFragment : Fragment() {
 
     lateinit var binding: FragmentHistoryBinding
 
+    lateinit var adapter: HistoryAdapter
     val billList = arrayListOf<HistoryDataClass>()
     private lateinit var userID: String
 
@@ -48,12 +50,29 @@ class HistoryFragment : Fragment() {
 
         (activity as HomeActivity).supportActionBar?.show()
 
+        adapter = HistoryAdapter(requireActivity(), billList,
+            object : HistoryAdapter.OnClick {
+                override fun openInvoice(historyDataClass: HistoryDataClass) {
+                    val bundle = Bundle()
+                    bundle.putString("invoiceNo", historyDataClass.key)
+
+                    val fragment = ViewInvoiceFragment()
+                    fragment.arguments = bundle
+
+                    activity!!.supportFragmentManager.beginTransaction()
+                        .replace(R.id.layout_home, fragment, "VIEW-INVOICE")
+                        .addToBackStack(null)
+                        .commit()
+                }
+            })
+
         //  applying `Layout` to Recyclerview
         binding.historyFragRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         //  Fetching Bill Data
         FirebaseDatabase.getInstance().getReference("Users/$userID/Bills")
             .addValueEventListener(object : ValueEventListener {
+                @SuppressLint("NotifyDataSetChanged")
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
                         binding.historyFragNoDataFrameLayout.visibility = View.GONE
@@ -64,24 +83,12 @@ class HistoryFragment : Fragment() {
                             billList.add(listedData)
                         }
 
-                        binding.historyFragRecyclerView.adapter = HistoryAdapter(requireActivity(), billList,
-                            object : HistoryAdapter.OnClick {
-                                override fun openInvoice(historyDataClass: HistoryDataClass) {
-                                    val bundle = Bundle()
-                                    bundle.putString("invoiceNo", historyDataClass.key)
-
-                                    val fragment = ViewInvoiceFragment()
-                                    fragment.arguments = bundle
-
-                                    activity!!.supportFragmentManager.beginTransaction()
-                                        .replace(R.id.layout_home, fragment, "VIEW-INVOICE")
-                                        .addToBackStack(null)
-                                        .commit()
-                                }
-                            })
+                        binding.historyFragRecyclerView.adapter = adapter
+                        adapter.notifyDataSetChanged()
                     }
                     else {
                         binding.historyFragNoDataFrameLayout.visibility = View.VISIBLE
+                        adapter.notifyDataSetChanged()
                     }
                 }
 

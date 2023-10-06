@@ -125,6 +125,8 @@ class PartiesFragment : Fragment() {
 
             //  ADD BUTTON
             addBinding.btnSaveParty.setOnClickListener {
+                addDialog.dismiss()
+
                 if (name.text.toString().trim() == "") {
                     addBinding.til1.helperText = "Name is require"
                 } else if (contact.text.toString().trim() == "") {
@@ -148,7 +150,6 @@ class PartiesFragment : Fragment() {
                     FirebaseDatabase.getInstance().getReference("Users/$userID").child("Party Data")
                         .child(key).setValue(addParty)
                         .addOnSuccessListener {
-                            addDialog.dismiss()
                             greenToast("Party added to list.")
                         }
                         .addOnFailureListener {
@@ -207,6 +208,8 @@ class PartiesFragment : Fragment() {
                 updateBinding.til5.helperText = "Phone number is require"
             }
             else {
+                updateDialog.dismiss()
+
                 val selectedID = updateBinding.updateRgType.checkedRadioButtonId
                 radioButton = updateDialog.findViewById(selectedID)
                 //  NAME
@@ -233,7 +236,6 @@ class PartiesFragment : Fragment() {
                 } else {
                     database.child("$key/type").setValue("")
                 }
-                updateDialog.dismiss()
                 greenToast("Party data updated.")
                 /*val selectedID = updateBinding.updateRgType.checkedRadioButtonId
                 radioButton = updateDialog.findViewById(selectedID)

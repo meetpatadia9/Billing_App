@@ -129,6 +129,7 @@ class InventoryFragment : Fragment() {
                     addBinding.til4.helperText = "Quantity is require"
                 }
                 else {      //  accepting condition
+                    addDialog.dismiss()
                     itemList.clear()
                     //  generating new `push()` key first so can be used later if required, so push ID does no get changed
                     val newKey = database.child("Inventory Data").push().key.toString()
@@ -143,7 +144,6 @@ class InventoryFragment : Fragment() {
 
                     FirebaseDatabase.getInstance().getReference("Users/$userID").child("Inventory Data").child(newKey).setValue(addItem)
                         .addOnSuccessListener {
-                            addDialog.dismiss()
                             greenToast("Item added to inventory.")
                         }
                         .addOnFailureListener {
@@ -188,6 +188,8 @@ class InventoryFragment : Fragment() {
 
         //  UPDATE BUTTON
         updateBinding.btnUpdateItem.setOnClickListener {
+            updateDialog.dismiss()
+
             if (pName.text.toString().trim() == "") {
                 updateBinding.til1.helperText = "Product name is required"
             }
@@ -206,17 +208,29 @@ class InventoryFragment : Fragment() {
                     productQty = qty.text.toString().toFloat()
                 )
 
-                val thisKey = database.child("Inventory Data").push().key.toString()
-                FirebaseDatabase.getInstance().getReference("Users/$userID").child("Inventory Data").child(thisKey).setValue(addItem)
+                val thisKey = key
 
                 FirebaseDatabase.getInstance().getReference("Users/$userID/Inventory Data").child(key).removeValue()
                     .addOnSuccessListener {
-                        updateDialog.dismiss()
-                        greenToast("Item data updated.")
+                        FirebaseDatabase.getInstance().getReference("Users/$userID").child("Inventory Data").child(thisKey).setValue(addItem)
+                            .addOnSuccessListener {
+                                greenToast("Item data updated.")
+                            }
                     }
                     .addOnFailureListener {
                         redToast(it.message.toString())
                     }
+
+                /*val thisKey = database.child("Inventory Data").push().key.toString()
+                FirebaseDatabase.getInstance().getReference("Users/$userID").child("Inventory Data").child(thisKey).setValue(addItem)
+
+                FirebaseDatabase.getInstance().getReference("Users/$userID/Inventory Data").child(key).removeValue()
+                    .addOnSuccessListener {
+                        greenToast("Item data updated.")
+                    }
+                    .addOnFailureListener {
+                        redToast(it.message.toString())
+                    }*/
             }
         }
 

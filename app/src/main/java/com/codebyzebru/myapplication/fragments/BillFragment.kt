@@ -381,15 +381,15 @@ class BillFragment : Fragment(), PurchasedItemAdapter.SubTotalListener {
                     .addOnCompleteListener {
                         if (it.isSuccessful) {
                             if (purchasedItemList.isNotEmpty()) {
-                                for (purchasedItemList in purchasedItemList) {
+                                for (purchasedItem in purchasedItemList) {
                                     invItemList.find { inv ->
-                                        inv.key == purchasedItemList.key
+                                        inv.key == purchasedItem.key
                                     }
                                         .let { inv ->
-                                            inv!!.productQty -= purchasedItemList.pqty
+                                            inv!!.productQty -= purchasedItem.pqty
 
                                             FirebaseDatabase.getInstance().getReference("Users/$userID")
-                                                .child("Inventory Data").child(purchasedItemList.key).child("productQty")
+                                                .child("Inventory Data").child(purchasedItem.key).child("productQty")
                                                 .setValue(inv?.productQty)
                                         }
                                 }
