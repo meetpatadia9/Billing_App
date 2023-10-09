@@ -314,7 +314,7 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnPdfShare"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/_150sdp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginStart="@dimen/_15sdp"
@@ -326,28 +326,9 @@
                 android:textSize="@dimen/_12ssp"
                 android:typeface="normal"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/btnImageShare"
-                app:layout_constraintHorizontal_weight="@integer/material_motion_duration_short_1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnImageShare"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:layout_marginEnd="@dimen/_15sdp"
-                android:background="@drawable/shape_btn_green"
-                android:text="@string/txt_share_as_image"
-                android:textAllCaps="false"
-                android:textColor="@color/color5"
-                android:textSize="@dimen/_12ssp"
-                android:typeface="normal"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_weight="@integer/material_motion_duration_short_1"
-                app:layout_constraintStart_toEndOf="@id/btnPdfShare"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
