@@ -29,7 +29,7 @@ class FirstFragment : Fragment() {
 
         val signInSignUpAdapter = SignInSignUpAdapter(childFragmentManager)
         signInSignUpAdapter.apply {
-            addFragment(SignInFragment(), "Sign In")
+            addFragment(PhoneAuthFragment(), "Sign In")
             addFragment(SignUpFragment(), "Sign Up")
         }
 

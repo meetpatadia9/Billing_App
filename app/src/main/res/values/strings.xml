@@ -10,7 +10,7 @@
 
     <!-- Authentication -->
     <string name="txt_password">Password*</string>
-    <string name="txt_conform_password">Conform password*</string>
+    <string name="txt_conform_password">Confirm password*</string>
     <string name="btn_verify">Verify</string>
     <string name="btn_sign_in">Sign In</string>
 
@@ -120,5 +120,9 @@
     <string name="txt_add_party">Add Party</string>
     <string name="txt_share_as_image">Share as Image</string>
     <string name="txt_share_as_pdf">Share as PDF</string>
+    <string name="cd_phone">Phone</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="txt_already_user">Already a user?</string>
 
 </resources>

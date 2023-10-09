@@ -1,4 +1,4 @@
-@file:Suppress("PrivatePropertyName", "DEPRECATION")
+@file:Suppress("DEPRECATION", "PrivatePropertyName")
 
 package com.codebyzebru.myapplication.fragments
 
@@ -8,12 +8,12 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.Fragment
 import com.codebyzebru.myapplication.R
 import com.codebyzebru.myapplication.activities.HomeActivity
 import com.codebyzebru.myapplication.databinding.FragmentSignInBinding
@@ -31,7 +31,7 @@ import java.util.regex.Pattern
 
 class SignInFragment : Fragment() {
 
-    private lateinit var binding: FragmentSignInBinding
+    lateinit var binding: FragmentSignInBinding
 
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
@@ -102,6 +102,13 @@ class SignInFragment : Fragment() {
             binding.progressbarSignIn.visibility = View.VISIBLE
             binding.btnLogin.visibility = View.GONE
             signInWithGoogle()
+        }
+
+        binding.loginPhone.setOnClickListener {
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.frameMain, PhoneAuthFragment())
+                .addToBackStack(null)
+                .commit()
         }
     }
 
