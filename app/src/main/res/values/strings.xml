@@ -118,5 +118,7 @@
     <string name="txt_other">Other</string>
     <string name="txt_setting">Setting</string>
     <string name="txt_add_party">Add Party</string>
+    <string name="txt_share_as_image">Share as Image</string>
+    <string name="txt_share_as_pdf">Share as PDF</string>
 
 </resources>

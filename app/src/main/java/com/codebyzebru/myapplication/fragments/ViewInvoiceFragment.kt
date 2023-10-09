@@ -1,10 +1,17 @@
 package com.codebyzebru.myapplication.fragments
 
+import android.content.Context
+import android.graphics.Canvas
+import android.graphics.pdf.PdfDocument
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.codebyzebru.myapplication.R
@@ -22,6 +29,9 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 
 class ViewInvoiceFragment : Fragment() {
 
@@ -160,6 +170,55 @@ class ViewInvoiceFragment : Fragment() {
                 Log.e("Failed to fetch invoice detail", error.message)
             }
         })
+
+        binding.btnPdfShare.setOnClickListener {
+            createAndSharePDF()
+        }
     }
 
+
+    private fun createAndSharePDF() {
+        val pdfDocument = PdfDocument()
+        val pageInfo = PdfDocument.PageInfo.Builder(1080, 1920, 1).create()   // A4 size in points
+        val page = pdfDocument.startPage(pageInfo)
+        val displayMetrics = DisplayMetrics()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            requireActivity().display?.getRealMetrics(displayMetrics)
+        } else {
+            requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
+        }
+
+        //  inflate layout
+        val inflater = context?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val view = inflater.inflate(R.layout.fragment_view_invoice, null)
+
+        binding.invoiceView.apply {
+            measure(View.MeasureSpec.makeMeasureSpec(displayMetrics.widthPixels, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(displayMetrics.heightPixels, View.MeasureSpec.EXACTLY))
+            layout(0, 0, pageInfo.pageWidth, pageInfo.pageHeight)
+        }
+
+        //  draw view on Canvas
+        val canvas: Canvas = page.canvas
+        binding.invoiceView.draw(canvas)
+        pdfDocument.finishPage(page)
+
+        // Create a file to save the PDF
+        val pdfFile = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "Invoice-${binding.txtInvoiceNo.text}.pdf")
+
+        try {
+            val outputStream = FileOutputStream(pdfFile)
+            pdfDocument.writeTo(outputStream)
+            Toast.makeText(context, "saved", Toast.LENGTH_SHORT).show()
+            outputStream.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
+            Log.e("createAndSharePDF: IOException", e.message.toString())
+        }
+
+        Log.i("pdfFile.absolutePath", pdfFile.absolutePath)
+
+        // Close the PdfDocument
+        pdfDocument.close()
+    }
 }

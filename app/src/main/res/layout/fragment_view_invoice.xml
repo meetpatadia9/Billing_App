@@ -11,9 +11,9 @@
         android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/invoiceView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
             android:padding="@dimen/_5sdp">
 
             <!-- ORG/STORE NAME -->
@@ -304,8 +304,8 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#F4F4F4"
-        android:layout_gravity="bottom">
+        android:layout_gravity="bottom"
+        android:background="#F4F4F4">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -320,7 +320,7 @@
                 android:layout_marginStart="@dimen/_15sdp"
                 android:layout_marginEnd="@dimen/_15sdp"
                 android:background="@drawable/shape_btn_red"
-                android:text="Share as PDF"
+                android:text="@string/txt_share_as_pdf"
                 android:textAllCaps="false"
                 android:textColor="@color/color4"
                 android:textSize="@dimen/_12ssp"
@@ -339,7 +339,7 @@
                 android:layout_marginStart="@dimen/_15sdp"
                 android:layout_marginEnd="@dimen/_15sdp"
                 android:background="@drawable/shape_btn_green"
-                android:text="Share as Image"
+                android:text="@string/txt_share_as_image"
                 android:textAllCaps="false"
                 android:textColor="@color/color5"
                 android:textSize="@dimen/_12ssp"
