@@ -60,17 +60,11 @@ class HomeActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
             when (it.itemId) {
                 R.id.drawer_item_home -> replaceFragments(HomeFragment(), it.title.toString(), "HOME")
                 R.id.drawer_item_bill -> replaceFragments(BillFragment(), it.title.toString(), "BILL")
-                R.id.drawer_item_inventory -> replaceFragments(
-                    InventoryFragment(),
-                    it.title.toString(),
-                    "INVENTORY"
-                )
+                R.id.drawer_item_inventory -> replaceFragments(InventoryFragment(), it.title.toString(), "INVENTORY")
                 R.id.drawer_item_parties -> replaceFragments(PartiesFragment(), it.title.toString(), "PARTIES")
                 R.id.drawer_item_history -> replaceFragments(HistoryFragment(), it.title.toString(), "HISTORY")
                 R.id.drawer_item_setting -> replaceFragments(SettingFragment(), it.title.toString(), "SETTING")
-                else -> {
-                    true
-                }
+                else -> { true }
             }
         }
     }
@@ -94,15 +88,11 @@ class HomeActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
     }
 
     /**
-        CHECKING FOR ACTIVE INTERNET CONNECTION
+    *   CHECKING FOR ACTIVE INTERNET CONNECTION
     */
-    private fun noInternet() {
-        isConnected = false
-    }
+    private fun noInternet() { isConnected = false }
 
-    private fun internetConnected() {
-        isConnected = true
-    }
+    private fun internetConnected() { isConnected = true }
 
     override fun onNetworkConnectionChange(isConnected: Boolean) {
         showNetworkMessage(isConnected)
